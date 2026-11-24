@@ -1,0 +1,33 @@
+% S12_ECHILIBRARE  Factorul de echilibrare, contragreutatea brațelor și inerția arborelui.
+% Masele vin din Fusion (volum x densitate), vezi echilibrare.m. Unghiul contragreutății
+% merge în parametri_fusion.csv (s07), iar Fusion verifică factorul cu masele lui (C7).
+P = parametri();
+fprintf('\n=== S12 Echilibrarea arborelui cotit ===\n');
+E = echilibrare(P);
+g = 1e3; mm = 1e3;
+fprintf('Masele din Fusion: piston %.1f g, bolț %.1f g, siguranțe %.1f g, rulment picior %.1f g, segmenți %.1f g\n', ...
+        E.m.piston*g, E.m.bolt*g, E.m.sigurante*g, E.m.rulment_picior*g, E.m_seg*g);
+fprintf('   biela %.1f g, centrul de masă la %.1f mm de capul ei: %.1f g alternativi, %.1f g rotativi\n', ...
+        E.m.biela*g, E.d_biela*mm, E.m_biela_rec*g, E.m_biela_rot*g);
+fprintf('   maneton %.1f g, șaibe %.1f g, rulment cap %.1f g\n', E.m.maneton*g, E.m.saibe*g, E.m.rulment_cap*g);
+fprintf('Masa alternativă %.1f g, masa rotativă pe maneton %.1f g\n', E.m_rec*g, E.m_rot*g);
+fprintf('Brațe de %.2f mm, rază %.2f mm, bosaj R%.0f: contragreutate pe ±%.1f grade\n', ...
+        E.t*mm, E.R*mm, P.R_bosaj*mm, E.alfa*180/pi);
+w = 2*pi*P.n_putere/60;
+F1 = E.m_rec*P.r*w^2;
+fprintf('Forța de ordinul 1 la %d rot/min: %.2f kN; rămân %.2f kN pe axa cilindrului și %.2f kN transversal\n', ...
+        P.n_putere, F1/1e3, (1 - E.BF)*F1/1e3, E.BF*F1/1e3);
+fprintf('Arborele: %.2f kg, inerție %.5f kg m2\n', E.m_arbore, E.J);
+
+verifica(E.atins, 'B1', sprintf('Contragreutatea pe ±%.1f grade dă factorul de echilibrare %.2f (cerut %.2f, maxim posibil %.2f)', ...
+         E.alfa*180/pi, E.BF, P.BF, E.BF_max));
+verifica(E.perete_fus >= P.perete_fus, 'B2', sprintf('În jurul fusului palier rămân %.1f mm de braț (>= %.0f mm)', ...
+         E.perete_fus*mm, P.perete_fus*mm));
+verifica(P.r + P.R_bosaj <= E.R && P.R_bosaj - P.d_maneton/2 >= 0.3*P.d_maneton, 'B3', sprintf( ...
+         'Bosajul manetonului: perete de %.1f mm (>= 0,3 d) și %.1f mm sub raza brațelor', ...
+         (P.R_bosaj - P.d_maneton/2)*mm, (E.R - P.r - P.R_bosaj)*mm));
+J_tot = J_volant_usor(P);
+verifica(J_tot < P.J_pasiv, 'B4', sprintf('Volantul ușor (arbore %.5f + rotorul mașinii) = %.5f kg m2 < volantul clasic %.3f', ...
+         E.J, J_tot, P.J_pasiv));
+verifica(abs(E.m_rec - P.m_rec) <= 0.03*E.m_rec, 'B5', sprintf( ...
+         'Masa alternativă din parametri.m (%.0f g) = cea măsurată în Fusion (%.1f g), în 3%%', P.m_rec*g, E.m_rec*g));

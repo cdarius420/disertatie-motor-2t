@@ -1,0 +1,10 @@
+{
+	"autodeskProduct":	"Fusion",
+	"type":	"script",
+	"author":	"Darius",
+	"description":	{
+		"":	"Dizertație: construiește modelul pas cu pas din parametri_fusion.csv"
+	},
+	"supportedOS":	"windows|mac",
+	"editEnabled":	true
+}

@@ -1,0 +1,364 @@
+# Favorites Library
+Iron, Gray Cast ASTM A48 Grade 20
+Iron, Gray Cast ASTM A48 Grade 60
+# Fusion Additive Material Library
+Aluminum AlSi10Mg
+Cobalt Chrome
+EPX 150 - Air Baked (with Carbon M2 M3 L1 3D Printers)
+EPX 82 (with Carbon M2 M3 L1 3D Printers)
+EPX 86FR (with Carbon M2 M3 L1 3D Printers)
+HP 3D HR CB PA 12 (with HP Jet Fusion 580 Color 3D Printer)
+Inconel 625
+Inconel 718
+Inconel 718 Plus
+Nylon 12 (with Formlabs Fuse 1 3D Printer)
+Orgasol® Invent Smooth - PA 12
+PA 11 - Nylon- HP 11-30 (with EOS P 396 3D Printer)
+PA 12 - Nylon - PA 603-CF (with EOS P 3D Printers)
+PA 12 - PA 2200 - 120µm - Balance (with EOS 3D printers)
+PEKK - Polyetherketoneketone Reinforced With Carbon Fibers - HT-23 (with EOS P 810 3D Printer)
+Rilsan Invent Natural - PA 11
+Stainless Steel 17-4 PH
+Stainless Steel AISI 304
+Titanium 6Al-4V
+Tough 2000 (with Formlabs SLA 3D Printers)
+# Fusion Appearance Library
+# Fusion Material Library
+60Sn40Pb
+63Sn37Pb
+ABS Plastic
+Acetal Resin, Black
+Acetal Resin, White
+Acrylic
+Acrylic, Clear
+Air
+Alumina (Al2O3)
+Aluminum
+Aluminum 1100-H14
+Aluminum 1100-H18
+Aluminum 1100-O
+Aluminum 2014-T4
+Aluminum 2014-T6
+Aluminum 3003-H12
+Aluminum 3003-H14
+Aluminum 3003-H16
+Aluminum 3003-O
+Aluminum 3004-H32
+Aluminum 3004-H34
+Aluminum 3004-H38
+Aluminum 3004-O
+Aluminum 3105-H12
+Aluminum 3105-H14
+Aluminum 3105-H16
+Aluminum 3105-H18
+Aluminum 3105-O
+Aluminum 5005
+Aluminum 5005-H12
+Aluminum 5005-H14
+Aluminum 5005-H16
+Aluminum 5005-H18
+Aluminum 5005-H38
+Aluminum 5005-O
+Aluminum 5052
+Aluminum 5052 H32
+Aluminum 5052-H34
+Aluminum 5052-H36
+Aluminum 5052-H38
+Aluminum 5052-O
+Aluminum 5083 87 Cold Formed
+Aluminum 5454 0 Cold Formed
+Aluminum 6061
+Aluminum 6061 T6 0 Cold Formed
+Aluminum 6061 T6 80 Hot Formed
+Aluminum 6061, Welded
+Aluminum 6061-AHC
+Aluminum 6061-O
+Aluminum 7075
+Aluminum 7175 T73 0 Hot Formed
+Aluminum A356 T6
+Aluminum nitride (AlN)
+Aluminum, Anodized Blue
+Aluminum, Anodized Red
+Aluminum, Anodized Silver
+Argon
+Ash
+Bamboo
+Beryllium oxide (BeO)
+Birch
+Brass
+Brass, Soft Yellow
+Brass, Soft Yellow, Welded
+Bronze
+Bronze, Architectural
+Bronze, Cast
+Bronze, Soft Tin
+CFRP
+Canvas
+Carpet
+Cherry
+Copper
+Copper, Alloy
+Copper, Cast
+Copper, Patina
+Copper, Wrought
+Discrete Component
+Douglas Fir
+EPX 150 - Air Baked (with Carbon M2 M3 L1 3D Printers)
+EPX 82 (with Carbon M2 M3 L1 3D Printers)
+EPX 86FR (with Carbon M2 M3 L1 3D Printers)
+Epoxy Resin
+FR4
+Fabric
+Fieldstone
+GFRP
+Glass
+Glass, Bronze Glazing
+Glass, Bronze Glazing, Low E
+Glass, Cast, Clear
+Glass, Cast, Gray
+Glass, Clear Glazing
+Glass, Clear Glazing, Low E
+Glass, Clear Glazing, Tempered
+Glass, Frosted
+Gold
+Granite, Cut, Polished
+Granite, Cut, Rough
+HP 3D HR CB PA 12 (with HP Jet Fusion 580 Color 3D Printer)
+Inconel 718 Plus
+Iron, Cast
+Iron, Ductile
+Iron, Gray
+Iron, Gray Cast ASTM A48 Grade 20
+Iron, Gray Cast ASTM A48 Grade 25
+Iron, Gray Cast ASTM A48 Grade 30
+Iron, Gray Cast ASTM A48 Grade 35
+Iron, Gray Cast ASTM A48 Grade 40
+Iron, Gray Cast ASTM A48 Grade 50
+Iron, Gray Cast ASTM A48 Grade 60
+Iron, Malleable
+Iron, Wrought
+Jarrah
+LCP Plastic
+Laminate, Blue, Matte
+Laminate, Red, Matte
+Laminate, White, Matte
+Laminated Veneer Lumber
+Lauan, Meranti
+Lead
+Leather, weathered
+Limestone
+Linen, Beige
+Linen, White
+MDF Medium Density Fiberboard
+Magnesium
+Magnesium AZ63A
+Magnesium AZ91E T6
+Mahogany
+Maple
+Marble
+Mirror
+Nickel-Copper Alloy 400
+Nitrogen
+Nylon 12 (with Formlabs Fuse 1 3D Printer)
+Nylon 6
+Nylon 6/6
+Nylon, molybdenum disulphide
+Oak, Red
+Oak, White
+Orgasol® Invent Smooth - PA 12
+Oriented Strand Board
+Oxygen
+PA 11 - Nylon- HP 11-30 (with EOS P 396 3D Printer)
+PA 12 - Nylon - PA 603-CF (with EOS P 3D Printers)
+PA 12 - PA 2200 - 120µm - Balance (with EOS 3D printers)
+PAEK Plastic
+PBT Plastic
+PC/ABS Plastic
+PEEK
+PEKK - Polyetherketoneketone Reinforced With Carbon Fibers - HT-23 (with EOS P 810 3D Printer)
+PET Plastic
+PMMA Plastic
+PPS Plastic
+PTFE
+PVC, Flexible
+PVC, Unplasticized
+PVC-Piping
+Palladium
+Paper
+Particleboard
+Phenolic Resin
+Pine
+Pine, Radiata
+Pine, Scots
+Pine, Southern
+Plastic
+Plastic, Opaque Black
+Plastic, Opaque White
+Plastic, Transparent
+Platinum
+Plywood, Finish
+Plywood, Sheathing
+Polycarbonate, Bronze
+Polycarbonate, Clear
+Polyethylene, High Density
+Polyethylene, Low Density
+Polyisocyanate
+Polyisocyanurate
+Polymide (Kapton)
+Polypropylene
+Polystyrene
+Polystyrene, Expanded
+Polystyrene, High Impact
+Polytetrafluoroethylene
+Polyurethane Foam
+Poplar
+Porcelain
+Porcelain, glazed
+Redwood
+Rilsan Invent Natural - PA 11
+Rubber
+Rubber, Black
+Rubber, Butyl
+Rubber, Natural
+Rubber, Nitrile
+Rubber, Silicone
+Rubble
+SAN Plastic
+Siding, Clapboard
+Silicon Nitride
+Silver
+Slate
+Softwood, Finish
+Softwood, Lumber
+Solid Surface Countertop
+Spruce
+Stainless Steel
+Stainless Steel 17-4 PH
+Stainless Steel 316L
+Stainless Steel AISI 202
+Stainless Steel AISI 302
+Stainless Steel AISI 304
+Stainless Steel AISI 309
+Stainless Steel AISI 310
+Stainless Steel AISI 317
+Stainless Steel AISI 405
+Stainless Steel AISI 430
+Stainless Steel AISI 440C, Welded
+Stainless Steel AISI 446
+Stainless Steel, 440C
+Stainless Steel, Austenitic
+Stainless Steel, Brushed
+Stainless Steel, Polished
+Steel
+Steel AISI 1006 85 HR
+Steel AISI 1006 85B HR
+Steel AISI 1008 91 HR
+Steel AISI 1015
+Steel AISI 1015 80 NORM
+Steel AISI 1018 106 HR
+Steel AISI 1018 118 QT
+Steel AISI 1018 209 QT
+Steel AISI 1020 107 HR
+Steel AISI 1020 108 ANLD
+Steel AISI 1022
+Steel AISI 1030 128 HR
+Steel AISI 1030 128A HR
+Steel AISI 1045 225 ANLD
+Steel AISI 1045 390 QT
+Steel AISI 1045 450 QT
+Steel AISI 1045 500 QT
+Steel AISI 1045 595 QT
+Steel AISI 1045 705 QT
+Steel AISI 1045 HV HR
+Steel AISI 1050
+Steel AISI 1051
+Steel AISI 1052
+Steel AISI 1053
+Steel AISI 1054
+Steel AISI 1055
+Steel AISI 1056
+Steel AISI 1057
+Steel AISI 1058
+Steel AISI 1059
+Steel AISI 1060
+Steel AISI 1061
+Steel AISI 1080 371 QT
+Steel AISI 1080 410 QT
+Steel AISI 1080 421 AUST
+Steel AISI 1522 289 HR
+Steel AISI 1522 304 HR
+Steel AISI 1541 362 QT
+Steel AISI 1561 234 HR
+Steel AISI 4130 259 QT
+Steel AISI 4130 366 QT
+Steel AISI 4142 380 QT
+Steel AISI 4142 400 QT
+Steel AISI 4142 450 QT
+Steel AISI 4142 450A QT
+Steel AISI 4142 475 QT
+Steel AISI 4142 475A QT
+Steel AISI 4142 560 QT
+Steel AISI 4142 670 QT
+Steel AISI 4340 242 HR
+Steel AISI 4340 350A QT
+Steel AISI 4340 350B QT
+Steel AISI 4340 350C QT
+Steel AISI 4340 409 QT
+Steel AISI 5160 434 QT
+Steel AISI 5210 517 H
+Steel AISI 8630 254 NORM
+Steel AISI 8640 361 QT
+Steel AISI 9262 260 NORM
+Steel AISI 9262 271 QT
+Steel ASTM A242
+Steel ASTM A36
+Steel ASTM A53
+Steel ASTM A572
+Steel ASTM A913
+Steel, Alloy
+Steel, Carbon
+Steel, Cast
+Steel, Chrome Plated
+Steel, Galvanized
+Steel, High Strength, Low Alloy
+Steel, MAN-TEN
+Steel, Mild
+Steel, Mild, Welded
+Steel, Non-Alloy
+Steel, Paint Finish, Blue
+Steel, Paint Finish, Blue
+Steel, Paint Finish, Dark Gray
+Steel, Paint Finish, Red
+Steel, RQC100
+Steel, Wrought
+Stone
+Teak
+Thermoplastic Resin
+Tin (Sn)
+Tin-Aluminium-Copper (Sn-Ag-Cu)
+Titanium
+Titanium 6Al-4V
+Tough 2000 (with Formlabs SLA 3D Printers)
+Travertine
+UHMW, Black
+UHMW, White
+Walnut
+Water
+Wood
+Wood (Oak)
+Wood Flooring
+Zinc
+# Fusion Nonlinear Material Library
+Aluminum - High-Strength Alloy
+Aluminum - Moderate-Strength Alloy
+Aluminum - Pure (Low-Strength)
+Copper - High-Strength Alloy
+Copper - Pure (Low-Strength)
+Steel - Carbon Steel for Pressure Vessels
+Steel - High-Strength Structural
+Steel - High-Strength, Low-Alloy
+Steel - Stainless
+Steel - Standard Structural
+Titanium - High-Strength Alloy
+Titanium - Pure (Low-Strength)
+# Private Visual Library
