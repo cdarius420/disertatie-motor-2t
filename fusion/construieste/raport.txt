@@ -1,5 +1,5 @@
-Reconstruire: șterse 11_Cilindru_corp.
-Parametri: 0 noi, 269 actualizați.
+Reconstruire: șterse 80_Toba, 90_Compresor, 11_Cilindru_corp.
+Parametri: 0 noi, 287 actualizați.
 Pasul 1: 00_Schelet există deja, l-am lăsat neatins.
 Pasul 2: 10_Cilindru există deja, l-am lăsat neatins.
 Pasul 3: 20_Piston există deja, l-am lăsat neatins.
@@ -14,15 +14,16 @@ Pasul 10: 60_Stator există deja, l-am lăsat neatins.
 Pasul 11: 61_Rotor există deja, l-am lăsat neatins.
 Pasul 12: 11_Cilindru_corp construit (Ø112, galerie 70-106 mm, 5 canale de transfer, colectorul compresorului turnat în spate).
 Pasul 12b: 12_Supapa există deja, l-am lăsat neatins.
-Pasul 13: 90_Compresor există deja, l-am lăsat neatins.
+Pasul 13: 90_Compresor construit (roata Ø44.2 mm și motorul Ø50 x 60 mm, pe axa orizontală la z = 125.8 mm).
 Pasul 14: 52_Capac_dreapta există deja, l-am lăsat neatins.
 Pasul 14b: 55_Scut există deja, l-am lăsat neatins.
 Pasul 14c: 56_Pompa_ulei există deja, l-am lăsat neatins.
-Pasul 8: legături existente; piese fixe: 00_Schelet, 10_Cilindru, 15_Chiulasa, 50_Carter_stanga, 51_Carter_dreapta, 53_Lamela, 60_Stator, 11_Cilindru_corp, 12_Supapa, 90_Compresor, 52_Capac_dreapta, 55_Scut, 56_Pompa_ulei.
-Materiale: 60 corpuri; 9 materiale (AlSi9Cu3 turnat din -, Al 4032 forjat din -, Otel C45 imbunatatit din -, Tole electrotehnice 0,2 mm din -, Bobinaj Cu 55% din -, NdFeB N42SH din -, Al 2618 forjat din -, Al 5754 tabla din -, Anexe (anvelopa) din -).
+Pasul 15: 80_Toba construită (colector Ø38.4, burta Ø96, ieșire Ø23.0 mm; 1352 mm de la flanșă la capăt).
+Pasul 8: legături existente; piese fixe: 00_Schelet, 10_Cilindru, 15_Chiulasa, 50_Carter_stanga, 51_Carter_dreapta, 53_Lamela, 60_Stator, 11_Cilindru_corp, 12_Supapa, 90_Compresor, 52_Capac_dreapta, 55_Scut, 56_Pompa_ulei, 80_Toba.
+Materiale: 62 corpuri; 10 materiale (AlSi9Cu3 turnat din -, Al 4032 forjat din -, Otel C45 imbunatatit din -, Tole electrotehnice 0,2 mm din -, Bobinaj Cu 55% din -, NdFeB N42SH din -, Al 5754 tabla din -, Anexe (anvelopa) din -, Al 2618 forjat din -, Otel tabla toba (DE CONFIRMAT) din -).
 Cinematica: 180 poziții la 2°, jocuri la 0/90/180/270°; am scris cinematica_fusion.csv.
 Multicorp: STEP-uri în fusion/multicorp, mase și inerții în inertii_fusion.csv.
-Parametri orfani șterși: unghi_injector, injector_raza, injector_corp, injector_varf, injector_lungime, oring_adancime, oring_latime, stut_perete, stut_lungime, apa_intrare_x, compresor_y, flansa_D, fanta_lungime, fanta_latime, fante_nr, sita_grosime, baie_fata, baie_adancime, z_baie_sus.
+Parametri orfani șterși: niciunul.
 
 [TRECUT] S1a   Schița „Mecanism” e definită complet (19 curbe)
 [TRECUT] S1b   Coroana urmează formula bielă-manivelă la 5-175° (abatere maximă 1.8e-14 mm)
@@ -89,24 +90,27 @@ Parametri orfani șterși: unghi_injector, injector_raza, injector_corp, injecto
 [TRECUT] C12a  Corpul cilindrului: Ø112 de la baza (62 mm) la punte (164.25 mm), cămașa Ø66 presată, 4 prezoane M8 până la chiulasă; laturile plane la fața carterului (±52.46) până la 69.5 mm, deasupra rotorului
 [TRECUT] C12b  Galeria de admisie: R33-52 mm, de la 70 la 105.75 mm (4 mm sub ferestre), cu 4 coloane la prezoane
 [TRECUT] C12c  Canalele de transfer: 5 din 5 (A±, B±, C), cât coarda ferestrei, până la R47 mm, din galerie până la marginea transferului (122.29 mm)
-[TRECUT] C12d  Colectorul compresorului turnat în spatele cilindrului (inel R37.5, axa la z = 125.3 mm), canalul Ø25 intră în galerie la 87.9 mm; conducta de evacuare de 38 mm iese în față până la 137.43 mm
+[TRECUT] C12d  Colectorul compresorului turnat în spatele cilindrului (inel R37.9, axa la z = 125.8 mm), canalul Ø25 intră în galerie la 87.9 mm; conducta de evacuare de 38 mm iese în față până la 137.43 mm
 [TRECUT] C12e  Cămașa de apă: R36.5-52 mm, de la 141.4 la 160.25 mm, plină în față pe ±27 mm; secțiunea 292 mm2, 80 mm2 pe lângă coloanele prezoanelor (ca în s17); intrarea Ø14 radial la -120° (dreapta-spate); 5 treceri Ø7 spre chiulasă
 [TRECUT] C12f  Evacuarea: tranziție de la fereastra 38 x 27.7 mm (1052 mm2) la gura Ø36.6 (1052 mm2); flanșa la 12 mm de corp, 2 prezoane M8 la ±26 mm (16 mm filet, 4.3 mm perete până la gură)
 [TRECUT] C12g  Ghilotina: lama 2.5 x 42 x 19.8 mm, jocul în fantă 0.25 mm, 0.24 mm de cămașă, 7.0 mm de chiulasă; ghidată 12 mm la deschis, închisă rămâne 3 mm în buzunar (pârghia); axul Ø8 al servomotorului în carcasă, 3 mm deasupra gurii de evacuare
 [TRECUT] C12h  Canalele B fără domuri de injector (injecția e directă, în chiulasă)
-[TRECUT] C13a  Compresorul în linie: roata Ø43.4 mm pe axa orizontală la z = 125.3 mm, motorul în spatele ei; partea din spatele cilindrului are ±53.0 mm, în lățimea cilindrului (±56)
-[TRECUT] C13b  Jocul roată-colector 0.300 mm (cerut 0.300); roata și motorul la 24.0 mm de carter, rotor și chiulasă (>= 5); interferențe între cămașă, corp, ghilotină, chiulasă, carter, rotor și compresor: 0
+[TRECUT] C13a  Compresorul în linie: roata Ø44.2 mm pe axa orizontală la z = 125.8 mm, motorul în spatele ei; partea din spatele cilindrului are ±53.4 mm, în lățimea cilindrului (±56)
+[TRECUT] C13b  Jocul roată-colector 0.300 mm (cerut 0.300); roata și motorul la 23.4 mm de carter, rotor și chiulasă (>= 5); interferențe între cămașă, corp, ghilotină, chiulasă, carter, rotor și compresor: 0
 [TRECUT] C14a  Capacul din dreapta: 5.0 mm până la rotor, 3.0 mm până la bobine, statorul stă pe 3 bosaje cu M5 (7.9 mm filet); ocolește corpul cilindrului la 0.5 mm; camera de apă 130 x 64 x 5 mm cu 2 racorduri Ø14
 [TRECUT] C14b  Prinderile: urechi M10 față-spate pe ambele semicartere (±66 mm, z = 28 mm, 16.8 mm deasupra băilor), urechea chiulasei pentru tijă; inelul capacului pe semicarterul drept (R76.5, 4 mm)
 [TRECUT] C14c  Scutul la 8.0 mm sub cel mai de jos punct (nervura sorbului), fața lui la 85.5 mm sub axă; interferențe carter, capac, stator, rotor, cilindru, chiulasă, compresor, pompa de ulei, scut: 0
 [TRECUT] C14d  Ungerea: sorbul la mijlocul tubului în U (x = 0), galeria Ø7 prin nervura de 14 x 10 mm de sub semicarterul drept, până la plăcuța pompei de la x = 125 mm; pompa Ø40 x 70 și răcitorul ulei-apă deasupra ei, în fața băii
-[TRECUT] C11   Materialele: 60 corpuri cu densitatea din parametri.m (oțel, aluminiu, 4032, NdFeB, tole, bobinaj)
+[TRECUT] C15a  Toba: lungimea acordată pe axa modelului 1000.0 mm = 1000.0 mm din s02; golită la 1.0 mm (237 cm3 de tablă); masa 1.86 kg
+[TRECUT] C15b  Toba pe dreapta: cel mai aproape de 15_Chiulasa (24.6 mm >= 15 mm); pompa de ulei 34.8 mm, capacul 33.1 mm, scutul 117.9 mm, compresorul 133.3 mm; interferențe: 0
+[TRECUT] C15c  Catalizatorul rezervat în burtă: Ø84 x 177 mm, 5.0 mm de perete (substratul DE CONFIRMAT); sonda lambda: gaură Ø18 pe colector
+[TRECUT] C11   Materialele: 62 corpuri cu densitatea din parametri.m (oțel, aluminiu, 4032, NdFeB, tole, bobinaj)
 [TRECUT] C8a   Legături: Arbore_cilindru, Biela_maneton, Biela_bolt, Bolt_piston, Piston_cilindru, Rotor_arbore; piese fixe ancorate; mecanismul revine la PMI după rulare
-[TRECUT] C8b   Pistonul urmează formula bielă-manivelă în 180 poziții pe o rotație: abatere max. 2.7e-12 mm
-[TRECUT] C8c   Biela urmează unghiul arcsin(lambda sin theta): abatere max. 1.2e-13 grade
+[TRECUT] C8b   Pistonul urmează formula bielă-manivelă în 180 poziții pe o rotație: abatere max. 9.2e-12 mm
+[TRECUT] C8c   Biela urmează unghiul arcsin(lambda sin theta): abatere max. 3.3e-13 grade
 [TRECUT] C8d   Pistonul rămâne pe axa cilindrului, fără rotire: abatere max. 0.0e+00
 [TRECUT] C8e   Squish la PMI, coroana-banda chiulasei: 1.1000 mm la 0° (cerut 1.1000 mm)
-[TRECUT] C8f   Jocul radial piston-cilindru: 0.0212/0.0212/0.0212/0.0212 mm la 0/90/180/270° (cerut 0.0212 mm)
+[TRECUT] C8f   Jocul radial piston-cilindru: 0.0212/0.0212/0.0213/0.0212 mm la 0/90/180/270° (cerut 0.0212 mm)
 [TRECUT] C8g   Jocul axial bielă-bosaje: 0.5000/0.5000/0.5000/0.5000 mm la 0/90/180/270° (cerut 0.5000 mm)
 [TRECUT] C8h   Jocul bielă-brațe (șaibă + jumătate din jocul lateral): 1.1750/1.1750/1.1750/1.1750 mm la 0/90/180/270° (cerut 1.1750 mm)
 [TRECUT] C8i   Fusta-contragreutăți la PME: 3.0000 mm la 180° (minim 3.0000 mm)
@@ -119,4 +123,4 @@ Parametri orfani șterși: unghi_injector, injector_raza, injector_corp, injecto
 [TRECUT] C8q   Discul rotorului-capetele bobinelor: 2.0000/2.0000/2.0000/2.0000 mm la 0/90/180/270° (cerut 2.0000 mm)
 [TRECUT] C8r   Rotorul-fața carterului: 2.0000/2.0000/2.0000/2.0000 mm la 0/90/180/270° (cerut 2.0000 mm)
 
-Rezumat: 94 din 94 verificări trecute
+Rezumat: 97 din 97 verificări trecute

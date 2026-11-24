@@ -12,6 +12,7 @@ M = isg_geometrie(P);     % mașina electrică (s15)
 K = compresor(P);         % compresorul și admisia (s16)
 W = racire(P);            % răcirea cu apă (s17)
 D = capac(P);             % capacul din dreapta, prinderile (s18)
+Tb = toba(P);              % toba de rezonanță (s02)
 xEO = 'raza_manivela*(1 - cos(%s)) + biela_L*(1 - sqrt(1 - (raza_manivela/biela_L)^2*sin(%s)^2))';
 T = {
 % nume                 unitate  expresie                                    comentariu
@@ -284,6 +285,24 @@ T = {
 'racitor_y',           'mm',  num2str(P.racitor_ulei(2)*mm),             'Răcitorul ulei-apă'
 'racitor_z',           'mm',  num2str(P.racitor_ulei(3)*mm),             'Răcitorul ulei-apă'
 'densitate_anexe',     '',    num2str(P.rho_anexe/1e3),                  'Pompele și răcitorul (anvelopă), g/cm3'
+'toba_L0',             'mm',  num2str(Tb.L0*mm),                          'Lungimea acordată, de la fereastră la reflexie (s02)'
+'toba_L_port',         'mm',  num2str(Tb.L_port*mm),                      'De la fereastră la fața flanșei'
+'toba_D1',             'mm',  num2str(Tb.D1*mm),                          'Colectorul (Jennings)'
+'toba_L1e',            'mm',  num2str((Tb.L1 - Tb.L_port)*mm),             'Colectorul, de la flanșă'
+'toba_D2',             'mm',  num2str(Tb.D2*mm),                          'Burta'
+'toba_L2',             'mm',  num2str(Tb.L2*mm),                          'Difuzorul'
+'toba_L3',             'mm',  num2str(Tb.L3*mm),                          'Burta'
+'toba_L4',             'mm',  num2str(Tb.L4*mm),                          'Conul invers'
+'toba_D3',             'mm',  num2str(Tb.D3*mm),                          'Țeava de ieșire'
+'toba_L5',             'mm',  num2str(Tb.L5*mm),                          'Țeava de ieșire'
+'toba_reflexie',       '',    num2str(P.toba_jennings(8)),               'Partea din conul invers până la reflexie'
+'toba_tabla',          'mm',  num2str(P.toba_tabla*mm),                  'Tabla tobei'
+'toba_joc',            'mm',  num2str(P.toba_joc*mm),                    'Jocul minim față de motor'
+'toba_flansa_grosime', 'mm',  num2str(P.toba_flansa*mm),                 'Flanșa tobei'
+'lambda_filet',        'mm',  num2str(P.lambda_bosaj(1)*mm),             'Filetul sondei lambda'
+'lambda_bosaj_D',      'mm',  num2str(P.lambda_bosaj(2)*mm),             'Bosajul sondei'
+'lambda_bosaj_H',      'mm',  num2str(P.lambda_bosaj(3)*mm),             'Bosajul sondei, înălțimea'
+'cat_joc',             'mm',  num2str(P.cat_joc*mm),                     'Jocul catalizatorului rezervat'
 };
 nume = T(:,1); expr = T(:,3);
 v = evalueaza_fusion(nume, expr);

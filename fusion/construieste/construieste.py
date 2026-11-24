@@ -56,13 +56,13 @@ def run(context):
                   pas02_cilindru(design), pas03_piston(design), pas03_bolt(design), pas04_biela(design),
                   pas05_arbore(design), pas06_chiulasa(design), exporta_volume(design),
                   pas09_carter(design), pas09b_lamela(design), pas10_stator(design), pas11_rotor(design),
-                  pas12_cilindru_corp(design), pas12b_supapa(design), pas13_compresor(design), pas14_capac(design), pas14b_scut(design), pas14c_pompa_ulei(design),
+                  pas12_cilindru_corp(design), pas12b_supapa(design), pas13_compresor(design), pas14_capac(design), pas14b_scut(design), pas14c_pompa_ulei(design), pas15_toba(design),
                   pas08_legaturi(design), aplica_materiale(design), ruleaza_cinematica(design),
                   exporta_multicorp(design), sterge_orfani(design), '']
         teste = []
         for verif in (verifica_pas01, verifica_pas02, verifica_pas03, verifica_pas04,
                       verifica_pas05, verifica_pas06, verifica_echilibrare, verifica_pas09, verifica_pas10,
-                      verifica_pas12, verifica_pas14, verifica_ulei, verifica_materiale, verifica_cinematica):
+                      verifica_pas12, verifica_pas14, verifica_ulei, verifica_toba, verifica_materiale, verifica_cinematica):
             try:
                 teste += verif(design)
             except Exception as ex:                  # o verificare care nu poate rula pică, restul continuă
@@ -1511,7 +1511,7 @@ def verifica_pas06(design):
 # bielă pe maneton (rotație), piston pe bolțul bielei (rotație), piston în cilindru
 # (translație pe Z); bolțul e fix în piston. Aceleași legături are modelul Simscape (m02).
 FIXE = ['00_Schelet', '10_Cilindru', '15_Chiulasa', '50_Carter_stanga', '51_Carter_dreapta', '53_Lamela', '60_Stator',
-        '11_Cilindru_corp', '12_Supapa', '90_Compresor', '52_Capac_dreapta', '55_Scut', '56_Pompa_ulei']
+        '11_Cilindru_corp', '12_Supapa', '90_Compresor', '52_Capac_dreapta', '55_Scut', '56_Pompa_ulei', '80_Toba']
 LEGATURI = ['Arbore_cilindru', 'Biela_maneton', 'Biela_bolt', 'Bolt_piston', 'Piston_cilindru', 'Rotor_arbore']
 PAS_CINEMATICA = 2                     # [grade] între pozițiile rulării cinematice
 UNGHIURI_JOCURI = (0, 90, 180, 270)    # pozițiile la care se măsoară jocurile minime
@@ -2115,6 +2115,7 @@ def verifica_pas09(design):
 # bază din Fusion Material Library, pentru simulările de rezistență -----------------------------------
 OTEL = ('Otel C45 imbunatatit', 'densitate_otel', 'Steel AISI 1045 390 QT')       # C45 = AISI 1045
 ANEXE = ('Anexe (anvelopa)', 'densitate_anexe', 'Aluminum 2014-T6')     # piese cumpărate, masa din catalog
+TABLA = ('Otel tabla toba (DE CONFIRMAT)', 'densitate_otel', 'Steel AISI 1006 85 HR')   # tabla de oțel a tobei
 AL_TURNAT = ('AlSi9Cu3 turnat', 'densitate_aluminiu', 'Aluminum A356 T6')           # Al-Si turnat
 DENSITATI = {
     'piston': ('Al 4032 forjat', 'densitate_piston', 'Aluminum 2014-T6'),          # aliaj forjat de piston
@@ -2126,6 +2127,7 @@ DENSITATI = {
     'roata_compresor': ('Al 2618 forjat', 'densitate_aluminiu', 'Aluminum 2014-T6'),            # roată frezată
     'capac': AL_TURNAT, 'scut': ('Al 5754 tabla', 'densitate_aluminiu', 'Aluminum 2014-T6'),     # scutul: tablă îndoită
     'pompa_ulei': ANEXE, 'racitor_ulei': ANEXE,
+    'toba': TABLA, 'flansa_toba': TABLA,
 }
 for _rol in ('bolt', 'sigurante', 'biela', 'rulment_cap', 'rulment_picior', 'ambielaj', 'maneton', 'saibe',
              'rulmenti_paliere', 'bucsa', 'lamela', 'rotor_pahar', 'pana', 'saiba_rotor', 'piulita', 'supapa_evacuare'):
@@ -3229,6 +3231,208 @@ def verifica_ulei(design):
       'până la plăcuța pompei de la x = {:.0f} mm; pompa Ø{:.0f} x {:.0f} și răcitorul ulei-apă deasupra ei, în fața băii'
       .format(2*rg*10, v('nervura_latime')*10, v('nervura_inaltime')*10, (v('baie_x') + 0.5)*10,
               v('pompa_ulei_D')*10, v('pompa_ulei_H')*10))
+    return teste
+
+
+# --- Pasul 15: toba de rezonanță (MR-011) -------------------------------------------------
+# Traseul ales: pe dreapta (-Y), în față și în jos, apoi pe lateral, în sus spre spate. Lungimile și diametrele vin
+# din parametri (Jennings, s02); aici sunt doar direcțiile tronsoanelor. Lungimile scrise sunt în cm.
+TRASEU_TOBA = [('colector', (1, 0, 0), 4.0),             # drept prin flanșă
+               ('colector', (0.9, -0.2, -0.4), 7.0),
+               ('colector', (0.15, -0.85, -0.5), None),   # restul colectorului: iese spre dreapta în fața capacului
+               ('difuzor', (-0.85, -0.28, 0.40), None),   # trece pe lângă capac cu toba_joc
+               ('burta', (-0.9, 0.0, 0.43), None),
+               ('con_invers', (-0.88, 0.15, 0.46), None),
+               ('iesire', (-0.9, 0.2, 0.40), None)]
+
+
+def _traseu_toba(v):
+    """Tronsoanele tobei: (nume, punctul de început, punctul de sfârșit, (raza la început, raza la sfârșit)), în cm."""
+    g = _geometrie_evacuare(v)
+    lung = {'difuzor': v('toba_L2'), 'burta': v('toba_L3'), 'con_invers': v('toba_L4'), 'iesire': v('toba_L5')}
+    r1, r2, r3 = v('toba_D1')/2, v('toba_D2')/2, v('toba_D3')/2
+    raze = {'colector': (r1, r1), 'difuzor': (r1, r2), 'burta': (r2, r2), 'con_invers': (r2, r3), 'iesire': (r3, r3)}
+    p = (v('corp_raza') + v('flansa_grosime'), 0.0, g['zem'])
+    seg, colector = [], 0.0
+    for nume, d, L in TRASEU_TOBA:
+        n = math.sqrt(sum(c*c for c in d))
+        d = tuple(c/n for c in d)
+        if nume == 'colector':
+            L = L if L is not None else v('toba_L1e') - colector
+            colector += L
+        else:
+            L = lung[nume]
+        q = tuple(p[i] + L*d[i] for i in range(3))
+        seg.append((nume, p, q, raze[nume]))
+        p = q
+    return seg
+
+
+def pas15_toba(design):
+    """Toba: tronsoane drepte (conuri și cilindri) cu bile la îmbinări, golită la grosimea tablei; flanșa pe cele două
+    prezoane ale cilindrului; bosajul sondei lambda pe colector; catalizatorul rezervat în burtă."""
+    comp = componenta_noua(design, '80_Toba')
+    if comp is None:
+        return 'Pasul 15: 80_Toba există deja, am lăsat-o neatinsă.'
+    v = valoare(design)
+    f = comp.features
+    nou = adsk.fusion.FeatureOperations.NewBodyFeatureOperation
+    uneste = adsk.fusion.FeatureOperations.JoinFeatureOperation
+    taie = adsk.fusion.FeatureOperations.CutFeatureOperation
+    seg = _traseu_toba(v)
+    s = Schita(comp, comp.xYConstructionPlane, 'Traseu_toba')
+    linii = [s.lin.addByTwoPoints(s.p(*a), s.p(*b)) for _, a, b, _ in seg]
+    for ln in linii:
+        ln.isConstruction = True
+    s.gata()
+
+    def plan(linie, t, nume):
+        pi = comp.constructionPlanes.createInput()
+        pi.setByDistanceOnPath(linie, adsk.core.ValueInput.createByReal(t))
+        pl = comp.constructionPlanes.add(pi)
+        pl.name = nume
+        return pl
+
+    def cerc(pl, centru, r, nume):
+        sk = Schita(comp, pl, nume)
+        sk.sk.sketchCurves.sketchCircles.addByCenterRadius(sk.p(*centru), r)
+        return sk.gata().profiles.item(0)
+
+    corpuri, planuri = [], []
+    for i, ((nume, a, b, (ra, rb)), ln) in enumerate(zip(seg, linii)):
+        pa, pb = plan(ln, 0.0, 'Toba_{}_inceput'.format(i)), plan(ln, 1.0, 'Toba_{}_sfarsit'.format(i))
+        planuri.append((pa, pb))
+        li = f.loftFeatures.createInput(nou)
+        li.loftSections.add(cerc(pa, a, ra, 'Toba_{}_{}_a'.format(i, nume)))
+        li.loftSections.add(cerc(pb, b, rb, 'Toba_{}_{}_b'.format(i, nume)))
+        li.isSolid = True
+        corpuri.append(f.loftFeatures.add(li).bodies.item(0))
+        if i < len(seg) - 1:                     # bila de la îmbinare: semidisc rotit în jurul diametrului
+            sk = Schita(comp, pb, 'Toba_{}_bila'.format(i))
+            c = sk.p(*b)
+            sk.sk.sketchCurves.sketchCircles.addByCenterRadius(c, rb)
+            ax = sk.lin.addByTwoPoints(adsk.core.Point3D.create(c.x - rb, c.y, 0), adsk.core.Point3D.create(c.x + rb, c.y, 0))
+            corpuri.append(_rotire(f, sk.gata().profiles.item(0), ax, nou))
+    unelte = adsk.core.ObjectCollection.create()
+    for b_ in corpuri[1:]:
+        unelte.add(b_)
+    ci = f.combineFeatures.createInput(corpuri[0], unelte)
+    ci.operation = uneste
+    corp = f.combineFeatures.add(ci).bodies.item(0)
+    corp.name = 'Toba'
+    marcheaza(corp, 'toba')
+    # Golirea la grosimea tablei, cu capetele deschise
+    capete = adsk.core.ObjectCollection.create()
+    for pt in (seg[0][1], seg[-1][2]):
+        for fa in corp.faces:
+            c = fa.centroid
+            if (fa.geometry.surfaceType == adsk.core.SurfaceTypes.PlaneSurfaceType
+                    and (c.x - pt[0])**2 + (c.y - pt[1])**2 + (c.z - pt[2])**2 < 1e-4):
+                capete.add(fa)
+                break
+    si = f.shellFeatures.createInput(capete, False)
+    si.insideThickness = adsk.core.ValueInput.createByString('toba_tabla')
+    f.shellFeatures.add(si)
+    # Bosajul sondei lambda, la mijlocul ultimului tronson de colector, spre exterior (dreapta-sus)
+    nume, a, b, (ra, _) = seg[2]
+    d = [b[i] - a[i] for i in range(3)]
+    nd = math.sqrt(sum(x*x for x in d))
+    d = [x/nd for x in d]
+    sus = (0.0, -1.0, 0.5)
+    pr = sum(sus[i]*d[i] for i in range(3))
+    n = [sus[i] - pr*d[i] for i in range(3)]
+    nn = math.sqrt(sum(x*x for x in n))
+    n = [x/nn for x in n]
+    c = [(a[i] + b[i])/2 for i in range(3)]
+    t_, H = v('toba_tabla'), v('lambda_bosaj_H')
+    sl = Schita(comp, comp.xYConstructionPlane, 'Axa_lambda')
+    la = sl.lin.addByTwoPoints(sl.p(*c), sl.p(*[c[i] + n[i]*(ra + H) for i in range(3)]))
+    la.isConstruction = True
+    sl.gata()
+    pl = plan(la, (ra - t_)/(ra + H), 'Plan_lambda')
+    c0 = [c[i] + n[i]*(ra - t_) for i in range(3)]
+    _extrudare_spre(comp, cerc(pl, c0, v('lambda_bosaj_D')/2, 'Bosaj_lambda'), uneste, 'lambda_bosaj_H + toba_tabla', tuple(n), corp)
+    _extrudare_spre(comp, cerc(pl, c0, v('lambda_filet')/2, 'Gaura_lambda'), taie, 'lambda_bosaj_H + toba_tabla + 1 mm', tuple(n), corp)
+    # Catalizatorul rezervat: cilindrul din burtă, la cat_joc de peretele interior (substratul DE CONFIRMAT)
+    k = [i for i, x in enumerate(seg) if x[0] == 'burta'][0]
+    rc = v('toba_D2')/2 - t_ - v('cat_joc')
+    li = f.loftFeatures.createInput(nou)
+    li.loftSections.add(cerc(planuri[k][0], seg[k][1], rc, 'Catalizator_a'))
+    li.loftSections.add(cerc(planuri[k][1], seg[k][2], rc, 'Catalizator_b'))
+    li.isSolid = True
+    cat = f.loftFeatures.add(li).bodies.item(0)
+    cat.name = 'Catalizator_rezervat'
+    marcheaza(cat, 'catalizator_rezervat')
+    # Flanșa pe cele două prezoane ale cilindrului, cu găurile de trecere M8 (9 mm, ISO 273 seria medie) și țeava prin ea
+    g = _geometrie_evacuare(v)
+    xf = seg[0][1][0]
+    pi = comp.constructionPlanes.createInput()
+    pi.setByOffset(comp.yZConstructionPlane, adsk.core.ValueInput.createByReal(xf))
+    pf = comp.constructionPlanes.add(pi)
+    pf.name = 'Plan_flansa_toba'
+    sf = Schita(comp, pf, 'Flansa_toba')
+    C = sf.sk.sketchCurves.sketchCircles
+    zy, Rb = g['y_prezon'], v('flansa_bosaj_R')
+    C.addByCenterRadius(sf.p(xf, 0, g['zem']), g['Ro'])
+    for y in (zy, -zy):
+        C.addByCenterRadius(sf.p(xf, y, g['zem']), Rb)
+    _dreptunghi_fix(sf, [(xf, -zy, g['zem'] - Rb), (xf, zy, g['zem'] - Rb), (xf, zy, g['zem'] + Rb), (xf, -zy, g['zem'] + Rb)])
+    fl = _extrudare_spre(comp, _toate(sf.gata()), nou, 'toba_flansa_grosime', (1, 0, 0)).bodies.item(0)
+    fl.name = 'Flansa_toba'
+    marcheaza(fl, 'flansa_toba')
+    sg = Schita(comp, pf, 'Gauri_flansa_toba')
+    sg.sk.sketchCurves.sketchCircles.addByCenterRadius(sg.p(xf, 0, g['zem']), v('toba_D1')/2)
+    for y in (zy, -zy):
+        sg.sk.sketchCurves.sketchCircles.addByCenterRadius(sg.p(xf, y, g['zem']), 0.45)
+    _extrudare_spre(comp, _toate(sg.gata()), taie, 'toba_flansa_grosime + 1 mm', (1, 0, 0), fl)
+    return 'Pasul 15: 80_Toba construită (colector Ø{:.1f}, burta Ø{:.0f}, ieșire Ø{:.1f} mm; {:.0f} mm de la flanșă la capăt).'.format(
+        v('toba_D1')*10, v('toba_D2')*10, v('toba_D3')*10, sum(math.dist(a, b) for _, a, b, _ in seg)*10)
+
+
+def verifica_toba(design):
+    teste, t = _t()
+    v = valoare(design)
+    occ, corp, fl, cat = ocurenta(design, '80_Toba'), gaseste(design, 'toba'), gaseste(design, 'flansa_toba'), gaseste(design, 'catalizator_rezervat')
+    if occ is None or corp is None or fl is None or cat is None:
+        t(False, 'C15a', '80_Toba lipsește sau e incompletă')
+        return teste
+    seg = _traseu_toba(v)
+    L = v('toba_L_port') + sum(math.dist(a, b) for n, a, b, _ in seg if n in ('colector', 'difuzor', 'burta')) + v('toba_reflexie')*v('toba_L4')
+    plin = sum(math.pi/3*math.dist(a, b)*(ra*ra + ra*rb + rb*rb) for _, a, b, (ra, rb) in seg)
+    gol = corp.volume < 0.2*plin
+    t(abs(L - v('toba_L0')) < 0.01 and gol, 'C15a',
+      'Toba: lungimea acordată pe axa modelului {:.1f} mm = {:.1f} mm din s02; golită la {:.1f} mm ({:.0f} cm3 de tablă); masa {:.2f} kg'
+      .format(L*10, v('toba_L0')*10, v('toba_tabla')*10, corp.volume, corp.physicalProperties.mass))
+    mm_ = adsk.core.Application.get().measureManager
+    T_ = corp.createForAssemblyContext(occ)
+    dist = {}
+    for nume in ('10_Cilindru', '15_Chiulasa', '50_Carter_stanga', '51_Carter_dreapta', '52_Capac_dreapta', '55_Scut',
+                 '56_Pompa_ulei', '90_Compresor'):
+        try:
+            dist[nume] = min(mm_.measureMinimumDistance(T_, b).value for b in _corpuri(design, [(nume, None)]))
+        except Exception:
+            dist[nume] = float('nan')
+    col = adsk.core.ObjectCollection.create()
+    for nume in ('11_Cilindru_corp', '15_Chiulasa', '50_Carter_stanga', '51_Carter_dreapta', '52_Capac_dreapta', '55_Scut',
+                 '56_Pompa_ulei', '90_Compresor', '80_Toba'):
+        col.add(ocurenta(design, nume))
+    ii = design.createInterferenceInput(col)
+    ii.areCoincidentFacesIncluded = False
+    inter = design.analyzeInterference(ii)
+    n_int = inter.count if inter else 0
+    perechi = ['{}/{}'.format(inter.item(i).entityOne.name, inter.item(i).entityTwo.name) for i in range(n_int)]
+    mic = min(dist, key=lambda k: dist[k] if dist[k] == dist[k] else -1)
+    t(all(d >= v('toba_joc') - TOL for d in dist.values()) and n_int == 0, 'C15b',
+      'Toba pe dreapta: cel mai aproape de {} ({:.1f} mm >= {:.0f} mm); pompa de ulei {:.1f} mm, capacul {:.1f} mm, scutul {:.1f} mm, '
+      'compresorul {:.1f} mm; interferențe: {}{}'.format(mic, dist[mic]*10, v('toba_joc')*10, dist['56_Pompa_ulei']*10,
+                                                        dist['52_Capac_dreapta']*10, dist['55_Scut']*10, dist['90_Compresor']*10,
+                                                        n_int, ' (' + ', '.join(perechi) + ')' if perechi else ''))
+    j_c = mm_.measureMinimumDistance(cat.createForAssemblyContext(occ), T_).value
+    _, cil = _fete(corp)
+    gaura = any(abs(r - v('lambda_filet')/2) < TOL for r, a, o in cil)
+    t(0.9*v('cat_joc') <= j_c <= 1.05*v('cat_joc') + TOL and gaura, 'C15c',
+      'Catalizatorul rezervat în burtă: Ø{:.0f} x {:.0f} mm, {:.1f} mm de perete (substratul DE CONFIRMAT); sonda lambda: gaură Ø{:.0f} pe colector'
+      .format((v('toba_D2') - 2*v('toba_tabla') - 2*v('cat_joc'))*10, v('toba_L3')*10, j_c*10, v('lambda_filet')*10))
     return teste
 
 

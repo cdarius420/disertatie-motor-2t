@@ -1,5 +1,5 @@
 Dizertație: grup propulsor 2T hibrid, controlat mecatronic
-Rulare: 24-Nov-2026 19:06:13
+Rulare: 24-Nov-2026 23:40:03
 
 === S01 Cinematica bielă-manivelă și ferestrele ===
 Cilindree: 124.8 cm3, lambda = r/L = 0.248
@@ -39,6 +39,8 @@ Ambele, cazul cel mai rău: 158 mm (15.8%)
 Fără variator, banda 6000-10500 rot/min: 679 mm (67.9%)  <- de ce tobele variabile singure n-au prins
   [TRECUT] T2     Compensarea temperaturii cere sub 10% din lungime: realizabil telescopic
   [TRECUT] T3     Cu variatorul, toba variază de peste 3 ori mai puțin decât fără el
+Toba (Jennings): colector Ø38.4 x 269 mm (din care 41 prin cilindru), difuzor 8° pe 412 mm, burta Ø96 x 177 mm, con invers 16° pe 259 mm, ieșire Ø23.0 x 276 mm
+  [TRECUT] T4     Toba Jennings încape în lungimea acordată de 1000 mm: burta rămâne de 177 mm (catalizatorul rezervat în ea)
 
 === S03 Variatorul CVT ===
 Lungimea curelei: 776 mm
@@ -126,7 +128,7 @@ La PME fusta coboară la 49.8 mm de axa arborelui: contragreutățile pot avea r
   [TRECUT] F7e    Lățimea totală din Fusion (A, B, boost) = cea din timp-arie
   [TRECUT] F7d    Diametrul pistonului din Fusion = alezajul minus jocul mediu
   [TRECUT] F7f    Fețele și tamburul capacului din dreapta din Fusion = s18
-Am scris 269 parametri în fusion/parametri_fusion.csv
+Am scris 287 parametri în fusion/parametri_fusion.csv
 Fereastra de evacuare: 26.82 mm sub PMI; transferul: 41.96 mm; cursa supapei: 4.81 mm
 
 === S08 Ajustajul piston-cilindru ===
@@ -281,7 +283,7 @@ Masa 190 kg (motocicleta 115 + pilot 75), Crr 0.020, randamentul transmisiei 0.8
    căldura în apă           9222.6: eta_i (25%), imep_plin (20%), f_apa (20%)
    uleiul                     85.8: T_apa_modul (17%), eta_i (6%), imep_plin (5%)
    modulul ISG                94.0: eta_inv (131%), T_apa_modul (16%), modul (4%)
-   (171 parametri [ESTIMARE] variați cu ±20%; în paranteză, schimbarea cea mai mare a rezultatului)
+   (176 parametri [ESTIMARE] variați cu ±20%; în paranteză, schimbarea cea mai mare a rezultatului)
 
 === M01 Modelul Simulink al arborelui (MIL-1) ===
 Am construit model_arbore.slx (se deschide și rulează singur: cazul C)
@@ -299,4 +301,4 @@ La 10500 rot/min: forța totală pe carcasă 5.85 kN pe axa cilindrului, 4.63 kN
   [TRECUT] M2c    Simscape: forța lumii pe mecanism = suma m*a cu masele din Fusion (abatere 7.2e-12)
   [TRECUT] M2d    Forța transversală din Simscape 4.632 kN = BF*m_rec*r*omega^2 din s12 4.622 kN (în 1%)
 
-=== Rezumat: 96 din 96 verificări trecute ===
+=== Rezumat: 97 din 97 verificări trecute ===

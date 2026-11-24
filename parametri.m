@@ -337,6 +337,16 @@ P.J_pasiv = 0.006;   % arbore + volant clasic                        [ESTIMARE]
 % --- Toba de rezonanță ---
 P.gamma_ev = 1.35; P.R_ev = 287;                     % gazele de evacuare
 P.EGT_ref = 600; P.EGT_min = 550; P.EGT_max = 650;   % [grade C] [ESTIMARE]
+% Forma tobei (toba.m): Jennings, Two-Stroke Tuner's Handbook (1973), p. 55-73. Intervalele din carte, în paranteză:
+% aria colectorului / fereastră (1,10-1,15), L1/D1 (6-8 la putere maximă), difuzorul: unghi inclus (7-8° la motocros
+% <= 250 cm3), D2/D1 (2,5: aria de 6,25 ori), conul invers: unghi inclus (dublul difuzorului, 14-20°), D3/D1 (0,57-0,62),
+% L5/D3 (12), reflexia: partea din conul invers până la punctul mediu de reflexie ("puțin peste jumătate")
+P.toba_jennings = [1.10 7 8 2.5 16 0.60 12 0.55];
+P.toba_tabla = 1.0e-3;        % tabla tobei [m] [ESTIMARE]
+P.toba_joc = 15e-3;           % jocul minim al tobei față de restul motorului [m] [ESTIMARE]
+P.toba_flansa = 6e-3;         % grosimea flanșei tobei [m] [ESTIMARE]
+P.lambda_bosaj = [18 28 12]*1e-3;  % sonda lambda: filetul (M18 x 1,5, DE CONFIRMAT din fișa sondei), bosajul Ø și înălțimea [m] [ESTIMARE]
+P.cat_joc = 5e-3;             % jocul catalizatorului rezervat în burtă; substratul DE CONFIRMAT (decizia D5) [m] [ESTIMARE]
 P.toleranta_cvt  = 0.05;          % cât de precis ține variatorul turația (criteriul V8) [-]
 P.banda_fara_cvt = [6000 10500];  % banda unei cutii cu trepte, pentru comparație [ESTIMARE]
 

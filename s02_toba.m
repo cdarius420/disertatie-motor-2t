@@ -52,3 +52,11 @@ legend(sprintf('%d grade C', P.EGT_min), sprintf('%d grade C', P.EGT_ref), ...
        sprintf('%d grade C', P.EGT_max), 'cursa tobei: doar temperatura');
 title('Variatorul ține turația; toba compensează temperatura gazelor');
 salveaza_figura(f, 's02_toba');
+
+% 4) Forma tobei, după Jennings (toba.m): tronsoanele care dau lungimea acordată
+Tb = toba(P);
+fprintf('Toba (Jennings): colector Ø%.1f x %.0f mm (din care %.0f prin cilindru), difuzor %.0f° pe %.0f mm, burta Ø%.0f x %.0f mm, con invers %.0f° pe %.0f mm, ieșire Ø%.1f x %.0f mm\n', ...
+        Tb.D1*1e3, Tb.L1*1e3, Tb.L_port*1e3, P.toba_jennings(3), Tb.L2*1e3, Tb.D2*1e3, Tb.L3*1e3, P.toba_jennings(5), Tb.L4*1e3, Tb.D3*1e3, Tb.L5*1e3);
+verifica(Tb.L3 > 2*P.cat_joc && Tb.L1 > Tb.L_port, 'T4', sprintf( ...
+         'Toba Jennings încape în lungimea acordată de %.0f mm: burta rămâne de %.0f mm (catalizatorul rezervat în ea)', Tb.L0*1e3, Tb.L3*1e3));
+

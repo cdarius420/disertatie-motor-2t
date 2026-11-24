@@ -10,7 +10,7 @@ FILE_DESCRIPTION(
 
 FILE_NAME(
 /* name */ '30_Biela.step',
-/* time_stamp */ '2026-11-24T18:57:28+02:00',
+/* time_stamp */ '2026-11-24T23:54:57+02:00',
 /* author */ (''),
 /* organization */ (''),
 /* preprocessor_version */ 'ST-DEVELOPER v20.1',
@@ -942,7 +942,7 @@ SOLID_ANGLE_UNIT()
 #889=PRODUCT_DEFINITION_SHAPE('',$,#892);
 #890=SHAPE_REPRESENTATION('',(#516),#882);
 #891=PRODUCT_DEFINITION_CONTEXT('part definition',#896,'design');
-#892=PRODUCT_DEFINITION('2026-11-24-18-57-28-640','30_Biela',#893,#891);
+#892=PRODUCT_DEFINITION('2026-11-24-23-54-57-150','30_Biela',#893,#891);
 #893=PRODUCT_DEFINITION_FORMATION('',$,#898);
 #894=PRODUCT_RELATED_PRODUCT_CATEGORY('30_Biela','30_Biela',(#898));
 #895=APPLICATION_PROTOCOL_DEFINITION('international standard',
@@ -950,7 +950,7 @@ SOLID_ANGLE_UNIT()
 #896=APPLICATION_CONTEXT(
 'Core Data for Automotive Mechanical Design Process');
 #897=PRODUCT_CONTEXT('part definition',#896,'mechanical');
-#898=PRODUCT('2026-11-24-18-57-28-640','30_Biela',$,(#897));
+#898=PRODUCT('2026-11-24-23-54-57-150','30_Biela',$,(#897));
 #899=PRESENTATION_STYLE_ASSIGNMENT((#900));
 #900=SURFACE_STYLE_USAGE(.BOTH.,#901);
 #901=SURFACE_SIDE_STYLE('',(#902));
