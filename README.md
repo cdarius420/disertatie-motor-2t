@@ -34,6 +34,7 @@ Pachetul calculează și verifică pe bucăți conceptul din propunere, exportă
 | `s16_compresor.m` | Compresorul electric în linie, turnat în spatele cilindrului: aerul, roata, motorul, galeria, așezarea |
 | `s17_racire.m` | Răcirea cu apă: căldura, debitul, vitezele, pereții, pierderile pe circuit, pompa, radiatorul |
 | `s18_capac.m` | Capacul din dreapta: jocurile față de rotor, prinderea statorului, camera de apă și temperatura modulului de putere, prinderile pe cadru, scutul |
+| `s19_vehicul.m` | Viteza maximă din puterea netă de la arbore și încadrarea în L3e-A1 |
 | `m01_model_arbore.m` | Construiește `model_arbore.slx` (dinamica arborelui + volantul activ) și îl compară cu s05 |
 | `m02_multicorp.m` | Modelul Simscape Multibody al mecanismului, cu masele și inerțiile din Fusion |
 | `fusion/` | `construieste/construieste.py` (scriptul Fusion: construiește componentele și le verifică), `README_fusion.md`, CSV-ul generat |
@@ -58,6 +59,8 @@ Pachetul calculează și verifică pe bucăți conceptul din propunere, exportă
 | U5–U6 | Pompa de ulei (aspirația ≤ 1 m/s) și uleiul ≤ 110 °C la ieșirea din răcitor |
 | Q1–Q3 | Capacul din dreapta (≥ 5 mm de rotor, filetul statorului ≥ 1,5 d), joncțiunea modulului ≤ 125 °C cu apa la 75 °C, prinderile M10 pe material plin |
 | F7f | Fețele capacului din Fusion = s18 |
+| N1–N3 | Cinematica rulată în Fusion = formula bielă-manivelă (poziția pistonului, rotația bielei, accelerația) |
+| G1–G2 | Vehiculul: viteza maximă ≥ ținta la puterea netă; puterea și raportul putere/masă în limitele L3e-A1 |
 | C…, S1… (Fusion) | Geometria fiecărui pas din `construieste`, jocurile în 180 de poziții, materialele, interferențele: lista completă în `raport.txt` |
 | M1a–M1c | Simulink (integrare în timp, ode45) = metoda energiei pe unghi din s05, pentru volantul clasic, ușor pasiv și ușor activ: fluctuația sub 2%, turația sub 0,5% |
 

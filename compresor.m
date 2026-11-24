@@ -17,16 +17,22 @@ A = P.w_tr*max(0, cinematica(th, P) - xTO);
 C.A_tr_max = max(A);
 om_m = P.n_putere*pi/30;
 p_in = P.p0*(1 - P.dp_filtru);
-T_ies = @(ps) P.T0*(1 + ((ps/p_in)^((g - 1)/g) - 1)/P.eta_c);
+T_ies = @(ps) P.T0*(1 + ((ps/p_in)^((g - 1)/g) - 1)/P.roots(3));   % refularea Roots
 masa = @(ps) trapz(th*pi/180, P.Cd_tr*A*ps/sqrt(R*T_ies(ps))*psi(P.p_ev/ps, g))/om_m;
 C.p_s = fzero(@(ps) masa(ps) - C.m_liv, [1.0001 3]*P.p0);
 C.PR = C.p_s/p_in;
 C.T_s = T_ies(C.p_s);
-C.dT_vap = P.h_vap/P.AFR/cp;                            % răcirea prin vaporizarea benzinei (TPI)
 C.dh_is = cp*P.T0*(C.PR^((g - 1)/g) - 1);
-C.P_c = C.mdot*C.dh_is/P.eta_c;                         % puterea pe roată [W]
+C.P_c = C.mdot*C.dh_is/P.roots(3);                      % puterea pe rotoarele Roots [W]
 C.P_e = C.P_c/P.eta_em_c;                               % din baterie [W]
-% 3. Roata
+% 3. Roots proiectat (MR-003): volumul pe rotație din debit, rotoarele din volum
+C.Q1 = C.mdot/(p_in/(R*P.T0));                          % debitul volumic la intrare [m3/s]
+C.om_r = P.roots(1)*pi/30;
+C.V_rot = C.Q1/(P.roots(2)*P.roots(1)/60);              % volumul geometric pe rotație [m3]
+C.D_r = (C.V_rot/(P.roots(4)*P.roots(5)))^(1/3);        % diametrul exterior al lobilor
+C.L_r = P.roots(5)*C.D_r;
+C.u_r = C.om_r*C.D_r/2;                                 % viteza la vârful lobilor
+% Roata centrifugală veche: doar pentru colectorul existent din corpul cilindrului, până la MR-008
 C.om = P.n_comp*pi/30;
 C.Q1 = C.mdot/(p_in/(R*P.T0));
 C.Ns = C.om*sqrt(C.Q1)/C.dh_is^0.75;                    % viteza specifică
@@ -46,13 +52,13 @@ C.x_c = -(P.R_corp + P.joc_comp + P.D_admisie/2 + P.t_carcasa_c);   % planul ine
 C.R_aer = sqrt((P.D_motor_c(1)/2)^2 + 1.2*((C.D1/2)^2 - (C.D_butuc/2)^2));   % intrarea pe lângă motor
 C.lungime_spate = -C.x_c + P.D_admisie/2 + P.t_carcasa_c + 5e-3 + P.D_motor_c(2) - P.R_corp;   % cât iese în spatele cilindrului
 % 4. Motorul compresorului: rotorul din forfecarea admisă, inerția, pornirea
-C.T_n = C.P_c/C.om;
+C.T_n = C.P_c/C.om_r;
 C.r_mot = (C.T_n/(2*pi*P.sigma_c*P.Lr_c))^(1/3);
 C.L_mot = P.Lr_c*C.r_mot;
 C.J = 0.5*P.rho_mag*pi*C.r_mot^4*C.L_mot + ...                                     % rotorul cu magnet
-      0.5*(P.k_plin_roata*P.rho_al*pi*(C.D2/2)^2*C.L_roata/2)*(C.D2/2)^2;          % roata: disc plin pe jumătate
+      2*0.5*(P.k_plin_roots*P.rho_al*pi*(C.D_r/2)^2*C.L_r)*(C.D_r/2)^2/2;      % cei doi rotori, raportați la motor (1:1)
 k = P.k_supra_c;                                        % J dw/dt = k T_n - T_n (w/w_n)^2, de la 0 la w_n
-C.t_pornire = C.J*C.om^2/C.P_c/(2*sqrt(k))*log((sqrt(k) + 1)/(sqrt(k) - 1));
+C.t_pornire = C.J*C.om_r^2/C.P_c/(2*sqrt(k))*log((sqrt(k) + 1)/(sqrt(k) - 1));
 % 5. Corpul cilindrului: galeria și canalele
 z_pmi = P.r + P.L + P.h_comp;
 C.z_fer_jos = z_pmi - P.S;                              % ferestrele încep la coroana de la PME

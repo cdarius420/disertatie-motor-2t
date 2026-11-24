@@ -29,6 +29,6 @@ subplot(2, 1, 2); plot(th, -asind(P.r/P.L*sind(th)), 'k-', th, psi, 'r.'); grid 
 xlabel('unghiul arborelui [grade]'); ylabel('rotația bielei [grade]');
 salveaza_figura(f, 's13_cinematica_fusion');
 
-verifica(ex < 1e-7, 'K1', sprintf('Pistonul din Fusion = formula în %d poziții: abatere max. %.1e mm', numel(th), ex*1e3));
-verifica(eb < 1e-4, 'K2', sprintf('Rotația bielei din Fusion = -arcsin(lambda sin theta): abatere max. %.1e grade', eb));
-verifica(ea < 1e-3, 'K3', sprintf('Accelerația derivată din pozițiile Fusion = analitica: abatere %.3f%% din maxim', 100*ea));
+verifica(ex < 1e-7, 'N1', sprintf('Pistonul din Fusion = formula în %d poziții: abatere max. %.1e mm', numel(th), ex*1e3));
+verifica(eb < 1e-4, 'N2', sprintf('Rotația bielei din Fusion = -arcsin(lambda sin theta): abatere max. %.1e grade', eb));
+verifica(ea < 1e-3, 'N3', sprintf('Accelerația derivată din pozițiile Fusion = analitica: abatere %.3f%% din maxim', 100*ea));

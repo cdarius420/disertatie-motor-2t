@@ -10,7 +10,7 @@ FILE_DESCRIPTION(
 
 FILE_NAME(
 /* name */ '50_Carter_stanga.step',
-/* time_stamp */ '2026-11-24T16:38:23+02:00',
+/* time_stamp */ '2026-11-24T18:57:29+02:00',
 /* author */ (''),
 /* organization */ (''),
 /* preprocessor_version */ 'ST-DEVELOPER v20.1',
@@ -4772,7 +4772,7 @@ SOLID_ANGLE_UNIT()
 #4685=PRODUCT_DEFINITION_SHAPE('',$,#4688);
 #4686=SHAPE_REPRESENTATION('',(#2860),#4678);
 #4687=PRODUCT_DEFINITION_CONTEXT('part definition',#4692,'design');
-#4688=PRODUCT_DEFINITION('2026-11-24-16-38-23-300','50_Carter_stanga',#4689,
+#4688=PRODUCT_DEFINITION('2026-11-24-18-57-29-043','50_Carter_stanga',#4689,
 #4687);
 #4689=PRODUCT_DEFINITION_FORMATION('',$,#4694);
 #4690=PRODUCT_RELATED_PRODUCT_CATEGORY('50_Carter_stanga',
@@ -4782,7 +4782,7 @@ SOLID_ANGLE_UNIT()
 #4692=APPLICATION_CONTEXT(
 'Core Data for Automotive Mechanical Design Process');
 #4693=PRODUCT_CONTEXT('part definition',#4692,'mechanical');
-#4694=PRODUCT('2026-11-24-16-38-23-300','50_Carter_stanga',$,(#4693));
+#4694=PRODUCT('2026-11-24-18-57-29-043','50_Carter_stanga',$,(#4693));
 #4695=PRESENTATION_STYLE_ASSIGNMENT((#4697));
 #4696=PRESENTATION_STYLE_ASSIGNMENT((#4698));
 #4697=SURFACE_STYLE_USAGE(.BOTH.,#4699);

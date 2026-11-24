@@ -208,7 +208,7 @@ P.wiebe_a = 5; P.wiebe_m = 2; P.wiebe_durata = 55;   % [-], [-], [grade] [ESTIMA
 % de la mașina electrică de pe arbore, prin baterie. Turația compresorului dozează aerul, deci el ține
 % loc și de clapetă de accelerație. Aerul trece întâi peste motorul compresorului (îl răcește), apoi
 % prin roată și spirală, într-o galerie inelară din corpul cilindrului, sub ferestre, și urcă prin
-% cele cinci canale de transfer. Benzina (TPI) se injectează în canalele B: vaporizarea răcește aerul.
+% cele cinci canale de transfer. Benzina se injectează direct în cilindru (injector în chiulasă), după închiderea ferestrelor.
 P.eta_i = 0.30;      % randamentul indicat la sarcină plină [-]              [ESTIMARE]
 P.AFR = 13;          % amestecul la putere maximă, puțin bogat [-]           [ESTIMARE]
 P.LHV = 43e6;        % puterea calorifică a benzinei [J/kg]
@@ -218,7 +218,11 @@ P.Cd_tr = 0.65;      % coeficientul de debit al ferestrelor de transfer [-]  [ES
 P.T0 = 293;  P.p0 = 1e5;   % aerul din jur [K], [Pa]
 P.dp_filtru = 0.02;  % pierderea relativă de presiune în filtru și pe lângă motor [-] [ESTIMARE]
 P.PR_max = 1.6;      % o treaptă, fără răcitor intermediar [-]
-P.eta_c = 0.70;      % randamentul izentropic al compresorului mic [-]      [ESTIMARE]
+P.roots = [12000 0.80 0.55 0.40 1.5];  % Roots proiectat (MR-003): turația rotoarelor [rot/min], randamentul volumetric,
+                     % randamentul izentropic, V_rot/(D^2 L), L/D [-] [ESTIMARE]
+P.n_roots_max = 18000;  % turația maximă de lucru a unui Roots mic de serie (Eaton TVS R410, eaton.com) [rot/min]
+P.k_plin_roots = 0.6;   % cât din cilindrul D x L al unui rotor e metal [-] [ESTIMARE]
+P.eta_c = 0.70;      % roata centrifugală veche: doar pentru colectorul existent, până la MR-008 [-] [ESTIMARE]
 P.psi_c = 0.70;      % coeficientul de lucru al roții cu palete înclinate înapoi [-] [ESTIMARE]
 P.n_comp = 110000;   % turația compresorului la putere [rot/min]            [ESTIMARE]
 P.roata = [0.70 0.30 0.08 0.35];   % roata: D1/D2, butuc/D1, b2/D2, lungimea axială/D2 [-] [ESTIMARE]
@@ -267,8 +271,6 @@ P.unghi_intrare_apa = -120;   % intrarea în cilindru: radial, pe dreapta-spate 
 P.flansa_ev = [12 26 9 16]*1e-3;  % grosime în fața corpului, prezoanele la ±Y, raza bosajelor, filetul în aluminiu (2 d) [m] [ESTIMARE]
 P.flansa_perete = 4e-3;           % peretele din jurul gurii [m]
 P.lama_ev = [2.5 0.25 12 2]*1e-3;   % ghilotina: grosime, joc în fantă, cât rămâne în fantă la deschis, cât trece de fereastră pe fiecare parte [m]
-P.injector = [30 7 14 11]*1e-3;   % domul injectorului: lungime, gaura vârfului, gaura corpului, raza domului (perete 4 mm) [m]
-P.unghi_injector = 30;       % axa injectorului, în jos față de orizontală [grade] [ESTIMARE]
 
 % --- Capacul din dreapta, modulul de putere, prinderile pe cadru (s18; pasul 14 din Fusion) ---
 % Capacul e un tambur turnat care alunecă peste rotor și se strânge pe un inel al semicarterului drept
@@ -347,7 +349,14 @@ P.beta   = 14;       % semiunghiul flancurilor curelei [grade] [ESTIMARE]
 
 % --- Vehicul ---
 P.r_roata = 0.29;    % raza dinamică a roții de 17 inci [m]    [ESTIMARE]
-P.v_max   = 110;     % ținta din propunere [km/h]
+P.v_max   = 99;      % ținta (decizia D1: L3e-A1, 11 kW, valoarea dată de s19 cu Roots) [km/h]
+P.P_ef    = 11e3;    % puterea efectivă la n_putere: limita L3e-A1, după care s-a ales imep_plin [W] [ESTIMARE]
+P.P_A1    = [11e3 0.1e3];  % L3e-A1: putere maximă [W], raport putere/masă [W/kg] (Reg. UE 168/2013, anexa I)
+P.m_veh   = [115 75];  % masa motocicletei în ordine de mers, masa pilotului [kg] [ESTIMARE]
+P.CdA     = 0.55;    % aria frontală echivalentă, pilot în picioare/drept [m2] [ESTIMARE] [DE CONFIRMAT]
+P.Crr     = 0.020;   % coeficientul de rezistență la rulare [-] [ESTIMARE]
+P.eta_tr  = 0.85;    % randamentul transmisiei: variator, reducție, lanț [-] [ESTIMARE]
+P.rho_aer = 1.2;     % densitatea aerului [kg/m3]
 
 % --- Bateria (16 celule LFP) și mașina electrică ---
 P.n_cel = 16; P.V_cel_min = 2.8; P.V_cel_nom = 3.2; P.V_cel_max = 3.65;  % [V]

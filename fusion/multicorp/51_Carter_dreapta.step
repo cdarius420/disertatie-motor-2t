@@ -10,7 +10,7 @@ FILE_DESCRIPTION(
 
 FILE_NAME(
 /* name */ '51_Carter_dreapta.step',
-/* time_stamp */ '2026-11-24T16:38:23+02:00',
+/* time_stamp */ '2026-11-24T18:57:29+02:00',
 /* author */ (''),
 /* organization */ (''),
 /* preprocessor_version */ 'ST-DEVELOPER v20.1',
@@ -6451,7 +6451,7 @@ SOLID_ANGLE_UNIT()
 #6354=PRODUCT_DEFINITION_SHAPE('',$,#6357);
 #6355=SHAPE_REPRESENTATION('',(#3845),#6347);
 #6356=PRODUCT_DEFINITION_CONTEXT('part definition',#6361,'design');
-#6357=PRODUCT_DEFINITION('2026-11-24-16-38-23-567','51_Carter_dreapta',
+#6357=PRODUCT_DEFINITION('2026-11-24-18-57-29-320','51_Carter_dreapta',
 #6358,#6356);
 #6358=PRODUCT_DEFINITION_FORMATION('',$,#6363);
 #6359=PRODUCT_RELATED_PRODUCT_CATEGORY('51_Carter_dreapta',
@@ -6461,7 +6461,7 @@ SOLID_ANGLE_UNIT()
 #6361=APPLICATION_CONTEXT(
 'Core Data for Automotive Mechanical Design Process');
 #6362=PRODUCT_CONTEXT('part definition',#6361,'mechanical');
-#6363=PRODUCT('2026-11-24-16-38-23-567','51_Carter_dreapta',$,(#6362));
+#6363=PRODUCT('2026-11-24-18-57-29-320','51_Carter_dreapta',$,(#6362));
 #6364=PRESENTATION_STYLE_ASSIGNMENT((#6366));
 #6365=PRESENTATION_STYLE_ASSIGNMENT((#6367));
 #6366=SURFACE_STYLE_USAGE(.BOTH.,#6368);

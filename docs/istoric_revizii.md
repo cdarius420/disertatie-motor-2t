@@ -1,0 +1,12 @@
+# Istoricul reviziilor
+
+Până la instalarea Git, istoricul se ține aici. Baza: `Documents\dizertatie_versiuni\2026-11-24_baza_audit.zip` (starea auditată). La primul commit, baza intră ca prim commit, apoi câte un commit pentru fiecare rând de mai jos.
+
+| Data | MR | Ce s-a schimbat | Fișiere | Verificare |
+|---|---|---|---|---|
+| 2026-11-24 | MR-001 | `.gitignore`; `importa_parametri.py` șters; `README_fusion.md` rescris; mesajul C12g corectat; K1–K3 din s13 → N1–N3; jurnalul rulării scris direct (era gol când MATLAB rula din alt program); parametrii orfani din Fusion se șterg automat (19 șterși) | `.gitignore`, `fusion/README_fusion.md`, `fusion/importa_parametri.py`, `construieste.py`, `s13_cinematica_fusion.m`, `ruleaza_tot.m`, `README.md` | MATLAB 96/96, Fusion 94/94, `jurnal.txt` 23 KB |
+| 2026-11-24 | MR-002 | ținta de viteză 100 km/h (D1); bloc nou de vehicul; `s19_vehicul.m` cu G1 (101,1 km/h ≥ 100) și G2 (11 kW, 0,096 kW/kg); reducția finală 15,31 → 16,84 | `parametri.m`, `s19_vehicul.m`, `ruleaza_tot.m`, `README.md` | G1, G2, V1c, V2c trec |
+| 2026-11-24 | MR-005 | domurile injectorului scoase din 11_Cilindru_corp; C12h verifică acum că nu mai există; parametrii `injector_*`, `unghi_injector` scoși | `construieste.py`, `s07_export_fusion.m`, `parametri.m` | Fusion 94/94, C12 complet |
+| 2026-11-24 | MR-010 (tabel) | tabelul de defectări și lista senzorilor | `docs/defectari.md` | fiecare anexă are detecție și reacție |
+| 2026-11-24 | MR-016 A | epruvete de ajustaj: 63/22 exterior Ø56 și interior Ø22, simering Ø35, câte 5 variante la −0,2…+0,2 mm | `macheta/epruvete.py`, `macheta/*.stl` | corpuri închise; încap pe 208 × 136 mm |
+| 2026-11-24 | MR-003 (parțial) | compresorul devine Roots proiectat (decizia ta): 115 cm³/rot la 12.000 rot/min, rotoare Ø57,7 × 86,5 mm, 1.375 W din baterie, aer refulat la 77 °C; K2 nou (turația ≤ 18.000 rot/min, referință Eaton TVS R410); răcirea prin benzină scoasă din text; ținta de viteză 99 km/h (G1: 99,7); s21 sensibilitatea | `compresor.m`, `s16_compresor.m`, `parametri.m`, `s21_sensibilitate.m`, `ruleaza_tot.m` | MATLAB 96/96 |

@@ -3,22 +3,22 @@
 clear global VERIF; global VERIF; VERIF = [];
 jurnal = fullfile('rezultate', 'jurnal.txt');
 if ~exist('rezultate', 'dir'), mkdir('rezultate'); end
-if exist(jurnal, 'file'), delete(jurnal); end
-diary(jurnal);
-fprintf('Dizertație: grup propulsor 2T hibrid, controlat mecatronic\n');
-if exist('OCTAVE_VERSION', 'builtin')
-    fprintf('Rulare: %s\n', datestr(now));
-else
-    fprintf('Rulare: %s\n', char(datetime('now')));
-end
-s01_cinematica; s02_toba; s03_variator; s04_masina_electrica; s05_volant_activ; s06_segmenti; s07_export_fusion; s08_tolerante; s09_piston; s10_ambielaj; s11_chiulasa; s12_echilibrare; s13_cinematica_fusion; s14_carter; s15_masina_electrica; s16_compresor; s17_racire; s18_capac;
+RT_fid = fopen(jurnal, 'w', 'n', 'UTF-8');   % jurnalul se scrie direct: diary rămâne gol când MATLAB e rulat din alt program
+RT_scr = {'s01_cinematica', 's02_toba', 's03_variator', 's04_masina_electrica', 's05_volant_activ', 's06_segmenti', ...
+          's07_export_fusion', 's08_tolerante', 's09_piston', 's10_ambielaj', 's11_chiulasa', 's12_echilibrare', ...
+          's13_cinematica_fusion', 's14_carter', 's15_masina_electrica', 's16_compresor', 's17_racire', 's18_capac', 's19_vehicul', 's21_sensibilitate'};
 if ~exist('OCTAVE_VERSION', 'builtin')
-    m01_model_arbore;        % Simulink există doar în MATLAB
-    m02_multicorp;           % Simscape Multibody: aceleași legături ca în Fusion
+    RT_scr = [RT_scr, {'m01_model_arbore', 'm02_multicorp'}];   % Simulink și Simscape există doar în MATLAB
+end
+RT_txt = sprintf('Dizertație: grup propulsor 2T hibrid, controlat mecatronic\nRulare: %s\n', datestr(now));
+fprintf('%s', RT_txt); fprintf(RT_fid, '%s', RT_txt);
+for RT_k = 1:numel(RT_scr)
+    RT_txt = evalc(RT_scr{RT_k});
+    fprintf('%s', RT_txt); fprintf(RT_fid, '%s', RT_txt);
 end
 nr = numel(VERIF); ok = sum([VERIF.ok]);
-fprintf('\n=== Rezumat: %d din %d verificări trecute ===\n', ok, nr);
+RT_txt = sprintf('\n=== Rezumat: %d din %d verificări trecute ===\n', ok, nr);
 for k = find(~[VERIF.ok])
-    fprintf('  PICAT: %s %s\n', VERIF(k).cod, VERIF(k).text);
+    RT_txt = [RT_txt, sprintf('  PICAT: %s %s\n', VERIF(k).cod, VERIF(k).text)]; %#ok<AGROW>
 end
-diary off;
+fprintf('%s', RT_txt); fprintf(RT_fid, '%s', RT_txt); fclose(RT_fid);

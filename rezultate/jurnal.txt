@@ -1,0 +1,302 @@
+Dizertație: grup propulsor 2T hibrid, controlat mecatronic
+Rulare: 24-Nov-2026 19:06:13
+
+=== S01 Cinematica bielă-manivelă și ferestrele ===
+Cilindree: 124.8 cm3, lambda = r/L = 0.248
+La 9500 rot/min: viteza medie a pistonului 17.3 m/s, maximă 27.9 m/s
+Accelerația pistonului: 33650 m/s2 la PMI, -20288 m/s2 la PME
+Forța de inerție maximă: 8581 N
+  [TRECUT] C1     x(PMI) = 0 și x(PME) = cursa
+  [TRECUT] C2     Cilindreea = 124,8 cm3 (pi/4 * B^2 * S)
+  [TRECUT] C3     dx/dtheta analitic = derivata numerică
+  [TRECUT] C4     d2x/dtheta2 analitic = derivata numerică
+Durata evacuării: 196 grade cu supapa deschisă, 176 grade cu supapa închisă
+Supapa coboară marginea ferestrei cu 4.81 mm
+Durata transferului: 128 grade; destinderea liberă: 34 grade
+Înălțimea ferestrei de evacuare: 27.7 mm (51% din cursă)
+Timp-arie specific la 9500 rot/min [s/m]: evacuare 1.89e-02, transfer 5.99e-03, destindere liberă 1.43e-03
+Timp-arie la evacuare, supapa închisă: 75% din cel cu supapa deschisă
+  [TRECUT] C5     Calaj simetric: închiderea evacuării la 360 - deschiderea
+Ferestre: evacuare 0°, A ±62°, B ±105°, boost 180°; puntea cea mai îngustă 3.6 mm
+  [TRECUT] L1     Lățimile A, B și boost însumează lățimea de transfer din timp-arie
+  [TRECUT] L2     Puntea cea mai îngustă 3.6 mm >= 3.0 mm
+  [TRECUT] L3     Știftul segmenților (140°) e pe perete plin, la 13.3 mm de cea mai apropiată fereastră
+Fereastra de injecție în transfer: 128 grade (de la 116 la 244 grade)
+    1500 rot/min: 14.22 ms; 1 grad = 111.1 us
+    6000 rot/min: 3.56 ms; 1 grad = 27.8 us
+    9500 rot/min: 2.25 ms; 1 grad = 17.5 us
+   10500 rot/min: 2.03 ms; 1 grad = 15.9 us
+Volumul mort: 9.45 cm3; raport geometric echivalent: 14.2
+
+=== S02 Toba de rezonanță: lungimea acordată ===
+  [TRECUT] T1     Formula reproduce exemplul Jennings: 35.9 inci
+Viteza undei la 600 grade C: 582 m/s
+Lungimea acordată la 9500 rot/min: 1000 mm
+Toba fixă: acordul se mută de la 9224 la 9768 rot/min între 550 și 650 grade C
+Doar temperatura (550-650 grade C), turație fixă: 57 mm (5.7%)  <- rolul tobei
+Doar abaterea variatorului (+-5%): 100 mm (10.0%)
+Ambele, cazul cel mai rău: 158 mm (15.8%)
+Fără variator, banda 6000-10500 rot/min: 679 mm (67.9%)  <- de ce tobele variabile singure n-au prins
+  [TRECUT] T2     Compensarea temperaturii cere sub 10% din lungime: realizabil telescopic
+  [TRECUT] T3     Cu variatorul, toba variază de peste 3 ori mai puțin decât fără el
+
+=== S03 Variatorul CVT ===
+Lungimea curelei: 776 mm
+Raport: de la 2.58 (pornire) la 0.62 (viteză maximă); plaja 4.19
+Cursa servo-ului pe semifulia conducătoare: 15.0 mm
+Cursa semifuliei conduse (arcul din spate): 14.3 mm
+Reducția finală (cutie + lanț) pentru 99 km/h la 9500 rot/min: 17.01
+În modul dezlănțuit, motorul stă la 9500 rot/min de la 24 km/h; sub această viteză patinează ambreiajul centrifugal
+  [TRECUT] V1c    Lungimea curelei rămâne constantă pe toată plaja
+  [TRECUT] V2c    Raportul scade monoton când crește raza conducătoare
+
+=== S04 Mașina electrică pe arborele cotit ===
+Baterie 16 celule LFP: 44.8 V minim, 51.2 V nominal, 58.4 V maxim
+Regula: tensiunea indusă la 11500 rot/min <= 44.8 V (tensiunea minimă)
+Constanta de cuplu: 0.0322 N m/A; cuplu la 380 A: 12.2 N m
+Cu regula respinsă (sub 58.4 V) cuplul ar fi 16.0 N m (+30%), dar diodele ar conduce
+   necontrolat ori de câte ori bateria e sub tensiunea indusă.
+Rotor la 11500 rot/min: viteza periferică 72 m/s, tensiune 61 MPa, coeficient de siguranță 4.5
+Puterea mecanică la cuplul maxim: 1.9 7.7 12.2 13.5  kW (limită superioară, fără căderea inductivă)
+  [TRECUT] E1     Tensiunea indusă la supraturare <= tensiunea minimă a bateriei
+  [TRECUT] E2     Rotorul la supraturare: coeficient de siguranță 4.5 >= 2
+
+=== S05 Volantul activ și pornirea ===
+Pornire: cuplul rezistent maxim la compresie 25.5 N m; energia compresiei 21.9 J
+Mașina dă 10.7 N m la 380 A (magneți la 120 °C): are nevoie de 117 grade de elan înainte de compresie (rotire înapoi, apoi înainte).
+   (fără frecare și fără ungere rece: de măsurat pe motorul real)
+
+1500 rot/min, PMI 1.0 bar: căldură 26 J/ciclu, presiune maximă 18.4 bar
+   cuplul de gaze: mediu 1.99 N m, între -25.5 și 37.0 N m
+  [TRECUT] F1a    Presiunea medie indicată atinsă (abatere < 0,5%)
+  [TRECUT] F1b    Lucrul din cuplu = lucrul din p dV (abatere < 0,5%)
+   A volant clasic            fluctuație 22.36%   turație medie  1525 rot/min
+   B volant ușor, pasiv       fluctuație 25.90%   turație medie  1519 rot/min
+   C volant ușor, activ       fluctuație 11.37%   turație medie  1495 rot/min
+   D activ, răspuns lent 2 ms fluctuație 14.93%   turație medie  1464 rot/min
+   (fluctuația e raportată la 1500 rot/min)
+   Estimarea analitică pentru A: 21.04%
+  [TRECUT] F1c    Simularea A = estimarea analitică (abatere < 15%)
+  [TRECUT] F1e    Turația medie rămâne la țintă (abatere < 3%)
+   Un răspuns lent (2 ms) schimbă turația medie cu -2.4%: cuplul electric trebuie să răspundă în <= 0,5 ms
+  [TRECUT] V-VA   Ralanti: volantul ușor cu comandă activă e cel puțin la fel de liniștit ca volantul clasic (11.4% față de 22.4%)
+   Dimensionare: 50% reducere cere 9.0 N m (280 A); ca volantul clasic cere NaN N m (NaN A)
+
+4000 rot/min, PMI 3.0 bar: căldură 78 J/ciclu, presiune maximă 23.5 bar
+   cuplul de gaze: mediu 5.96 N m, între -25.5 și 61.8 N m
+  [TRECUT] F2a    Presiunea medie indicată atinsă (abatere < 0,5%)
+  [TRECUT] F2b    Lucrul din cuplu = lucrul din p dV (abatere < 0,5%)
+   A volant clasic            fluctuație  4.27%   turație medie  4038 rot/min
+   B volant ușor, pasiv       fluctuație  4.93%   turație medie  4039 rot/min
+   C volant ușor, activ       fluctuație  3.00%   turație medie  4016 rot/min
+   D activ, răspuns lent 2 ms fluctuație  3.69%   turație medie  4013 rot/min
+   (fluctuația e raportată la 4000 rot/min)
+   Estimarea analitică pentru A: 4.20%
+  [TRECUT] F2c    Simularea A = estimarea analitică (abatere < 15%)
+  [TRECUT] F2e    Turația medie rămâne la țintă (abatere < 3%)
+   Un răspuns lent (2 ms) schimbă turația medie cu +0.3%: cuplul electric trebuie să răspundă în <= 0,5 ms
+
+=== S06 Presiunea maximă, pistonul și segmenții ===
+Sarcină plină, PMI 7.0 bar: presiune maximă 37.1 bar la 18 grade (18 după PMI)
+Presiunea de proiectare (x1.3 pentru avans și detonație): 48.3 bar
+  [TRECUT] S1     Presiunea medie indicată la sarcină plină atinsă (abatere < 0,5%)
+    9500 rot/min: forța de gaze 10.9 kN, inerția la PMI 8.6 kN, rezultanta pe bolț 2.4 kN
+   10500 rot/min: forța de gaze 10.9 kN, inerția la PMI 10.5 kN, rezultanta pe bolț 0.5 kN
+   11500 rot/min: forța de gaze 10.9 kN, inerția la PMI 12.6 kN, rezultanta pe bolț -1.6 kN
+   Frână de motor fără ardere, 11500 rot/min: compresia 3.2 kN, inerția 12.6 kN -> bolțul e tras spre chiulasă cu 9.4 kN
+  [TRECUT] S2     Rostul liber: formula închisă = integrala Castigliano numerică
+Segment 54.0 x 2.2 mm, presiune elastică 0.15 MPa: rost liber 4.8 mm
+   Efort în lucru 249 MPa; efort la montaj 472 MPa
+   Materialul trebuie să reziste la încovoiere la cel puțin 708 MPa (coeficient 1.5)
+   Forța gazelor pe segment depășește de multe ori elasticitatea: presiunea de proiectare e de 32 ori presiunea elastică
+Ridicarea segmentului în timpul fazei închise (etanșarea contează):
+   h = 0.8 mm:  0.0 grade la 9500 rot/min,  0.0 grade la 10500 rot/min
+   h = 1.0 mm:  0.0 grade la 9500 rot/min,  0.0 grade la 10500 rot/min
+   h = 1.5 mm:  0.0 grade la 9500 rot/min, 20.8 grade la 10500 rot/min
+  [TRECUT] S3     Segmentul de 0.8 mm nu se ridică în faza închisă până la limitator (10500 rot/min)
+Raclorul: la cel puțin 56.5 mm sub coroană; fusta lungă de 60.0 mm
+La PME fusta coboară la 49.8 mm de axa arborelui: contragreutățile pot avea rază de cel mult 46.8 mm
+  [TRECUT] S4     Raclorul nu trece niciodată prin ferestre (stă sub ele și la PMI)
+Știfturile segmenților de compresie: capetele pe peretele plin dintre ferestre; raclorul nu are nevoie de știft.
+
+=== S07 Parametrii pentru Fusion ===
+  [TRECUT] F7a    Expresiile ferestrelor din Fusion dau aceleași cote ca s01
+  [TRECUT] F7b    Cursa servo-ului din Fusion = s03
+  [TRECUT] F7c    Raza maximă a contragreutăților din Fusion = s06
+  [TRECUT] F7e    Lățimea totală din Fusion (A, B, boost) = cea din timp-arie
+  [TRECUT] F7d    Diametrul pistonului din Fusion = alezajul minus jocul mediu
+  [TRECUT] F7f    Fețele și tamburul capacului din dreapta din Fusion = s18
+Am scris 269 parametri în fusion/parametri_fusion.csv
+Fereastra de evacuare: 26.82 mm sub PMI; transferul: 41.96 mm; cursa supapei: 4.81 mm
+
+=== S08 Ajustajul piston-cilindru ===
+Alezaj Ø54 +0/+14 um, 4 clase; joc la rece 40-45 um pe pereche
+   Clasa   Alezaj [mm]          Piston [mm]
+   A       54.000-54.002        53.957-53.960
+   B       54.004-54.006        53.961-53.964
+   C       54.008-54.010        53.965-53.968
+   D       54.012-54.014        53.969-53.972
+Fără sortare, cu aceleași toleranțe, jocul ar fi 40-57 um: de aceea se sortează.
+La sarcină plină (cămașa 130 °C, fusta 150 °C) jocul se schimbă cu -6.2 um: 33.8-38.8 um
+  [TRECUT] J1     Jocul minim la cald 33.8 um >= 10 um (filmul de ulei)
+   Limită: pornirea la rece, cu pistonul încălzit înaintea cămășii, nu e acoperită.
+   Calculatorul limitează sarcina până se încălzește lichidul de răcire.
+
+=== S09 Pistonul și bolțul ===
+Pistonul pe clase: 53.957-53.972 mm; YZ125: 53.957-53.972 mm
+  [TRECUT] P1     Clasele de piston din s08 = plaja YZ125 din manual
+Forța de proiectare pe piston 10.9 kN; bolț 15/9 x 41 mm: moment 57.4 N m, efort 199 MPa
+  [TRECUT] P2     Bolțul la încovoiere: 199 MPa <= 300 MPa (coeficient 2.0)
+  [TRECUT] P3     Presiunea în bosaje 30.3 MPa <= 60 MPa
+Canalele segmenților: 3.00-3.84 și 6.84-7.68 mm sub coroană; bosajele încep la 14.5 mm
+Centura segmenților: groasă de 4.35 mm (canal 2.35 + perete 2.00), până la 9.68 mm sub coroană
+  [TRECUT] P4     Între centura segmenților și bosaje rămân 4.8 mm (>= 2 mm)
+  [TRECUT] P5     Canalul raclorului 2.04 mm încape în zona de 3.5 mm, cu umăr de 1 mm
+  [TRECUT] P6     Bolțul de 41 mm + siguranțele încap în pistonul de 53.957 mm
+   Diferență față de YZ125: segmentul lui are 1,0 mm și ține la turații mari; criteriul din s06
+   presupune presiunea din carter sub segment, deci e prudent. Păstrăm 0,8 mm pentru ambii segmenți.
+
+=== S10 Biela, arborele cotit și rulmenții ===
+Ambielaj 55.925 mm: brațe de 18.84 mm, gol 18.25 mm; manetonul intră 18.13 mm în fiecare braț
+  [TRECUT] A1     Manetonul (54.5 mm) stă în brațe pe 96% din grosime și nu iese în afară
+Brațele: rază 46.75 mm (fusta la PME trece la 3.0 mm deasupra)
+  [TRECUT] A2     Capul bielei (Ø36) încape în brațe: 1.5 mm până la marginea lor
+   oraș            4000 rot/min, PMI 3 bar: P echivalent 0.73 kN, vârf 1.69 kN, L10 = 88661 h
+   putere maximă   9500 rot/min, PMI 7 bar: P echivalent 2.11 kN, vârf 2.99 kN, L10 = 1536 h
+  [TRECUT] A3     Rulmenții 63/22 la forța de proiectare (5.5 kN fiecare): s0 = C0/P = 1.69 >= 1
+  [TRECUT] A4     Durata L10 la mers prin oraș: 88661 h >= 2000 h
+   La putere maximă continuă: 1536 h.
+  [TRECUT] A5     Rulmenții cu forța reziduală la 10500 rot/min (2.3 kN fiecare, adunată la gaze): s0 = 1.19 >= 1
+  [TRECUT] A7     Rotorul pe con 1:5 cu piulița M12 la 50 N m: frecarea ține 113 N m >= 3 x 12.2 N m (cuplul maxim al mașinii)
+  [TRECUT] A6     Tija în I (99.1 mm2): compresiune 110 MPa <= Re/3 = 262 MPa la forța de proiectare
+
+=== S11 Chiulasa și squish-ul ===
+Volum mort 9.45 cm3 = alezaj x squish 2.52 cm3 + calota 6.93 cm3
+Banda de squish: 45% din alezaj, bolul Ø40.05 mm, adânc de 10.14 mm, sferă de rază 24.84 mm
+Viteza maximă de squish: 19.5 m/s la 9500 rot/min, 21.5 m/s la limitator
+  [TRECUT] H1     Squish de 1.10 mm: 19.5 m/s <= 20 m/s la turația de putere (Blair)
+  [TRECUT] H2     Deasupra bolului rămân 19.9 mm de chiulasă (>= 6 mm) pentru bujie
+   Raport de compresie geometric 14.2; reținut 7.5 (YZ125 declară 8,2-10,1).
+
+=== S12 Echilibrarea arborelui cotit ===
+Masele din Fusion: piston 139.2 g, bolț 36.4 g, siguranțe 0.6 g, rulment picior 13.3 g, segmenți 9.3 g
+   biela 139.1 g, centrul de masă la 44.5 mm de capul ei: 56.3 g alternativi, 82.8 g rotativi
+   maneton 162.6 g, șaibe 6.7 g, rulment cap 29.4 g
+Masa alternativă 255.1 g, masa rotativă pe maneton 281.5 g
+Brațe de 18.84 mm, rază 46.75 mm, bosaj R18: contragreutate pe ±56.0 grade
+Forța de ordinul 1 la 9500 rot/min: 6.88 kN; rămân 3.10 kN pe axa cilindrului și 3.78 kN transversal
+Arborele: 1.80 kg, inerție 0.00136 kg m2
+  [TRECUT] B1     Contragreutatea pe ±56.0 grade dă factorul de echilibrare 0.55 (cerut 0.55, maxim posibil 0.61)
+  [TRECUT] B2     În jurul fusului palier rămân 26.5 mm de braț (>= 5 mm)
+  [TRECUT] B3     Bosajul manetonului: perete de 7.0 mm (>= 0,3 d) și 1.5 mm sub raza brațelor
+  [TRECUT] B4     Volantul ușor (arbore 0.00136 + rotorul mașinii) = 0.00520 kg m2 < volantul clasic 0.006
+  [TRECUT] B5     Masa alternativă din parametri.m (255 g) = cea măsurată în Fusion (255.1 g), în 3%
+
+=== S13 Cinematica ansamblului din Fusion ===
+Fusion: 180 poziții la 2 grade; cursa 54.5000 mm
+  [TRECUT] N1     Pistonul din Fusion = formula în 180 poziții: abatere max. 5.2e-11 mm
+  [TRECUT] N2     Rotația bielei din Fusion = -arcsin(lambda sin theta): abatere max. 4.8e-11 grade
+  [TRECUT] N3     Accelerația derivată din pozițiile Fusion = analitica: abatere 0.016% din maxim
+
+=== S14 Carterul ===
+Cavitate R49.75 mm, pereți la ±30.46 mm; rulmenții între 28.46 și 44.46 mm; fața carterului la ±52.46 mm
+Fusurile ies din carter cu 32 mm spre variator (stânga) și 36 mm spre mașina electrică (dreapta)
+Băile: 0.30 L în față și în spate, până la ±120 mm, de la 67.5 mm sub axă (fundul rotorului) până la axă;
+   nivelul la repaus 33.7 mm sub axă; sorbul la x = 0, 59.5 mm sub axă; lamela la 235° pe cavitate
+  [TRECUT] R1     Prezoanele M8 la ±40° și ±140°: pereți de 4.4 mm la fantă, 4.2 mm la cavitate, 11.3 mm la gură (>= 3 mm)
+  [TRECUT] R2     Filetul prezoanelor în aluminiu: 16 mm >= 2 d
+  [TRECUT] U1     Sorbul de sub arbore rămâne acoperit: 26 mm de ulei la repaus, 65 mm la frânare cu 1.0 g, 31 mm la accelerare cu 0.4 g (>= 10 mm)
+  [TRECUT] U2     La repaus: lamela e sub ulei cu 7.8 mm (sifon: o etanșează și spală gazele), canalul de sub arbore e plin (+21 mm), 29 mm de aer sub tavan; băile sunt pline 61%
+  [TRECUT] U3     Pistonul pompează carterul între 0.54 și 1 bar (226/351 cm3): de 397 ori coloana de ulei de deasupra lamelei (116 Pa); forțele sunt calculate cu 0.50 bar la PMI (acoperitor, 0.1% din forța maximă)
+  [TRECUT] U4     Aripioarele: 8 pe fiecare latură, 3 mm groase, gol 5 mm, înalte de 15 mm (raport 3.0 <= 4), 2 mm sub fața carterului; suprafața băilor x4.7, ~342 W la 50 km/h și 70 K
+  [TRECUT] U5     Pompa de ulei: 1.36 L/min la 3.0 bar (duze [1 0.6 0.6] mm: 0.79 + 0.28 + 0.28 L/min), 27 W electric; aspirația 0.59 m/s prin galeria Ø7 (<= 1 m/s); uleiul se încălzește cu 16 K pe la jeturi
+  [TRECUT] U6     Bilanțul uleiului: 613 W intră (jetul de sub piston și rulmenții), aripioarele scot 342 W, răcitorul ulei-apă 271 W; uleiul iese din răcitor la 86 °C cu apa la 75 °C (<= 110)
+Fus Ø22 k5: strângere 2...21 µm; inel exterior în bucșa Ø56 M7: -13...30 µm (negativ = joc)
+Jocul radial C4 20...36 µm; rămas: probabil 8.4 µm, în cazul cel mai rău -22.3 µm
+  [TRECUT] R3     Rulmenții C4 rămân cu joc radial la ajustajele probabile: 8.4 µm
+  [TRECUT] R4     Bucșa de oțel e necesară: presat direct în aluminiu (S7, 29...72 µm), la 90 °C ar rămâne -8...35 µm
+
+=== S15 Mașina electrică: 12 crestături, 14 poli, rotor exterior de oțel ===
+Înfășurarea: A+ A- C- C+ B+ B- A- A+ C+ C- B- B+; factor 0.933; 2 spire pe bobină, 8 în serie pe fază
+Întrefier: Ø111.3 mm, inducție 1.08 T (20 °C) / 0.95 T (120 °C), fundamentala 1.33 / 1.17 T
+Pachet 19.4 mm (tole de 0.2 mm); stator Ø110.6/Ø69.3 mm, dinți de 18.4 mm, fundul crestăturii la R42.1 mm
+Crestătura: 78 mm2, 25.0 A/mm2 la 380 A (scurtă durată), umplere 0.55; capetele bobinelor ies 4.9 mm
+Cuplul la 380 A: 12.2 N m cu magneții reci, 10.7 N m la 120 °C; forfecare în întrefier 28.4 kPa
+Frecvența la 11500 rot/min: 1342 Hz
+Rotorul: 1.30 kg (magneți 176 g), inerție 0.00384 kg m2; cu arborele: 0.00520 kg m2 (volantul clasic: 0.006)
+  [TRECUT] I1     Constanta de tensiune cu magneții reci 0.02140 V s/rad: sub regula bateriei (0.02148) cu cel mult 3%
+  [TRECUT] I2     Paharul de 7.5 mm închide fluxul (are nevoie de 7.0 mm la 1.6 T)
+  [TRECUT] I3     Statorul (Ø69.3, urechile la R26.6) trece peste butucul de R16 mm cu 10.6 mm
+  [TRECUT] I4     Magneții nu se demagnetizează: 80 kA/m la 380 A <= jumătate din Hcj la 120 °C (637 kA/m)
+  [TRECUT] I5     Forfecarea în întrefier 28.4 kPa <= 40 kPa (scurtă durată, răcire prin capac)
+
+=== S16 Compresorul electric și admisia ===
+Aerul la 9500 rot/min: 88 mg reținuți pe ciclu (umplere 0.59), livrare 0.91 -> 21.4 g/s
+Galeria la 1.40 bar (raport de presiune 1.43), aerul refulat la 77 °C (injecție directă: fără răcire prin benzină)
+Roots: 115 cm3 pe rotație la 12000 rot/min, rotoare Ø57.7 x 86.5 mm, 36 m/s la vârf; 1238 W pe rotoare, 1375 W din baterie
+Motorul: 0.985 N m nominal, rotor Ø34.7 x 52.1 mm; inerția 2076.65 g cm2
+Colectorul, turnat cu cilindrul: planul la x = -76.5 mm, axa la z = 125.8 mm, inel R37.9 (±53 mm lățime), canal de 26 mm spre galerie; iese 101 mm în spatele cilindrului
+Galeria 158 cm3 (1.26 din cilindree)
+  [TRECUT] K1     Livrarea 0.91 trece prin ferestrele de transfer cu 1.40 bar în galerie: raport 1.43 <= 1.6 (o treaptă, fără răcitor)
+  [TRECUT] K2     Roots: 12000 rot/min <= 18000 rot/min (turația maximă a unui Roots mic de serie, Eaton TVS R410); 115 cm3 pe rotație
+  [TRECUT] K3     Mașina de pe arbore alimentează compresorul continuu: 1375 W cerut <= 2307 W (2.6 N m continuu la 9500 rot/min); 9.9% din puterea motorului
+  [TRECUT] K4     De la oprit la 12000 rot/min în 0.10 s <= 0.25 s (cuplu de vârf de 3 ori cel nominal)
+  [TRECUT] K5     Galeria 158 cm3 >= cilindreea; canalele A/B/C au 1.12/1.12/1.12 din aria ferestrei (>= 1,1); racordul 31 m/s <= 50
+  [TRECUT] K7     Compresorul în linie: ±53 mm lățime (cilindrul ±56), canal de 26 mm spre galerie (<= 40), fața inelului la x = -61 mm, în spatele carterului (-55), cel mai jos la 72 mm, deasupra băii din spate
+  [TRECUT] K6     Pereți de 9.2 mm între canale și prezoane, 7.6 mm între evacuare și prezoane (>= 3 mm); laturile corpului, plane la fața carterului până la 69.5 mm (rotorul + joc), sub galerie (70 mm)
+
+=== S17 Răcirea cu apă ===
+La 9500 rot/min: 13.8 kW indicat, 46.1 kW din combustibil, 9.2 kW spre apă -> 0.32 kg/s (18 L/min) la +8 K
+Cămașa cilindrului: R36.5-52 mm, de la 141.4 la 160.25 mm (deasupra ferestrelor), în C, plină în față la ghilotină
+Intrarea pe dreapta la -120 grade; ramura lungă duce 60% din debit, coloana cea mai încărcată 60%
+  [TRECUT] W1     Viteza apei: 0.63 m/s în cămașă (292 mm2), 2.29 m/s pe lângă coloana prezonului (80 mm2), 1.58 m/s în cele 5 treceri spre chiulasă, 1.98 m/s în racord (<= 2.5)
+  [TRECUT] W2     Pereți: 6.0 mm apă-ghilotină, 3.5 mm apă-cămașa cilindrului, 4.0 mm apă-conducta de evacuare (>= 3 mm)
+Circuitul: 9.6 kW în apă (motor 9.2, ulei 0.27, modul 0.12), +8.3 K; pierderi 0.45 bar la 18 L/min: [18.8 0.7 4.7 2.1 8.2 10] kPa
+  [TRECUT] W3     Pompa electrică de 12 V (clasa CWA50) dă 22 L/min pe circuitul acesta, la 0.62 bar; trebuie 18 L/min (rezervă 18%, turația se reduce prin PWM)
+  [TRECUT] W4     Radiatorul: 4.2 dm2 de miez frontal la 8 m/s prin miez (aerul +25 K, eficacitate 0.52 <= 0,6); apa iese din chiulasă la 83 °C, peste deschiderea termostatului (82 °C)
+
+=== S18 Capacul din dreapta și prinderile ===
+În lungul arborelui: carterul 52.46, urechile statorului 85.74, rotorul 86.74, fusul 88.46, bobinele 90.61 mm
+Capacul: R72.5-76.5 mm, fața interioară la 93.61, exterioară la 105.61 mm; cu modulul, motorul are 131 mm în dreapta axei
+Modulul: 2563 W pe mașina de pe arbore și 1375 W pe compresor -> 77 + 41 W pierderi; R placă 0.063 K/W, h 3512 W/m2K
+  [TRECUT] Q1     Capacul: 5 mm radial și 5.2 mm axial până la rotor și piuliță (>= 5); filetul M5 al statorului în bosaj 7.9 mm (>= 1,5 d)
+  [TRECUT] Q2     Modulul de putere: apa 0.95 m/s în cameră (Re 9282, turbulent), joncțiunea 94 °C cu apa la 75 °C (<= 125)
+  [TRECUT] Q3     Prinderile: M10 cu 6 mm de perete; urechile carterului la ±66 mm, 16.8 mm deasupra băilor, între capace (±30 < 52.5); urechea chiulasei cu 6.75 mm până la fața ei; scutul la 85.5 mm sub axă
+
+=== S19 Vehiculul ===
+Puterea la arbore: 11.0 kW efectiv - 1.53 kW compresorul = 9.5 kW net
+Masa 190 kg (motocicleta 115 + pilot 75), Crr 0.020, randamentul transmisiei 0.85
+   CdA 0.45 m2: viteza maximă 106 km/h; la 99 km/h trebuie 7.8 kW la arbore
+   CdA 0.55 m2: viteza maximă 100 km/h; la 99 km/h trebuie 9.3 kW la arbore
+   CdA 0.65 m2: viteza maximă  95 km/h; la 99 km/h trebuie 10.7 kW la arbore
+   CdA 0.75 m2: viteza maximă  90 km/h; la 99 km/h trebuie 12.2 kW la arbore
+  [TRECUT] G1     Viteza maximă 99.7 km/h >= ținta de 99 km/h (CdA 0.55 m2, 9.5 kW net)
+  [TRECUT] G2     L3e-A1: 11.0 kW <= 11 kW; 0.096 kW/kg <= 0.1 kW/kg (masa în ordine de mers 115 kg)
+   De confirmat: cum se adună puterea ISG la încadrarea în A1.
+
+=== S21 Sensibilitatea la estimări ===
+   viteza maximă              99.7: P_ef (9%), eta_tr (8%), CdA (7%)
+   puterea compresorului    1375.2: TE (98%), eta_i (98%), thTO (79%)
+   aerul refulat              77.3: thTO (59%), Cd_tr (44%), w_tr (44%)
+   căldura în apă           9222.6: eta_i (25%), imep_plin (20%), f_apa (20%)
+   uleiul                     85.8: T_apa_modul (17%), eta_i (6%), imep_plin (5%)
+   modulul ISG                94.0: eta_inv (131%), T_apa_modul (16%), modul (4%)
+   (171 parametri [ESTIMARE] variați cu ±20%; în paranteză, schimbarea cea mai mare a rezultatului)
+
+=== M01 Modelul Simulink al arborelui (MIL-1) ===
+Am construit model_arbore.slx (se deschide și rulează singur: cazul C)
+   A volant clasic        Simulink 22.34% (1523 rot/min)   s05 22.36% (1525 rot/min)
+  [TRECUT] M1a    A volant clasic: Simulink = metoda pe unghi (fluctuație < 2%, turație < 0,5%)
+   B volant ușor, pasiv   Simulink 25.88% (1516 rot/min)   s05 25.90% (1519 rot/min)
+  [TRECUT] M1b    B volant ușor, pasiv: Simulink = metoda pe unghi (fluctuație < 2%, turație < 0,5%)
+   C volant ușor, activ   Simulink 11.29% (1494 rot/min)   s05 11.37% (1495 rot/min)
+  [TRECUT] M1c    C volant ușor, activ: Simulink = metoda pe unghi (fluctuație < 2%, turație < 0,5%)
+
+=== M02 Modelul multicorp (Simscape Multibody) ===
+La 10500 rot/min: forța totală pe carcasă 5.85 kN pe axa cilindrului, 4.63 kN transversal
+  [TRECUT] M2a    Simscape: poziția pistonului = formula (abatere max. 9.0e-14 mm)
+  [TRECUT] M2b    Simscape: accelerația pistonului = formula (abatere 6.5e-12 din maxim)
+  [TRECUT] M2c    Simscape: forța lumii pe mecanism = suma m*a cu masele din Fusion (abatere 7.2e-12)
+  [TRECUT] M2d    Forța transversală din Simscape 4.632 kN = BF*m_rec*r*omega^2 din s12 4.622 kN (în 1%)
+
+=== Rezumat: 96 din 96 verificări trecute ===

@@ -58,7 +58,7 @@ def run(context):
                   pas09_carter(design), pas09b_lamela(design), pas10_stator(design), pas11_rotor(design),
                   pas12_cilindru_corp(design), pas12b_supapa(design), pas13_compresor(design), pas14_capac(design), pas14b_scut(design), pas14c_pompa_ulei(design),
                   pas08_legaturi(design), aplica_materiale(design), ruleaza_cinematica(design),
-                  exporta_multicorp(design), '']
+                  exporta_multicorp(design), sterge_orfani(design), '']
         teste = []
         for verif in (verifica_pas01, verifica_pas02, verifica_pas03, verifica_pas04,
                       verifica_pas05, verifica_pas06, verifica_echilibrare, verifica_pas09, verifica_pas10,
@@ -104,6 +104,26 @@ def importa_parametri(design):
     text = 'Parametri: {} noi, {} actualizați.'.format(noi, actualizati)
     if erori:
         text += '\nNu s-au putut scrie: ' + ', '.join(erori)
+    return text
+
+
+def sterge_orfani(design):
+    """Șterge parametrii utilizator care nu mai sunt în CSV (rămași de la variante vechi)."""
+    with open(CSV, newline='', encoding='utf-8-sig') as f:
+        din_csv = {r['Nume'] for r in csv.DictReader(f)} | {'unghi_manivela'}
+    params, sterse, ramase = design.userParameters, [], []
+    for i in reversed(range(params.count)):
+        p = params.item(i)
+        nume = p.name
+        if nume in din_csv:
+            continue
+        try:
+            (sterse if p.deleteMe() else ramase).append(nume)
+        except Exception:
+            ramase.append(nume)
+    text = 'Parametri orfani șterși: {}.'.format(', '.join(sterse) if sterse else 'niciunul')
+    if ramase:
+        text += ' Încă folosiți, rămân: ' + ', '.join(ramase)
     return text
 
 
@@ -2670,19 +2690,7 @@ def _cilindru_apa_evacuare(comp, v, corp):
     s = Schita(comp, _plan_y_la(comp, w/2 + 0.81, 'Ax_servo'), 'Ax_servo')
     _cerc_fix(s, g['x_ax'], w/2 + 0.81, zs, '8 mm', 0.8)
     _extrudare_spre(comp, s.gata().profiles.item(0), taie, 'latime_evacuare + 17 mm', (0, -1, 0), corp).name = 'Ax_servo'
-    # 5. Domurile injectoarelor pe canalele B, cu axa la unghi_injector sub orizontală, spre canal
-    Lj, rv, rb, Rd = v('injector_lungime'), v('injector_varf')/2, v('injector_corp')/2, v('injector_raza')
-    for semn, nume in ((1, 'Injector_B_plus'), (-1, 'Injector_B_minus')):
-        loc = _injector(v, semn)
-        for nume_s, pts, op in (('Dom_' + nume, [(0.6, 0), (Lj, 0), (Lj, Rd), (0.6, Rd)], uneste),
-                                ('Gaura_' + nume, [(-0.2, 0), (-0.2, rv), (1.0, rv), (1.0, rb), (Lj + 0.1, rb), (Lj + 0.1, 0)], taie)):
-            s = Schita(comp, _plan_radial(comp, semn*v('unghi_tB'), 'Plan_' + nume_s), nume_s)
-            ax = s.lin.addByTwoPoints(s.p(*loc(-0.5, 0)), s.p(*loc(Lj + 0.5, 0)))
-            ax.isConstruction = True
-            _fixeaza([ax.startSketchPoint, ax.endSketchPoint])
-            _dreptunghi_fix(s, [loc(sa, ro) for sa, ro in pts])
-            _rotire(f, s.gata().profiles.item(0), ax, op, corp)
-    # 6. Cămașa de apă: inel deasupra ferestrelor, plin în față (ghilotina), coloane la prezoane ocolite pe interior
+    # 5. Cămașa de apă: inel deasupra ferestrelor, plin în față (ghilotina), coloane la prezoane ocolite pe interior
     z1 = v('apa_z1')
     s = Schita(comp, _plan_z(comp, 'apa_z1', 'Apa_jos'), 'Camasa_apa')
     _cerc_fix(s, 0, 0, z1, '2 * galerie_raza', 2*Rg)
@@ -2734,20 +2742,6 @@ def _geometrie_evacuare(v):
     g['lama'] = dict(x=Rl - 0.001 + v('lama_joc'), y=g['y_fanta'] - v('lama_joc'), z=ze,
                      h=v('lama_rezerva') + v('cursa_supapa') + 0.3)
     return g
-
-
-def _injector(v, semn):
-    """Punctele din planul radial al canalului B: (s în lungul axei de la vârf spre exterior, rho perpendicular)."""
-    fi, ti = semn*v('unghi_tB'), v('unghi_injector')
-    e = (math.cos(fi), math.sin(fi))
-    d, n = (math.cos(ti), math.sin(ti)), (-math.sin(ti), math.cos(ti))
-    zt = (v('galerie_z2') + v('z_transfer_sus'))/2
-    r0 = v('canal_raza')
-
-    def loc(sa, ro):
-        r, z = r0 + sa*d[0] + ro*n[0], zt + sa*d[1] + ro*n[1]
-        return (r*e[0], r*e[1], z)
-    return loc
 
 
 def pas12b_supapa(design):
@@ -3341,21 +3335,13 @@ def verifica_pas12(design):
         t(abs(j_c - v('lama_joc')) < 1e-4 and j_l > 0.01 and j_h > 0.3 and ghidat >= v('lama_rezerva') - TOL and sus_inchis >= 0.3 - TOL
           and ax_s and are(zs, g['z_buzunar']) and podea >= 0.3 - TOL, 'C12g',
           'Ghilotina: lama {:.1f} x {:.0f} x {:.1f} mm, jocul în fantă {:.2f} mm, {:.2f} mm de cămașă, {:.1f} mm de chiulasă; ghidată {:.0f} mm '
-          'la deschis, închisă rămâne {:.0f} mm în buzunar (pârghia); axul Ø8 al servomotorului în carcasă, {:.0f} mm deasupra ștuțului'
+          'la deschis, închisă rămâne {:.0f} mm în buzunar (pârghia); axul Ø8 al servomotorului în carcasă, {:.0f} mm deasupra gurii de evacuare'
           .format(v('lama_grosime')*10, 2*g['lama']['y']*10, h_l*10, j_c*10, j_l*10, j_h*10, ghidat*10, sus_inchis*10, podea*10))
-    # Domurile injectoarelor pe canalele B
-    ti = v('unghi_injector')
-    bune = 0
-    for semn in (1, -1):
-        fi = semn*v('unghi_tB')
-        dir_ = (math.cos(ti)*math.cos(fi), math.cos(ti)*math.sin(fi), math.sin(ti))
-        pe_ax_inj = lambda r_: [o for r, a, o in cil if abs(r - r_) < TOL and abs(abs(a.x*dir_[0] + a.y*dir_[1] + a.z*dir_[2]) - 1) < 1e-6]
-        if pe_ax_inj(v('injector_corp')/2) and pe_ax_inj(v('injector_varf')/2) and pe_ax_inj(v('injector_raza')):
-            bune += 1
-    t(bune == 2 and v('injector_raza') - v('injector_corp')/2 >= v('perete_minim') - TOL, 'C12h',
-      'Injectoarele: 2 din 2 domuri pe canalele B (±{:.0f}°), axa la {:.0f}° sub orizontală spre canal, locaș Ø{:.0f} / vârf Ø{:.0f}, perete {:.0f} mm'
-      .format(math.degrees(v('unghi_tB')), math.degrees(ti), v('injector_corp')*10, v('injector_varf')*10,
-              (v('injector_raza') - v('injector_corp')/2)*10))
+    # Injecția este directă, în chiulasă: pe canalele B nu mai rămâne niciun dom de injector
+    occ_c = ocurenta(design, '11_Cilindru_corp')
+    domuri = [sk.name for sk in occ_c.component.sketches if sk.name.startswith(('Dom_Injector', 'Gaura_Injector'))] if occ_c else ['?']
+    t(not domuri, 'C12h', 'Canalele B fără domuri de injector (injecția e directă, în chiulasă)' if not domuri
+      else 'Au rămas schițe de injector în cilindru: ' + ', '.join(domuri))
     # Compresorul: roata și motorul pe axa orizontală, jocul față de colector, distanțele, interferențele
     roata, motor = gaseste(design, 'roata_compresor'), gaseste(design, 'motor_compresor')
     pr, cr = _fete(roata)
