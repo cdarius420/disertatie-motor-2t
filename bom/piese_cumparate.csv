@@ -1,0 +1,24 @@
+Poz;Denumire;Buc;Cote / cod;Producator;Sursa;Status
+1;Rulment palier;2;63/22, 22 x 56 x 16 mm, Cr 20,2 kN, C0r 9,25 kN;NSK;NSK, Rolling Bearings for Industrial Machinery E1103, partea C (nsk.com, e1103c_partc.pdf);verificat [catalog]
+2;Simering pe fus;2;22 x 35 x 7 mm;DE CONFIRMAT;DE CONFIRMAT;de verificat
+3;Rulment de picior al bielei (ace);1;15 x 19 x 17,3 mm;DE CONFIRMAT;DE CONFIRMAT;de verificat
+4;Rulment de cap de biela (ace);1;DE CONFIRMAT;DE CONFIRMAT;DE CONFIRMAT;de verificat
+5;Bolt cu sigurante;1 set;DE CONFIRMAT;DE CONFIRMAT;DE CONFIRMAT;de verificat
+6;Segmenti;1 set;DE CONFIRMAT;DE CONFIRMAT;DE CONFIRMAT;de verificat
+7;Piston;1;cumparat sau fabricat: DE CONFIRMAT;DE CONFIRMAT;DE CONFIRMAT;decizie deschisa
+8;Biela;1;cumparata sau fabricata: DE CONFIRMAT;DE CONFIRMAT;DE CONFIRMAT;decizie deschisa
+9;Lamela;1;cumparata sau fabricata: DE CONFIRMAT;DE CONFIRMAT;DE CONFIRMAT;decizie deschisa
+10;Bujie;1;M14 x 1,25;DE CONFIRMAT;DE CONFIRMAT;de verificat
+11;Prezoane cilindru si flansa evacuare;DE CONFIRMAT;M8 (filet in aluminiu 16 mm la flansa);DE CONFIRMAT;ISO 965 (DE CONFIRMAT);de verificat
+12;Suruburi prindere;DE CONFIRMAT;M10;DE CONFIRMAT;DE CONFIRMAT;de verificat
+13;Piulita rotor;1;M12 x 1,25, cheie 17, inaltime 10 mm;DE CONFIRMAT;DE CONFIRMAT;de verificat
+14;Pana Woodruff (rotor);1;DE CONFIRMAT;DE CONFIRMAT;DE CONFIRMAT;de verificat
+15;Pompa de apa electrica 12 V;1;clasa Pierburg CWA50 (25 L/min la 0,53 bar);Pierburg (DE CONFIRMAT codul);fisa produsului de atasat;de verificat
+16;Termostat;1;82 grade C;DE CONFIRMAT;DE CONFIRMAT;de verificat
+17;Pompa de ulei gerotor electrica;1;DE CONFIRMAT;DE CONFIRMAT;DE CONFIRMAT;de verificat
+18;Racitor ulei-apa;1;DE CONFIRMAT;DE CONFIRMAT;DE CONFIRMAT;de verificat
+19;Magneti rotor ISG;DE CONFIRMAT;NdFeB N42SH;DE CONFIRMAT;DE CONFIRMAT;de verificat
+20;Tole stator;DE CONFIRMAT;0,2 mm;DE CONFIRMAT;DE CONFIRMAT;de verificat
+21;Rulmenti rotoare Roots;DE CONFIRMAT;dupa MR-008;DE CONFIRMAT;DE CONFIRMAT;dupa MR-008
+22;Injector, pompa de inalta presiune, supapa de limitare;1 set;dupa MR-007;DE CONFIRMAT;DE CONFIRMAT;dupa MR-007
+23;Senzori (docs/defectari.md);9;dupa MR-010;DE CONFIRMAT;DE CONFIRMAT;dupa MR-010

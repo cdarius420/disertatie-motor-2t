@@ -95,7 +95,7 @@ P.piston_YZ125 = [53.957 53.972]*1e-3;  % plaja pistoanelor YZ125, pe clase [m]
 % Biela YZ125 din 2022: 110 mm între axe, cap Ø28 și picior Ø19, late de 15,9 mm.
 % Manetonul Ø22 x 54,5 mm cu șaibe de 1 mm (kiturile de bielă YZ125).
 % Ambielajul YZ125: lățime 55,90-55,95 mm, bătaie max. 0,03 mm.
-% Rulmenții paliere YZ125: 63/22 (22 x 56 x 16), Cr = 20,2 kN, C0r = 9,25 kN (NSK).
+% Rulmenții paliere YZ125: 63/22 (22 x 56 x 16), Cr = 20,2 kN, C0r = 9,25 kN [catalog] (NSK E1103, partea C; bom/piese_cumparate.csv).
 P.d_maneton = 22e-3;  P.l_maneton = 54.5e-3;
 P.D_cap = 28e-3;  P.D_picior = 19e-3;    % alezajele bielei (rulmenți cu ace) [m]
 P.D_ochi_cap = 36e-3; P.D_ochi_picior = 24e-3;  % exteriorul ochiurilor: pereți de 4 și 2,5 mm [m] [ESTIMARE]
