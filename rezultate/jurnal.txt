@@ -1,5 +1,5 @@
 Dizertație: grup propulsor 2T hibrid, controlat mecatronic
-Rulare: 24-Nov-2026 23:40:03
+Rulare: 25-Nov-2026 07:54:54
 
 === S01 Cinematica bielă-manivelă și ferestrele ===
 Cilindree: 124.8 cm3, lambda = r/L = 0.248
@@ -196,7 +196,7 @@ Arborele: 1.80 kg, inerție 0.00136 kg m2
 
 === S13 Cinematica ansamblului din Fusion ===
 Fusion: 180 poziții la 2 grade; cursa 54.5000 mm
-  [TRECUT] N1     Pistonul din Fusion = formula în 180 poziții: abatere max. 5.2e-11 mm
+  [TRECUT] N1     Pistonul din Fusion = formula în 180 poziții: abatere max. 5.6e-11 mm
   [TRECUT] N2     Rotația bielei din Fusion = -arcsin(lambda sin theta): abatere max. 4.8e-11 grade
   [TRECUT] N3     Accelerația derivată din pozițiile Fusion = analitica: abatere 0.016% din maxim
 
@@ -211,8 +211,8 @@ Băile: 0.30 L în față și în spate, până la ±120 mm, de la 67.5 mm sub a
   [TRECUT] U2     La repaus: lamela e sub ulei cu 7.8 mm (sifon: o etanșează și spală gazele), canalul de sub arbore e plin (+21 mm), 29 mm de aer sub tavan; băile sunt pline 61%
   [TRECUT] U3     Pistonul pompează carterul între 0.54 și 1 bar (226/351 cm3): de 397 ori coloana de ulei de deasupra lamelei (116 Pa); forțele sunt calculate cu 0.50 bar la PMI (acoperitor, 0.1% din forța maximă)
   [TRECUT] U4     Aripioarele: 8 pe fiecare latură, 3 mm groase, gol 5 mm, înalte de 15 mm (raport 3.0 <= 4), 2 mm sub fața carterului; suprafața băilor x4.7, ~342 W la 50 km/h și 70 K
-  [TRECUT] U5     Pompa de ulei: 1.36 L/min la 3.0 bar (duze [1 0.6 0.6] mm: 0.79 + 0.28 + 0.28 L/min), 27 W electric; aspirația 0.59 m/s prin galeria Ø7 (<= 1 m/s); uleiul se încălzește cu 16 K pe la jeturi
-  [TRECUT] U6     Bilanțul uleiului: 613 W intră (jetul de sub piston și rulmenții), aripioarele scot 342 W, răcitorul ulei-apă 271 W; uleiul iese din răcitor la 86 °C cu apa la 75 °C (<= 110)
+  [TRECUT] U5     Pompa de ulei mecanică (gerotor pe arbore, 0.30 cm3/rot): jeturile rulmenților la 1.0 bar la ralanti; 2.28 L/min la putere (duzele iau 1.36 L/min la 3.0 bar, presiune plină de la 5666 rot/min), 14 W de pe arbore; aspirația 0.99 m/s prin galeria Ø7 (<= 1 m/s); uleiul se încălzește cu 17 K pe la jeturi
+  [TRECUT] U6     Bilanțul uleiului: 625 W intră (jetul de sub piston și rulmenții), aripioarele scot 342 W, răcitorul ulei-apă 283 W; uleiul iese din răcitor la 86 °C cu apa la 75 °C (<= 110)
 Fus Ø22 k5: strângere 2...21 µm; inel exterior în bucșa Ø56 M7: -13...30 µm (negativ = joc)
 Jocul radial C4 20...36 µm; rămas: probabil 8.4 µm, în cazul cel mai rău -22.3 µm
   [TRECUT] R3     Rulmenții C4 rămân cu joc radial la ajustajele probabile: 8.4 µm
@@ -253,7 +253,7 @@ Cămașa cilindrului: R36.5-52 mm, de la 141.4 la 160.25 mm (deasupra ferestrelo
 Intrarea pe dreapta la -120 grade; ramura lungă duce 60% din debit, coloana cea mai încărcată 60%
   [TRECUT] W1     Viteza apei: 0.63 m/s în cămașă (292 mm2), 2.29 m/s pe lângă coloana prezonului (80 mm2), 1.58 m/s în cele 5 treceri spre chiulasă, 1.98 m/s în racord (<= 2.5)
   [TRECUT] W2     Pereți: 6.0 mm apă-ghilotină, 3.5 mm apă-cămașa cilindrului, 4.0 mm apă-conducta de evacuare (>= 3 mm)
-Circuitul: 9.6 kW în apă (motor 9.2, ulei 0.27, modul 0.12), +8.3 K; pierderi 0.45 bar la 18 L/min: [18.8 0.7 4.7 2.1 8.2 10] kPa
+Circuitul: 9.6 kW în apă (motor 9.2, ulei 0.28, modul 0.12), +8.3 K; pierderi 0.45 bar la 18 L/min: [18.8 0.7 4.7 2.1 8.2 10] kPa
   [TRECUT] W3     Pompa electrică de 12 V (clasa CWA50) dă 22 L/min pe circuitul acesta, la 0.62 bar; trebuie 18 L/min (rezervă 18%, turația se reduce prin PWM)
   [TRECUT] W4     Radiatorul: 4.2 dm2 de miez frontal la 8 m/s prin miez (aerul +25 K, eficacitate 0.52 <= 0,6); apa iese din chiulasă la 83 °C, peste deschiderea termostatului (82 °C)
 
@@ -281,7 +281,7 @@ Masa 190 kg (motocicleta 115 + pilot 75), Crr 0.020, randamentul transmisiei 0.8
    puterea compresorului    1375.2: TE (98%), eta_i (98%), thTO (79%)
    aerul refulat              77.3: thTO (59%), Cd_tr (44%), w_tr (44%)
    căldura în apă           9222.6: eta_i (25%), imep_plin (20%), f_apa (20%)
-   uleiul                     85.8: T_apa_modul (17%), eta_i (6%), imep_plin (5%)
+   uleiul                     86.3: T_apa_modul (17%), eta_i (6%), imep_plin (5%)
    modulul ISG                94.0: eta_inv (131%), T_apa_modul (16%), modul (4%)
    (176 parametri [ESTIMARE] variați cu ±20%; în paranteză, schimbarea cea mai mare a rezultatului)
 

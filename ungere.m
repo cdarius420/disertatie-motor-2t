@@ -1,5 +1,5 @@
 function U = ungere(P)
-% UNGERE  Aripioarele băilor, pompa de ulei cu jeturile, aspirația și bilanțul termic al uleiului (s14, s17).
+% UNGERE  Aripioarele băilor, pompa de ulei mecanică cu jeturile, aspirația și bilanțul termic al uleiului (s14, s17).
 G = geometrie_carter(P);
 % Aripioarele: turnabile (grosime, pas, înălțime) și cât scot la viteza și diferența de temperatură date
 U.ta = P.aripioare(1);  U.gol = P.aripioare(2) - U.ta;  U.ha = G.y_ar - (G.y_cav + P.t_carter);
@@ -17,11 +17,17 @@ U.nr_aripioare = numel(G.z_ar);
 U.Q_jet = P.Cd_jet*pi/4*P.jet_ulei.^2*sqrt(2*P.p_ulei/P.rho_ulei);
 U.Q = sum(U.Q_jet);
 U.dp = P.p_ulei + P.dp_ulei_traseu;
-U.P_el = U.Q*U.dp/P.eta_pompa_ulei;
-U.v_sorb = U.Q/(pi/4*P.galerie_sorb^2);
-% Căldura în ulei: jetul de sub piston și rulmenții; o scot aripioarele, restul răcitorul ulei-apă
+% Pompa: gerotor mecanic pe arbore (MR-018). Volumul pe rotație dă duzele rulmenților la ralanti; la turația de
+% putere debitul e mai mare decât al jeturilor, surplusul trece prin supapa de presiune înapoi în baie.
+U.Q_ral = sum(U.Q_jet(2:3))*sqrt(P.p_ulei_ralanti/P.p_ulei);
+U.V_rot = U.Q_ral/(P.gerotor(1)*P.n_ralanti/60);
+U.Q_max = U.V_rot*P.gerotor(1)*P.n_putere/60;
+U.n_plin = U.Q/(U.V_rot*P.gerotor(1))*60;                         % turația de la care jeturile au presiunea plină
+U.P_mec = U.Q_max*U.dp/P.gerotor(2);                              % de pe arbore
+U.v_sorb = U.Q_max/(pi/4*P.galerie_sorb^2);
+% Căldura în ulei: jetul de sub piston, rulmenții și supapa; o scot aripioarele, restul răcitorul ulei-apă
 P_comb = P.imep_plin*P.Vd*P.n_putere/60/P.eta_i;
-U.Q_ulei = P.f_ulei*P_comb + P.P_rulmenti;
+U.Q_ulei = P.f_ulei*P_comb + P.P_rulmenti + U.Q_max*U.dp;          % + laminarea din supapă
 U.dT_jet = U.Q_ulei/(U.Q*P.rho_ulei*P.cp_ulei);
 U.Q_racitor = max(0, U.Q_ulei - U.Q_aripioare);
 U.T_ulei = P.T_apa_modul + U.Q_racitor/P.UA_racitor;               % uleiul la ieșirea din răcitor
