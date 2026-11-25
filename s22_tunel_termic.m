@@ -60,13 +60,21 @@ for sursa = ["proaspat" "radiator"]
     end
 end
 
-% Verificările (criteriile de acceptanță ale tunelului)
-fprintf('\nT1 aerul radiatorului lasă cel puțin 20 K până la limita plasticului: %d\n', T_pp - T_rad - marja >= 20);
-fprintf('T2 tunelul cere mai puțin aer decât trece prin radiator (Tw = 400 C, 4 m/s, aer proaspăt): ');
-Ta = T_amb + (T_pp - T_amb - marja)/2; Tf = (400 + Ta)/2 + 273.15; [k, nu, Pr] = aer(Tf);
-Re = 4*D_echiv/nu; Nu = 0.3 + 0.62*Re^0.5*Pr^(1/3)/(1 + (0.4/Pr)^(2/3))^0.25*(1 + (Re/282000)^(5/8))^(4/5);
-Q = A_tunel*(Nu*k/D_echiv*(400 - Ta) + eps_w*sigma*((400 + 273.15)^4 - (Ta + 273.15)^4));
-fprintf('%d (cere %.3f kg/s, radiatorul are %.3f kg/s)\n', Q/(cp_aer*(T_pp - T_amb - marja)) < mdot_rad, Q/(cp_aer*(T_pp - T_amb - marja)), mdot_rad);
+% Verificarea (criteriul de acceptanță al tunelului, varianta EZ-9: aerul radiatorului trece prin tunel)
+% T1: la peretele de 500 C și 4 m/s, tunelul cere cel mult aerul care trece prin radiator.
+% Sensibilitatea: încălzirea aerului în radiator e o [ESTIMARE] (P.aer_radiator(2)); o încălzire mai mică
+% dă aer mai rece și mai mult, deci T1 se verifică pentru 15 K și pentru valoarea din parametri.
+fprintf('\n');
+for dT_r = [15 P.aer_radiator(2)]
+    Tin = T_amb + dT_r;  m_r = W.Q/(cp_aer*dT_r);  dTa = T_pp - Tin - marja;
+    Ta = Tin + dTa/2;  Tf = (500 + Ta)/2 + 273.15;  [k, nu, Pr] = aer(Tf);
+    Re = 4*D_echiv/nu;  Nu = 0.3 + 0.62*Re^0.5*Pr^(1/3)/(1 + (0.4/Pr)^(2/3))^0.25*(1 + (Re/282000)^(5/8))^(4/5);
+    Q = A_tunel*(Nu*k/D_echiv*(500 - Ta) + eps_w*sigma*((500 + 273.15)^4 - (Ta + 273.15)^4));
+    fprintf('T1 (radiatorul încălzește aerul cu %2.0f K: iese la %.0f C, %.3f kg/s): tunelul cere %.3f kg/s -> %d\n', ...
+            dT_r, Tin, m_r, Q/(cp_aer*dTa), Q/(cp_aer*dTa) <= m_r);
+end
+fprintf('Ce lipsește (de aceea T1 e necesar, nu suficient): temperatura panoului (radiația), oprirea la cald,\n');
+fprintf('căldura catalizatorului, materialul real al panoului. Modelul în trei straturi vine după măsurarea peretelui.\n');
 
 function [k, nu, Pr] = aer(T)
 % proprietățile aerului la presiune atmosferică, interpolate între 300 și 800 K (tabele standard de transfer termic)
