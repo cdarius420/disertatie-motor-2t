@@ -1,0 +1,57 @@
+unghi | x arbore | încape | garda min [mm] | colector, punctul de jos [mm] | spatele tobei [mm] | lovituri
+   30 |      520 |      0 |            211 |                           211 |               -233 | 1  roata spate / filtru
+   30 |      540 |      0 |            211 |                           211 |               -213 | 1  roata spate / filtru
+   30 |      560 |      1 |            211 |                           211 |               -193 | 0  
+   30 |      580 |      1 |            211 |                           211 |               -173 | 0  
+   30 |      600 |      1 |            211 |                           211 |               -153 | 0  
+   30 |      620 |      1 |            211 |                           211 |               -133 | 0  
+   30 |      640 |      1 |            211 |                           211 |               -113 | 0  
+   30 |      660 |      1 |            211 |                           211 |                -93 | 0  
+   30 |      680 |      0 |            211 |                           211 |                -73 | 1  radiator / colector+difuzor
+   30 |      700 |      0 |            211 |                           211 |                -53 | 1  radiator / colector+difuzor
+   30 |      720 |      0 |            211 |                           211 |                -33 | 2  chiulasa / radiator; radiator / colector+difuzor
+   45 |      520 |      0 |            211 |                           211 |               -273 | 1  roata spate / filtru
+   45 |      540 |      0 |            211 |                           211 |               -253 | 0  
+   45 |      560 |      1 |            211 |                           211 |               -233 | 0  
+   45 |      580 |      1 |            211 |                           211 |               -213 | 0  
+   45 |      600 |      1 |            211 |                           211 |               -193 | 0  
+   45 |      620 |      1 |            211 |                           211 |               -173 | 0  
+   45 |      640 |      1 |            211 |                           211 |               -153 | 0  
+   45 |      660 |      1 |            211 |                           211 |               -133 | 0  
+   45 |      680 |      1 |            211 |                           211 |               -113 | 0  
+   45 |      700 |      0 |            211 |                           211 |                -93 | 2  chiulasa / radiator; radiator / colector+difuzor
+   45 |      720 |      0 |            211 |                           211 |                -73 | 3  cilindru / radiator; chiulasa / radiator; radiator / colector+difuzor
+   60 |      520 |      0 |            201 |                           201 |               -403 | 0  
+   60 |      540 |      0 |            201 |                           201 |               -383 | 0  
+   60 |      560 |      0 |            201 |                           201 |               -363 | 0  
+   60 |      580 |      0 |            201 |                           201 |               -343 | 0  
+   60 |      600 |      0 |            201 |                           201 |               -323 | 0  
+   60 |      620 |      0 |            201 |                           201 |               -303 | 0  
+   60 |      640 |      0 |            201 |                           201 |               -283 | 0  
+   60 |      660 |      0 |            201 |                           201 |               -263 | 0  
+   60 |      680 |      0 |            201 |                           201 |               -243 | 1  chiulasa / radiator
+   60 |      700 |      0 |            201 |                           201 |               -223 | 1  chiulasa / radiator
+   60 |      720 |      0 |            201 |                           201 |               -203 | 3  cilindru / radiator; chiulasa / roata fata; chiulasa / radiator
+
+Cu bateria și rezervorul:
+unghi | x arbore | încape tot | garda [mm] | spatele tobei [mm] | baterie | rezervor | vârful chiulasei z [mm] | centrul cilindru+chiulasă z [mm]
+   30 |      600 |          1 |        210 |               -153 |       1 |        1 |                     496 |                              411
+        baterie: x 745..840, z 210..422, y -46..166 mm
+        rezervor 5.0 L: x 370..566, z 470..670, y 70..210 mm
+        lovituri: niciuna
+   45 |      600 |          1 |        211 |               -193 |       1 |        1 |                     477 |                              391
+        baterie: x 635..847, z 375..587, y 72..168 mm
+        rezervor 5.0 L: x 645..841, z 470..670, y -210..-70 mm
+        lovituri: niciuna
+   60 |      600 |          0 |        201 |               -323 |       1 |        1 |                     446 |                              364
+        baterie: x 275..487, z 210..305, y -46..166 mm
+        rezervor 5.0 L: x 515..711, z 470..670, y -210..-70 mm
+        lovituri: niciuna
+
+Cea mai bună: unghi 30, arborele la x = 600 mm (50% din ampatament), încape tot: 1
+  garda minimă 210 mm (cerut 210); colectorul coboară la 211 mm
+  tunelul se termină la x = -153 mm (limita EZ-9: -240 mm în spatele axului spate)
+  radiatorul: miez 300 x 135 mm
+  baterie: x 745..840, z 210..422, y -46..166 mm
+  rezervor 5.0 L: x 370..566, z 470..670, y 70..210 mm
+  lovituri: niciuna

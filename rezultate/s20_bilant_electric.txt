@@ -1,0 +1,8 @@
+Cererea la bornele bateriei: ISG 12.2 kW mecanic / 0.90 + Roots 1.38 kW + consumatori 150 W = 15.1 kW
+Curentul la 44.8 V: 336 A de vârf, 34 A continuu (fără generare)
+Pachet 16s3p din ANR26650M1B: 396 Wh, 3.65 kg celule, cutie 212 x 212 x 95 mm (4.3 L)
+O asistență de 4 s ia 16.7 Wh (4.2% din pachet); cu DoD 80%: 18 asistențe pe încărcare
+Frânarea regenerativă admisă de celule: 4.6 kW timp de 10 s, 1.8 kW continuu
+  [TRECUT] B1     Vârful de 336 A <= 3 x 120 A (descărcarea de 10 s a celulei)
+  [TRECUT] B2     Continuu 34 A <= 3 x 52 A
+  [TRECUT] B3     Asistența de 4 s <= 10 s, durata vârfului din fișă
