@@ -56,7 +56,7 @@ def run(context):
                   pas02_cilindru(design), pas03_piston(design), pas03_bolt(design), pas04_biela(design),
                   pas05_arbore(design), pas06_chiulasa(design), exporta_volume(design),
                   pas09_carter(design), pas09b_lamela(design), pas10_stator(design), pas11_rotor(design),
-                  pas12_cilindru_corp(design), pas12b_supapa(design), pas13_compresor(design), pas14_capac(design), pas14b_scut(design), pas14c_pompa_ulei(design), pas15_toba(design),
+                  pas12_cilindru_corp(design), pas12b_supapa(design), pas13_compresor(design), pas14_capac(design), pas14b_scut(design), pas14c_racitor_ulei(design), pas15_toba(design),
                   pas08_legaturi(design), aplica_materiale(design), ruleaza_cinematica(design),
                   exporta_multicorp(design), sterge_orfani(design), '']
         teste = []
@@ -1511,7 +1511,7 @@ def verifica_pas06(design):
 # bielă pe maneton (rotație), piston pe bolțul bielei (rotație), piston în cilindru
 # (translație pe Z); bolțul e fix în piston. Aceleași legături are modelul Simscape (m02).
 FIXE = ['00_Schelet', '10_Cilindru', '15_Chiulasa', '50_Carter_stanga', '51_Carter_dreapta', '53_Lamela', '60_Stator',
-        '11_Cilindru_corp', '12_Supapa', '90_Compresor', '52_Capac_dreapta', '55_Scut', '56_Pompa_ulei', '80_Toba']
+        '11_Cilindru_corp', '12_Supapa', '90_Compresor', '52_Capac_dreapta', '55_Scut', '56_Racitor_ulei', '80_Toba']
 LEGATURI = ['Arbore_cilindru', 'Biela_maneton', 'Biela_bolt', 'Bolt_piston', 'Piston_cilindru', 'Rotor_arbore']
 PAS_CINEMATICA = 2                     # [grade] între pozițiile rulării cinematice
 UNGHIURI_JOCURI = (0, 90, 180, 270)    # pozițiile la care se măsoară jocurile minime
@@ -1594,7 +1594,7 @@ def _corpuri(design, piese):
     return rez
 
 
-CARTER = [('50_Carter_stanga', None), ('51_Carter_dreapta', None)]
+CARTER = [('50_Carter_stanga', 'carter'), ('50_Carter_stanga', 'bucsa'), ('51_Carter_dreapta', 'carter'), ('51_Carter_dreapta', 'bucsa')]   # fără gerotor și capacul pompei
 PERECHI_JOCURI = [('piston_cilindru', [('20_Piston', None)], [('10_Cilindru', None)]),
                   ('piston_bratele', [('20_Piston', None)], [('40_Arbore', 'ambielaj')]),
                   ('biela_piston', [('30_Biela', 'biela')], [('20_Piston', None)]),
@@ -2025,6 +2025,47 @@ def _semicarter(comp, design, semn):
         marcheaza(b, 'bucsa' if e_bucsa else 'carter')
         if semn < 0 and not e_bucsa:                 # inelul e doar pe dreapta: îl țin minte pentru simetrie (C9a)
             b.attributes.add(GRUP, 'volum_inel', repr(v_inel))
+    if semn > 0:                                     # pompa de ulei mecanică e doar pe stânga (MR-018)
+        _pompa_mecanica(comp, v, [b for b in comp.bRepBodies if b.name == 'Carter_stanga'][0])
+
+
+def _pompa_mecanica(comp, v, corp):
+    """Gerotorul pe fusul stâng, între rulment și capacul pompei; capacul ține simeringul și intră în bosajul rulmentului.
+    Bosajul crește spre exterior cu gerotor_joc + gerotor_L; volumul adăugat se ține minte pentru simetrie (C9a)."""
+    uneste = adsk.fusion.FeatureOperations.JoinFeatureOperation
+    taie = adsk.fusion.FeatureOperations.CutFeatureOperation
+    nou = adsk.fusion.FeatureOperations.NewBodyFeatureOperation
+    v0 = corp.volume
+    yc, yr = v('y_carter'), v('y_rulment_ext')
+    yg, yk = yr + v('gerotor_joc'), yr + v('gerotor_joc') + v('gerotor_L')
+    stiva = 'gerotor_joc + gerotor_L'
+
+    def disc(y, d_expr, d, nume):
+        s = Schita(comp, _plan_y_la(comp, y, 'Plan_' + nume), nume)
+        _cerc_fix(s, 0, y, 0, d_expr, d)
+        return s.gata().profiles.item(0)
+
+    def inel(y, e_ext, d_ext, e_int, d_int, nume):
+        s = Schita(comp, _plan_y_la(comp, y, 'Plan_' + nume), nume)
+        _cerc_fix(s, 0, y, 0, e_ext, d_ext)
+        _cerc_fix(s, 0, y, 0, e_int, d_int)
+        return _profil_inel(s.gata(), d_ext, d_int)
+
+    _extrudare_spre(comp, disc(yc, 'D_bosaj_rul', v('D_bosaj_rul'), 'Bosaj_pompa'), uneste, stiva, (0, 1, 0), corp).name = 'Bosaj_pompa'
+    _extrudare_spre(comp, disc(yg, 'gerotor_D + 0.2 mm', v('gerotor_D') + 0.02, 'Locas_gerotor'), taie, 'gerotor_L',
+                    (0, 1, 0), corp).name = 'Locas_gerotor'
+    _extrudare_spre(comp, disc(yk, 'capac_pompa_D', v('capac_pompa_D'), 'Locas_capac_pompa'), taie, 'joc_simering + simering_B',
+                    (0, 1, 0), corp).name = 'Locas_capac_pompa'
+    corp.attributes.add(GRUP, 'volum_pompa', repr(corp.volume - v0))
+    g = _extrudare_spre(comp, inel(yg, 'gerotor_D', v('gerotor_D'), 'd_fus', v('d_fus'), 'Gerotor'), nou, 'gerotor_L', (0, 1, 0)).bodies.item(0)
+    g.name = 'Gerotor'
+    marcheaza(g, 'gerotor')
+    c = _extrudare_spre(comp, inel(yk, 'capac_pompa_D', v('capac_pompa_D'), 'd_fus + 1 mm', v('d_fus') + 0.1, 'Capac_pompa'), nou, 'joc_simering + simering_B',
+                        (0, 1, 0)).bodies.item(0)
+    c.name = 'Capac_pompa_ulei'
+    marcheaza(c, 'capac_pompa')
+    _extrudare_spre(comp, disc(yk + v('joc_simering') + v('simering_B'), 'simering_D', v('simering_D'), 'Locas_simering_capac'), taie,
+                    'simering_B', (0, -1, 0), c).name = 'Locas_simering_capac'
 
 
 def verifica_pas09(design):
@@ -2046,7 +2087,9 @@ def verifica_pas09(design):
     cs, cd = jum[1][0][0], jum[-1][0][0]
     a_i = cd.attributes.itemByName(GRUP, 'volum_inel')
     vi = float(a_i.value) if a_i else -1
-    t(vi > 0 and abs(cs.volume - (cd.volume - vi)) < 1e-6 and cs.physicalProperties.centerOfMass.y > 0 > cd.physicalProperties.centerOfMass.y,
+    a_p = cs.attributes.itemByName(GRUP, 'volum_pompa')
+    vp = float(a_p.value) if a_p else 0.0
+    t(vi > 0 and abs((cs.volume - vp) - (cd.volume - vi)) < 1e-6 and cs.physicalProperties.centerOfMass.y > 0 > cd.physicalProperties.centerOfMass.y,
       'C9a', 'Semicarterele sunt simetrice față de planul cilindrului: {:.2f} cm3 fiecare, plus inelul capacului și nervura sorbului pe dreapta ({:.2f} cm3)'
       .format(cs.volume, vi))
     plane, cil = _fete(cs)
@@ -2127,7 +2170,7 @@ DENSITATI = {
     'roata_compresor': ('Al 2618 forjat', 'densitate_aluminiu', 'Aluminum 2014-T6'),            # roată frezată
     'capac': AL_TURNAT, 'scut': ('Al 5754 tabla', 'densitate_aluminiu', 'Aluminum 2014-T6'),     # scutul: tablă îndoită
     'pompa_ulei': ANEXE, 'racitor_ulei': ANEXE,
-    'toba': TABLA, 'flansa_toba': TABLA,
+    'toba': TABLA, 'flansa_toba': TABLA, 'gerotor': OTEL, 'capac_pompa': AL_TURNAT,
 }
 for _rol in ('bolt', 'sigurante', 'biela', 'rulment_cap', 'rulment_picior', 'ambielaj', 'maneton', 'saibe',
              'rulmenti_paliere', 'bucsa', 'lamela', 'rotor_pahar', 'pana', 'saiba_rotor', 'piulita', 'supapa_evacuare'):
@@ -3117,7 +3160,7 @@ def verifica_pas14(design):
     j_s = dist(S_, _corpuri(design, CARTER + [('52_Capac_dreapta', None)]))
     col = adsk.core.ObjectCollection.create()
     for nume in ('10_Cilindru', '11_Cilindru_corp', '15_Chiulasa', '50_Carter_stanga', '51_Carter_dreapta', '52_Capac_dreapta',
-                 '55_Scut', '56_Pompa_ulei', '60_Stator', '61_Rotor', '90_Compresor'):
+                 '55_Scut', '56_Racitor_ulei', '60_Stator', '61_Rotor', '90_Compresor'):
         col.add(ocurenta(design, nume))
     ii = design.createInterferenceInput(col)
     ii.areCoincidentFacesIncluded = False
@@ -3186,35 +3229,30 @@ def _nervura_sorb(comp, v, corp):
     return corp.volume - v0
 
 
-def pas14c_pompa_ulei(design):
-    """Pompa electrică de ulei (gerotor, anvelopă) pe plăcuța din fața băii din față, cu răcitorul ulei-apă deasupra."""
-    comp = componenta_noua(design, '56_Pompa_ulei')
+def pas14c_racitor_ulei(design):
+    """Răcitorul ulei-apă (anvelopă, piesă cumpărată) pe plăcuța din fața băii din față. Pompa e mecanică, pe arbore (MR-018)."""
+    comp = componenta_noua(design, '56_Racitor_ulei')
     if comp is None:
-        return 'Pasul 14c: 56_Pompa_ulei există deja, l-am lăsat neatins.'
+        return 'Pasul 14c: 56_Racitor_ulei există deja, l-am lăsat neatins.'
     v = valoare(design)
     nou = adsk.fusion.FeatureOperations.NewBodyFeatureOperation
-    R, H, ys = v('pompa_ulei_D')/2, v('pompa_ulei_H'), v('y_sorb')
-    xc, z0 = v('baie_x') + 0.5 + R, -v('baie_jos') - 0.75
-    s = Schita(comp, _plan_z(comp, '-(baie_jos + 7.5 mm)', 'Baza_pompei'), 'Pompa_ulei')
-    _cerc_fix(s, xc, ys, z0, 'pompa_ulei_D', 2*R)
-    p = _extrudare_spre(comp, s.gata().profiles.item(0), nou, 'pompa_ulei_H', (0, 1)).bodies.item(0)
-    p.name = 'Pompa_ulei'
-    marcheaza(p, 'pompa_ulei')
-    rx, ry = v('racitor_x')/2, v('racitor_y')/2
-    s = Schita(comp, _plan_z(comp, '-(baie_jos + 7.5 mm) + pompa_ulei_H', 'Baza_racitorului'), 'Racitor_ulei')
-    _dreptunghi_fix(s, [(xc - rx, ys - ry, z0 + H), (xc + rx, ys - ry, z0 + H), (xc + rx, ys + ry, z0 + H), (xc - rx, ys + ry, z0 + H)])
-    r = _extrudare_spre(comp, s.gata().profiles.item(0), nou, 'racitor_z', (0, 1)).bodies.item(0)
+    x0, ys, z0 = v('baie_x') + 0.5, v('y_sorb'), -v('baie_jos') - 0.75
+    ry, H = v('racitor_y')/2, v('racitor_z')
+    s = Schita(comp, _plan_x_la(comp, x0, 'Placuta_racitor'), 'Racitor_ulei')
+    _dreptunghi_fix(s, [(x0, ys - ry, z0), (x0, ys + ry, z0), (x0, ys + ry, z0 + H), (x0, ys - ry, z0 + H)])
+    r = _extrudare_spre(comp, s.gata().profiles.item(0), nou, 'racitor_x', (1, 0, 0)).bodies.item(0)
     r.name = 'Racitor_ulei'
     marcheaza(r, 'racitor_ulei')
-    return 'Pasul 14c: 56_Pompa_ulei construită (pompa Ø{:.0f} x {:.0f} mm și răcitorul ulei-apă, în fața băii din față).'.format(2*R*10, H*10)
+    return 'Pasul 14c: 56_Racitor_ulei construit ({:.0f} x {:.0f} x {:.0f} mm, pe plăcuța din fața băii).'.format(
+        v('racitor_x')*10, v('racitor_y')*10, H*10)
 
 
 def verifica_ulei(design):
     teste, t = _t()
     v = valoare(design)
     occ = ocurenta(design, '51_Carter_dreapta')
-    if occ is None or gaseste(design, 'pompa_ulei') is None or gaseste(design, 'racitor_ulei') is None:
-        t(False, 'C14d', '51_Carter_dreapta sau 56_Pompa_ulei lipsește')
+    if occ is None or gaseste(design, 'racitor_ulei') is None:
+        t(False, 'C14d', '51_Carter_dreapta sau 56_Racitor_ulei lipsește')
         return teste
     rol_ = lambda c: c.attributes.itemByName(GRUP, 'rol').value if c.attributes.itemByName(GRUP, 'rol') else ''
     cd = [b for b in occ.component.bRepBodies if rol_(b) == 'carter'][0]
@@ -3228,9 +3266,29 @@ def verifica_ulei(design):
     nerv = any(abs(z + v('baie_jos') + v('nervura_inaltime')) < TOL for z in zs)
     t(gal and sorb and placuta and nerv, 'C14d',
       'Ungerea: sorbul la mijlocul tubului în U (x = 0), galeria Ø{:.0f} prin nervura de {:.0f} x {:.0f} mm de sub semicarterul drept, '
-      'până la plăcuța pompei de la x = {:.0f} mm; pompa Ø{:.0f} x {:.0f} și răcitorul ulei-apă deasupra ei, în fața băii'
-      .format(2*rg*10, v('nervura_latime')*10, v('nervura_inaltime')*10, (v('baie_x') + 0.5)*10,
-              v('pompa_ulei_D')*10, v('pompa_ulei_H')*10))
+      'până la plăcuța de la x = {:.0f} mm, cu răcitorul ulei-apă pe ea'
+      .format(2*rg*10, v('nervura_latime')*10, v('nervura_inaltime')*10, (v('baie_x') + 0.5)*10))
+    # Pompa mecanică (MR-018): gerotorul pe fusul stâng, între rulment și capacul pompei; capacul ține simeringul
+    occ_s = ocurenta(design, '50_Carter_stanga')
+    ger, cap = gaseste(design, 'gerotor'), gaseste(design, 'capac_pompa')
+    if occ_s is None or ger is None or cap is None:
+        t(False, 'C14e', 'Gerotorul sau capacul pompei lipsește din 50_Carter_stanga')
+        return teste
+    bb, bc = ger.boundingBox, cap.boundingBox
+    yg = v('y_rulment_ext') + v('gerotor_joc')
+    v_g = math.pi/4*(v('gerotor_D')**2 - v('d_fus')**2)*v('gerotor_L')
+    _, cil_c = _fete(cap)
+    cs = [c for c in occ_s.component.bRepBodies if c.name == 'Carter_stanga'][0]
+    _, cil_s = _fete(cs)
+    loc = any(abs(r - v('gerotor_D')/2 - 0.01) < TOL for r, a, o in cil_s) and any(abs(r - v('capac_pompa_D')/2) < TOL for r, a, o in cil_s)
+    sim = any(abs(r - v('simering_D')/2) < TOL for r, a, o in cil_c)
+    fata = bc.maxPoint.y
+    capat = v('y_rulment_ext') + v('capat_stanga')
+    t(abs(ger.volume - v_g) < 1e-4 and abs(bb.minPoint.y - yg) < TOL and abs(bb.maxPoint.y - yg - v('gerotor_L')) < TOL and loc and sim
+      and abs(fata - v('y_carter') - v('gerotor_joc') - v('gerotor_L')) < TOL, 'C14e',
+      'Pompa mecanică: gerotor Ø{:.0f}/Ø{:.0f} x {:.0f} mm pe fusul stâng, la {:.1f} mm de rulment; capacul Ø{:.0f} cu simeringul, fața la y = {:.1f} mm; '
+      'fusul iese {:.1f} mm din capac spre variator'.format(v('gerotor_D')*10, v('d_fus')*10, v('gerotor_L')*10, v('gerotor_joc')*10,
+                                                           v('capac_pompa_D')*10, fata*10, (capat - fata)*10))
     return teste
 
 
@@ -3366,10 +3424,7 @@ def pas15_toba(design):
     # Flanșa pe cele două prezoane ale cilindrului, cu găurile de trecere M8 (9 mm, ISO 273 seria medie) și țeava prin ea
     g = _geometrie_evacuare(v)
     xf = seg[0][1][0]
-    pi = comp.constructionPlanes.createInput()
-    pi.setByOffset(comp.yZConstructionPlane, adsk.core.ValueInput.createByReal(xf))
-    pf = comp.constructionPlanes.add(pi)
-    pf.name = 'Plan_flansa_toba'
+    pf = _plan_x_la(comp, xf, 'Plan_flansa_toba')
     sf = Schita(comp, pf, 'Flansa_toba')
     C = sf.sk.sketchCurves.sketchCircles
     zy, Rb = g['y_prezon'], v('flansa_bosaj_R')
@@ -3407,14 +3462,14 @@ def verifica_toba(design):
     T_ = corp.createForAssemblyContext(occ)
     dist = {}
     for nume in ('10_Cilindru', '15_Chiulasa', '50_Carter_stanga', '51_Carter_dreapta', '52_Capac_dreapta', '55_Scut',
-                 '56_Pompa_ulei', '90_Compresor'):
+                 '56_Racitor_ulei', '90_Compresor'):
         try:
             dist[nume] = min(mm_.measureMinimumDistance(T_, b).value for b in _corpuri(design, [(nume, None)]))
         except Exception:
             dist[nume] = float('nan')
     col = adsk.core.ObjectCollection.create()
     for nume in ('11_Cilindru_corp', '15_Chiulasa', '50_Carter_stanga', '51_Carter_dreapta', '52_Capac_dreapta', '55_Scut',
-                 '56_Pompa_ulei', '90_Compresor', '80_Toba'):
+                 '56_Racitor_ulei', '90_Compresor', '80_Toba'):
         col.add(ocurenta(design, nume))
     ii = design.createInterferenceInput(col)
     ii.areCoincidentFacesIncluded = False
@@ -3423,8 +3478,8 @@ def verifica_toba(design):
     perechi = ['{}/{}'.format(inter.item(i).entityOne.name, inter.item(i).entityTwo.name) for i in range(n_int)]
     mic = min(dist, key=lambda k: dist[k] if dist[k] == dist[k] else -1)
     t(all(d >= v('toba_joc') - TOL for d in dist.values()) and n_int == 0, 'C15b',
-      'Toba pe dreapta: cel mai aproape de {} ({:.1f} mm >= {:.0f} mm); pompa de ulei {:.1f} mm, capacul {:.1f} mm, scutul {:.1f} mm, '
-      'compresorul {:.1f} mm; interferențe: {}{}'.format(mic, dist[mic]*10, v('toba_joc')*10, dist['56_Pompa_ulei']*10,
+      'Toba pe dreapta: cel mai aproape de {} ({:.1f} mm >= {:.0f} mm); răcitorul de ulei {:.1f} mm, capacul {:.1f} mm, scutul {:.1f} mm, '
+      'compresorul {:.1f} mm; interferențe: {}{}'.format(mic, dist[mic]*10, v('toba_joc')*10, dist['56_Racitor_ulei']*10,
                                                         dist['52_Capac_dreapta']*10, dist['55_Scut']*10, dist['90_Compresor']*10,
                                                         n_int, ' (' + ', '.join(perechi) + ')' if perechi else ''))
     j_c = mm_.measureMinimumDistance(cat.createForAssemblyContext(occ), T_).value

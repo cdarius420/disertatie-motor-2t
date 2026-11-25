@@ -36,7 +36,7 @@ G.volum  = @(z0, k) volum_ulei(Gv, P, z0, k);
 G.z_nivel = fzero(@(z) G.volum(z, 0) - P.V_ulei, [G.z_fund, G.z_tavan]);
 % Prezoanele bazei cilindrului
 G.prezoane = P.prezon_raza*[cosd(P.prezon_unghi) sind(P.prezon_unghi)];   % primul cadran; restul în oglindă
-G.capete_libere = P.capete - (P.joc_simering + P.simering(3));       % cât ies fusurile din carter
+G.capete_libere = P.capete - (P.joc_simering + P.simering(3)) - [P.gerotor_joc + P.gerotor(4), 0];   % cât ies fusurile din carter (stânga: după capacul pompei)
 end
 
 function V = volum_ulei(G, P, z0, k)

@@ -1,5 +1,5 @@
-Reconstruire: șterse 80_Toba, 90_Compresor, 11_Cilindru_corp.
-Parametri: 0 noi, 287 actualizați.
+Reconstruire: șterse nimic.
+Parametri: 0 noi, 289 actualizați.
 Pasul 1: 00_Schelet există deja, l-am lăsat neatins.
 Pasul 2: 10_Cilindru există deja, l-am lăsat neatins.
 Pasul 3: 20_Piston există deja, l-am lăsat neatins.
@@ -12,15 +12,15 @@ Pasul 9: 50_Carter_stanga există deja; 51_Carter_dreapta există deja.
 Pasul 9b: 53_Lamela există deja, l-am lăsat neatins.
 Pasul 10: 60_Stator există deja, l-am lăsat neatins.
 Pasul 11: 61_Rotor există deja, l-am lăsat neatins.
-Pasul 12: 11_Cilindru_corp construit (Ø112, galerie 70-106 mm, 5 canale de transfer, colectorul compresorului turnat în spate).
+Pasul 12: 11_Cilindru_corp există deja, l-am lăsat neatins.
 Pasul 12b: 12_Supapa există deja, l-am lăsat neatins.
-Pasul 13: 90_Compresor construit (roata Ø44.2 mm și motorul Ø50 x 60 mm, pe axa orizontală la z = 125.8 mm).
+Pasul 13: 90_Compresor există deja, l-am lăsat neatins.
 Pasul 14: 52_Capac_dreapta există deja, l-am lăsat neatins.
 Pasul 14b: 55_Scut există deja, l-am lăsat neatins.
-Pasul 14c: 56_Pompa_ulei există deja, l-am lăsat neatins.
-Pasul 15: 80_Toba construită (colector Ø38.4, burta Ø96, ieșire Ø23.0 mm; 1352 mm de la flanșă la capăt).
-Pasul 8: legături existente; piese fixe: 00_Schelet, 10_Cilindru, 15_Chiulasa, 50_Carter_stanga, 51_Carter_dreapta, 53_Lamela, 60_Stator, 11_Cilindru_corp, 12_Supapa, 90_Compresor, 52_Capac_dreapta, 55_Scut, 56_Pompa_ulei, 80_Toba.
-Materiale: 62 corpuri; 10 materiale (AlSi9Cu3 turnat din -, Al 4032 forjat din -, Otel C45 imbunatatit din -, Tole electrotehnice 0,2 mm din -, Bobinaj Cu 55% din -, NdFeB N42SH din -, Al 5754 tabla din -, Anexe (anvelopa) din -, Al 2618 forjat din -, Otel tabla toba (DE CONFIRMAT) din -).
+Pasul 14c: 56_Racitor_ulei există deja, l-am lăsat neatins.
+Pasul 15: 80_Toba există deja, am lăsat-o neatinsă.
+Pasul 8: legături existente; piese fixe: 00_Schelet, 10_Cilindru, 15_Chiulasa, 50_Carter_stanga, 51_Carter_dreapta, 53_Lamela, 60_Stator, 11_Cilindru_corp, 12_Supapa, 90_Compresor, 52_Capac_dreapta, 55_Scut, 56_Racitor_ulei, 80_Toba.
+Materiale: 63 corpuri; 10 materiale (AlSi9Cu3 turnat din -, Al 4032 forjat din -, Otel C45 imbunatatit din -, Tole electrotehnice 0,2 mm din -, Bobinaj Cu 55% din -, NdFeB N42SH din -, Al 5754 tabla din -, Al 2618 forjat din -, Anexe (anvelopa) din -, Otel tabla toba (DE CONFIRMAT) din -).
 Cinematica: 180 poziții la 2°, jocuri la 0/90/180/270°; am scris cinematica_fusion.csv.
 Multicorp: STEP-uri în fusion/multicorp, mase și inerții în inertii_fusion.csv.
 Parametri orfani șterși: niciunul.
@@ -62,7 +62,7 @@ Parametri orfani șterși: niciunul.
 [TRECUT] C4d   Biela dintr-o bucată, tijă în I cu tălpi de 2.5 mm și patru racordări R6; volum 17.718 cm3
 [TRECUT] C4c   Rulmenții cu ace: 22 x 28 și 15 x 19 x 15.9 mm, volum exact
 [TRECUT] C5a   Brațe de 18.837 mm, gol 18.25 mm, ambielaj 55.925 mm (YZ125: 55,90-55,95)
-[TRECUT] C5b   Capetele arborelui, de la rulment: 40.0 mm spre variator (+Y), 44.0 mm spre mașina electrică (-Y)
+[TRECUT] C5b   Capetele arborelui, de la rulment: 46.5 mm spre variator (+Y), 44.0 mm spre mașina electrică (-Y)
 [TRECUT] C5c   Brațe de rază 46.75 mm, fusuri Ø22, alezaj de maneton Ø22 la 27.25 mm de axă
 [TRECUT] C5g   Brațe cu contragreutate pe ±56.0°, bosaj R18 la maneton și câte două tangente (fețe plane: 4)
 [TRECUT] C5h   Capătul spre mașina electrică: con 1:5 (semiunghi 5.711°), locașul penei Woodruff de 3 mm, filet M12 x 1,25 6g, Ø11.866 mm
@@ -73,8 +73,8 @@ Parametri orfani șterși: niciunul.
 [TRECUT] C6b   Banda de squish la 1.10 mm deasupra coroanei de la PMI; bolul sferic R24.844 mm
 [TRECUT] C6c   Chiulasa Ø112 răcită: cămașa R24-52 mm la 4 mm deasupra benzii de squish, 5 treceri aliniate cu puntea cilindrului, 4 prezoane, ieșirea Ø14 sus în spate
 [TRECUT] C7a   Factorul de echilibrare cu masele din Fusion: 0.551 (cerut 0.55); masa alternativă 255.1 g
-[TRECUT] C7b   Inerția arborelui din Fusion 13.595 kg cm2 = MATLAB 13.638 kg cm2 (în 1%)
-[TRECUT] C9a   Semicarterele sunt simetrice față de planul cilindrului: 478.65 cm3 fiecare, plus inelul capacului și nervura sorbului pe dreapta (41.22 cm3)
+[TRECUT] C7b   Inerția arborelui din Fusion 13.607 kg cm2 = MATLAB 13.650 kg cm2 (în 1%)
+[TRECUT] C9a   Semicarterele sunt simetrice față de planul cilindrului: 484.33 cm3 fiecare, plus inelul capacului și nervura sorbului pe dreapta (41.22 cm3)
 [TRECUT] C9b   Fețe în lungul arborelui: îmbinarea la 0, bosajul la 28.4625, cavitatea la 30.4625, umărul rulmentului la 44.4625, fața la 52.4625 mm
 [TRECUT] C9c   Pe axa arborelui: bucșa Ø64, simeringul Ø35, bosajul Ø80, cavitatea R49.75 mm
 [TRECUT] C9d   Bucșa de oțel 64/56 x 16 mm, cât rulmentul
@@ -100,17 +100,18 @@ Parametri orfani șterși: niciunul.
 [TRECUT] C14a  Capacul din dreapta: 5.0 mm până la rotor, 3.0 mm până la bobine, statorul stă pe 3 bosaje cu M5 (7.9 mm filet); ocolește corpul cilindrului la 0.5 mm; camera de apă 130 x 64 x 5 mm cu 2 racorduri Ø14
 [TRECUT] C14b  Prinderile: urechi M10 față-spate pe ambele semicartere (±66 mm, z = 28 mm, 16.8 mm deasupra băilor), urechea chiulasei pentru tijă; inelul capacului pe semicarterul drept (R76.5, 4 mm)
 [TRECUT] C14c  Scutul la 8.0 mm sub cel mai de jos punct (nervura sorbului), fața lui la 85.5 mm sub axă; interferențe carter, capac, stator, rotor, cilindru, chiulasă, compresor, pompa de ulei, scut: 0
-[TRECUT] C14d  Ungerea: sorbul la mijlocul tubului în U (x = 0), galeria Ø7 prin nervura de 14 x 10 mm de sub semicarterul drept, până la plăcuța pompei de la x = 125 mm; pompa Ø40 x 70 și răcitorul ulei-apă deasupra ei, în fața băii
+[TRECUT] C14d  Ungerea: sorbul la mijlocul tubului în U (x = 0), galeria Ø7 prin nervura de 14 x 10 mm de sub semicarterul drept, până la plăcuța de la x = 125 mm, cu răcitorul ulei-apă pe ea
+[TRECUT] C14e  Pompa mecanică: gerotor Ø46/Ø22 x 6 mm pe fusul stâng, la 0.5 mm de rulment; capacul Ø62 cu simeringul, fața la y = 59.0 mm; fusul iese 32.0 mm din capac spre variator
 [TRECUT] C15a  Toba: lungimea acordată pe axa modelului 1000.0 mm = 1000.0 mm din s02; golită la 1.0 mm (237 cm3 de tablă); masa 1.86 kg
-[TRECUT] C15b  Toba pe dreapta: cel mai aproape de 15_Chiulasa (24.6 mm >= 15 mm); pompa de ulei 34.8 mm, capacul 33.1 mm, scutul 117.9 mm, compresorul 133.3 mm; interferențe: 0
+[TRECUT] C15b  Toba pe dreapta: cel mai aproape de 15_Chiulasa (24.6 mm >= 15 mm); răcitorul de ulei 95.0 mm, capacul 33.1 mm, scutul 117.9 mm, compresorul 133.3 mm; interferențe: 0
 [TRECUT] C15c  Catalizatorul rezervat în burtă: Ø84 x 177 mm, 5.0 mm de perete (substratul DE CONFIRMAT); sonda lambda: gaură Ø18 pe colector
-[TRECUT] C11   Materialele: 62 corpuri cu densitatea din parametri.m (oțel, aluminiu, 4032, NdFeB, tole, bobinaj)
+[TRECUT] C11   Materialele: 63 corpuri cu densitatea din parametri.m (oțel, aluminiu, 4032, NdFeB, tole, bobinaj)
 [TRECUT] C8a   Legături: Arbore_cilindru, Biela_maneton, Biela_bolt, Bolt_piston, Piston_cilindru, Rotor_arbore; piese fixe ancorate; mecanismul revine la PMI după rulare
-[TRECUT] C8b   Pistonul urmează formula bielă-manivelă în 180 poziții pe o rotație: abatere max. 9.2e-12 mm
-[TRECUT] C8c   Biela urmează unghiul arcsin(lambda sin theta): abatere max. 3.3e-13 grade
+[TRECUT] C8b   Pistonul urmează formula bielă-manivelă în 180 poziții pe o rotație: abatere max. 1.3e-11 mm
+[TRECUT] C8c   Biela urmează unghiul arcsin(lambda sin theta): abatere max. 8.3e-13 grade
 [TRECUT] C8d   Pistonul rămâne pe axa cilindrului, fără rotire: abatere max. 0.0e+00
 [TRECUT] C8e   Squish la PMI, coroana-banda chiulasei: 1.1000 mm la 0° (cerut 1.1000 mm)
-[TRECUT] C8f   Jocul radial piston-cilindru: 0.0212/0.0212/0.0213/0.0212 mm la 0/90/180/270° (cerut 0.0212 mm)
+[TRECUT] C8f   Jocul radial piston-cilindru: 0.0212/0.0212/0.0212/0.0212 mm la 0/90/180/270° (cerut 0.0212 mm)
 [TRECUT] C8g   Jocul axial bielă-bosaje: 0.5000/0.5000/0.5000/0.5000 mm la 0/90/180/270° (cerut 0.5000 mm)
 [TRECUT] C8h   Jocul bielă-brațe (șaibă + jumătate din jocul lateral): 1.1750/1.1750/1.1750/1.1750 mm la 0/90/180/270° (cerut 1.1750 mm)
 [TRECUT] C8i   Fusta-contragreutăți la PME: 3.0000 mm la 180° (minim 3.0000 mm)
@@ -123,4 +124,4 @@ Parametri orfani șterși: niciunul.
 [TRECUT] C8q   Discul rotorului-capetele bobinelor: 2.0000/2.0000/2.0000/2.0000 mm la 0/90/180/270° (cerut 2.0000 mm)
 [TRECUT] C8r   Rotorul-fața carterului: 2.0000/2.0000/2.0000/2.0000 mm la 0/90/180/270° (cerut 2.0000 mm)
 
-Rezumat: 97 din 97 verificări trecute
+Rezumat: 98 din 98 verificări trecute

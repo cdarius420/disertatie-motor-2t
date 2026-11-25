@@ -111,7 +111,7 @@ P.D_saiba = 32e-3;                              % exteriorul șaibelor [m]   [ES
 P.latime_amb = 55.925e-3;  P.bataie_max = 0.03e-3;   % ambielajul, ca la YZ125 [m]
 P.d_fus = 22e-3;  P.rul = [22 56 16]*1e-3;  P.rul_C = 20.2e3;  P.rul_C0 = 9.25e3;
 P.joc_rulment = 0.5e-3;          % de la braț la rulment [m]                 [ESTIMARE]
-P.capete = [40 44]*1e-3;         % capetele arborelui, de la rulment: stânga (+Y) variatorul, dreapta (-Y) mașina electrică [m] [ESTIMARE]
+P.capete = [46.5 44]*1e-3;       % capetele arborelui, de la rulment: stânga (+Y) variatorul (+6,5 mm pentru gerotor, MR-018), dreapta (-Y) mașina electrică [m] [ESTIMARE]
 % Mașina electrică stă pe dreapta, în locul aprinderii; rotorul se prinde clasic, ca la YZ125:
 % con 1:5, pană Woodruff (doar poziționează, cuplul îl ține frecarea pe con) și piuliță M12 x 1,25.
 P.joc_con = 2e-3;                % de la simering la începutul conului [m]          [ESTIMARE]
@@ -302,8 +302,8 @@ P.K_termostat = 4;           % termostatul deschis, raportat la furtun [-]      
 P.dp_radiator = 0.10e5;      % radiatorul la debitul nominal [Pa]                      [ESTIMARE]
 P.aer_radiator = [8 25 35];  % aerul prin radiator: viteză [m/s], încălzire [K], temperatura lui [grade C] [ESTIMARE]
 P.T_termostat = 82;          % deschiderea termostatului, la ieșirea din chiulasă [grade C] [ESTIMARE]
-% Ungerea (s14): pompă electrică gerotor în fața băii din față, cu răcitorul ulei-apă deasupra. Sorbul rămâne la
-% mijlocul tubului în U; de acolo, o galerie găurită într-o nervură de sub fundul semicarterului drept duce la pompă.
+% Ungerea (s14): gerotor mecanic pe fusul stâng, între rulment și capacul pompei (MR-018); răcitorul ulei-apă pe plăcuța
+% din fața băii din față. Sorbul rămâne la mijlocul tubului în U; galeriile spre pompă, răcitor și jeturi urmează (MR-009).
 P.jet_ulei = [1.0 0.6 0.6]*1e-3;   % duzele: sub piston, palierul stâng, palierul drept [m] [ESTIMARE]
 P.p_ulei = 2.5e5;            % presiunea la duze [Pa]                                  [ESTIMARE]
 P.dp_ulei_traseu = 0.5e5;    % sorb, răcitor, galerii [Pa]                             [ESTIMARE]
@@ -312,13 +312,14 @@ P.f_ulei = 0.012;            % partea din puterea combustibilului dusă de jetul
 P.P_rulmenti = 60;           % frecarea celor doi rulmenți paliere [W]                 [ESTIMARE]
 P.gerotor = [0.80 0.80 46e-3 6e-3];  % pompa de ulei mecanică (MR-018): gerotor pe capătul stâng al arborelui, rotorul interior
                      % pe fusul Ø22; randamentul volumetric, randamentul total, Ø exterior, lățimea [m]; setul DE CONFIRMAT [ESTIMARE]
+P.gerotor_joc = 0.5e-3;      % de la rulment la gerotor [m] [ESTIMARE]
+P.capac_pompa_D = 62e-3;     % capacul pompei, cu simeringul în el, încastrat în bosajul rulmentului (Ø80) [m] [ESTIMARE]
 P.p_ulei_ralanti = 1.0e5;    % presiunea la duzele rulmenților, la ralanti (jetul pistonului nu e necesar) [Pa] [ESTIMARE]
 P.UA_racitor = 25;           % răcitorul ulei-apă cu plăci, mic [W/K]                  [ESTIMARE]
 P.T_ulei_max = 110;          % uleiul la ieșirea din răcitor [grade C]                 [ESTIMARE]
 P.galerie_sorb = 7e-3;       % galeria de aspirație [m]
 P.nervura_sorb = [14 10]*1e-3;   % nervura de sub fund: lățime, înălțime [m]
 P.y_sorb = -11e-3;           % galeria, în semicarterul drept [m]
-P.pompa_ulei = [40 70]*1e-3; % anvelopa vechii pompe electrice: rămâne doar până la modelarea MR-018 [m] [ESTIMARE]
 P.racitor_ulei = [40 40 30]*1e-3;   % răcitorul de deasupra pompei: X, Y, Z [m]        [ESTIMARE]
 P.rho_anexe = 2000;          % densitatea medie a pompelor și răcitorului (anvelopă) [kg/m3] [ESTIMARE]
 % Prinderile pe cadru: urechi pe corpul rotund al carterului (față, spate), tijă la chiulasă, scut dedesubt

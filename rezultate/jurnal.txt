@@ -1,5 +1,5 @@
 Dizertație: grup propulsor 2T hibrid, controlat mecatronic
-Rulare: 25-Nov-2026 07:54:54
+Rulare: 25-Nov-2026 17:07:04
 
 === S01 Cinematica bielă-manivelă și ferestrele ===
 Cilindree: 124.8 cm3, lambda = r/L = 0.248
@@ -128,7 +128,7 @@ La PME fusta coboară la 49.8 mm de axa arborelui: contragreutățile pot avea r
   [TRECUT] F7e    Lățimea totală din Fusion (A, B, boost) = cea din timp-arie
   [TRECUT] F7d    Diametrul pistonului din Fusion = alezajul minus jocul mediu
   [TRECUT] F7f    Fețele și tamburul capacului din dreapta din Fusion = s18
-Am scris 287 parametri în fusion/parametri_fusion.csv
+Am scris 289 parametri în fusion/parametri_fusion.csv
 Fereastra de evacuare: 26.82 mm sub PMI; transferul: 41.96 mm; cursa supapei: 4.81 mm
 
 === S08 Ajustajul piston-cilindru ===
@@ -187,7 +187,7 @@ Masele din Fusion: piston 139.2 g, bolț 36.4 g, siguranțe 0.6 g, rulment picio
 Masa alternativă 255.1 g, masa rotativă pe maneton 281.5 g
 Brațe de 18.84 mm, rază 46.75 mm, bosaj R18: contragreutate pe ±56.0 grade
 Forța de ordinul 1 la 9500 rot/min: 6.88 kN; rămân 3.10 kN pe axa cilindrului și 3.78 kN transversal
-Arborele: 1.80 kg, inerție 0.00136 kg m2
+Arborele: 1.82 kg, inerție 0.00136 kg m2
   [TRECUT] B1     Contragreutatea pe ±56.0 grade dă factorul de echilibrare 0.55 (cerut 0.55, maxim posibil 0.61)
   [TRECUT] B2     În jurul fusului palier rămân 26.5 mm de braț (>= 5 mm)
   [TRECUT] B3     Bosajul manetonului: perete de 7.0 mm (>= 0,3 d) și 1.5 mm sub raza brațelor
@@ -196,7 +196,7 @@ Arborele: 1.80 kg, inerție 0.00136 kg m2
 
 === S13 Cinematica ansamblului din Fusion ===
 Fusion: 180 poziții la 2 grade; cursa 54.5000 mm
-  [TRECUT] N1     Pistonul din Fusion = formula în 180 poziții: abatere max. 5.6e-11 mm
+  [TRECUT] N1     Pistonul din Fusion = formula în 180 poziții: abatere max. 6.1e-11 mm
   [TRECUT] N2     Rotația bielei din Fusion = -arcsin(lambda sin theta): abatere max. 4.8e-11 grade
   [TRECUT] N3     Accelerația derivată din pozițiile Fusion = analitica: abatere 0.016% din maxim
 
@@ -209,9 +209,9 @@ Băile: 0.30 L în față și în spate, până la ±120 mm, de la 67.5 mm sub a
   [TRECUT] R2     Filetul prezoanelor în aluminiu: 16 mm >= 2 d
   [TRECUT] U1     Sorbul de sub arbore rămâne acoperit: 26 mm de ulei la repaus, 65 mm la frânare cu 1.0 g, 31 mm la accelerare cu 0.4 g (>= 10 mm)
   [TRECUT] U2     La repaus: lamela e sub ulei cu 7.8 mm (sifon: o etanșează și spală gazele), canalul de sub arbore e plin (+21 mm), 29 mm de aer sub tavan; băile sunt pline 61%
-  [TRECUT] U3     Pistonul pompează carterul între 0.54 și 1 bar (226/351 cm3): de 397 ori coloana de ulei de deasupra lamelei (116 Pa); forțele sunt calculate cu 0.50 bar la PMI (acoperitor, 0.1% din forța maximă)
+  [TRECUT] U3     Pistonul pompează carterul între 0.54 și 1 bar (224/348 cm3): de 400 ori coloana de ulei de deasupra lamelei (116 Pa); forțele sunt calculate cu 0.50 bar la PMI (acoperitor, 0.1% din forța maximă)
   [TRECUT] U4     Aripioarele: 8 pe fiecare latură, 3 mm groase, gol 5 mm, înalte de 15 mm (raport 3.0 <= 4), 2 mm sub fața carterului; suprafața băilor x4.7, ~342 W la 50 km/h și 70 K
-  [TRECUT] U5     Pompa de ulei mecanică (gerotor pe arbore, 0.30 cm3/rot): jeturile rulmenților la 1.0 bar la ralanti; 2.28 L/min la putere (duzele iau 1.36 L/min la 3.0 bar, presiune plină de la 5666 rot/min), 14 W de pe arbore; aspirația 0.99 m/s prin galeria Ø7 (<= 1 m/s); uleiul se încălzește cu 17 K pe la jeturi
+  [TRECUT] U5     Pompa de ulei mecanică (gerotor pe arbore, 0.30 cm3/rot): jeturile rulmenților la 1.0 bar la ralanti; 2.28 L/min la putere (duzele iau 1.36 L/min la 2.5 bar, presiune plină de la 5666 rot/min), 14 W de pe arbore; aspirația 0.99 m/s prin galeria Ø7 (<= 1 m/s); uleiul se încălzește cu 17 K pe la jeturi
   [TRECUT] U6     Bilanțul uleiului: 625 W intră (jetul de sub piston și rulmenții), aripioarele scot 342 W, răcitorul ulei-apă 283 W; uleiul iese din răcitor la 86 °C cu apa la 75 °C (<= 110)
 Fus Ø22 k5: strângere 2...21 µm; inel exterior în bucșa Ø56 M7: -13...30 µm (negativ = joc)
 Jocul radial C4 20...36 µm; rămas: probabil 8.4 µm, în cazul cel mai rău -22.3 µm
@@ -283,20 +283,20 @@ Masa 190 kg (motocicleta 115 + pilot 75), Crr 0.020, randamentul transmisiei 0.8
    căldura în apă           9222.6: eta_i (25%), imep_plin (20%), f_apa (20%)
    uleiul                     86.3: T_apa_modul (17%), eta_i (6%), imep_plin (5%)
    modulul ISG                94.0: eta_inv (131%), T_apa_modul (16%), modul (4%)
-   (176 parametri [ESTIMARE] variați cu ±20%; în paranteză, schimbarea cea mai mare a rezultatului)
+   (177 parametri [ESTIMARE] variați cu ±20%; în paranteză, schimbarea cea mai mare a rezultatului)
 
 === M01 Modelul Simulink al arborelui (MIL-1) ===
 Am construit model_arbore.slx (se deschide și rulează singur: cazul C)
    A volant clasic        Simulink 22.34% (1523 rot/min)   s05 22.36% (1525 rot/min)
   [TRECUT] M1a    A volant clasic: Simulink = metoda pe unghi (fluctuație < 2%, turație < 0,5%)
-   B volant ușor, pasiv   Simulink 25.88% (1516 rot/min)   s05 25.90% (1519 rot/min)
+   B volant ușor, pasiv   Simulink 25.87% (1516 rot/min)   s05 25.90% (1519 rot/min)
   [TRECUT] M1b    B volant ușor, pasiv: Simulink = metoda pe unghi (fluctuație < 2%, turație < 0,5%)
-   C volant ușor, activ   Simulink 11.29% (1494 rot/min)   s05 11.37% (1495 rot/min)
+   C volant ușor, activ   Simulink 11.28% (1494 rot/min)   s05 11.37% (1495 rot/min)
   [TRECUT] M1c    C volant ușor, activ: Simulink = metoda pe unghi (fluctuație < 2%, turație < 0,5%)
 
 === M02 Modelul multicorp (Simscape Multibody) ===
 La 10500 rot/min: forța totală pe carcasă 5.85 kN pe axa cilindrului, 4.63 kN transversal
-  [TRECUT] M2a    Simscape: poziția pistonului = formula (abatere max. 9.0e-14 mm)
+  [TRECUT] M2a    Simscape: poziția pistonului = formula (abatere max. 6.2e-14 mm)
   [TRECUT] M2b    Simscape: accelerația pistonului = formula (abatere 6.5e-12 din maxim)
   [TRECUT] M2c    Simscape: forța lumii pe mecanism = suma m*a cu masele din Fusion (abatere 7.2e-12)
   [TRECUT] M2d    Forța transversală din Simscape 4.632 kN = BF*m_rec*r*omega^2 din s12 4.622 kN (în 1%)
