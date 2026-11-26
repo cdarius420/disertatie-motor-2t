@@ -1,5 +1,5 @@
 Dizertație: grup propulsor 2T hibrid, controlat mecatronic
-Rulare: 25-Nov-2026 17:07:04
+Rulare: 26-Nov-2026 07:45:27
 
 === S01 Cinematica bielă-manivelă și ferestrele ===
 Cilindree: 124.8 cm3, lambda = r/L = 0.248
@@ -43,11 +43,11 @@ Toba (Jennings): colector Ø38.4 x 269 mm (din care 41 prin cilindru), difuzor 8
   [TRECUT] T4     Toba Jennings încape în lungimea acordată de 1000 mm: burta rămâne de 177 mm (catalizatorul rezervat în ea)
 
 === S03 Variatorul CVT ===
-Lungimea curelei: 776 mm
-Raport: de la 2.58 (pornire) la 0.62 (viteză maximă); plaja 4.19
+Lungimea curelei: 580 mm
+Raport: de la 2.58 (pornire) la 0.63 (viteză maximă); plaja 4.07
 Cursa servo-ului pe semifulia conducătoare: 15.0 mm
-Cursa semifuliei conduse (arcul din spate): 14.3 mm
-Reducția finală (cutie + lanț) pentru 99 km/h la 9500 rot/min: 17.01
+Cursa semifuliei conduse (arcul din spate): 13.8 mm
+Reducția finală (cutie + lanț) pentru 99 km/h la 9500 rot/min: 13.52
 În modul dezlănțuit, motorul stă la 9500 rot/min de la 24 km/h; sub această viteză patinează ambreiajul centrifugal
   [TRECUT] V1c    Lungimea curelei rămâne constantă pe toată plaja
   [TRECUT] V2c    Raportul scade monoton când crește raza conducătoare
@@ -275,6 +275,15 @@ Masa 190 kg (motocicleta 115 + pilot 75), Crr 0.020, randamentul transmisiei 0.8
   [TRECUT] G1     Viteza maximă 99.7 km/h >= ținta de 99 km/h (CdA 0.55 m2, 9.5 kW net)
   [TRECUT] G2     L3e-A1: 11.0 kW <= 11 kW; 0.096 kW/kg <= 0.1 kW/kg (masa în ordine de mers 115 kg)
    De confirmat: cum se adună puterea ISG la încadrarea în A1.
+Cererea la bornele bateriei: ISG 12.2 kW mecanic / 0.90 + Roots 1.38 kW + consumatori 150 W = 15.1 kW
+Curentul la 44.8 V: 336 A de vârf, 34 A continuu (fără generare)
+Pachet 16s3p din ANR26650M1B: 384 Wh, 3.65 kg celule, cutie 212 x 212 x 95 mm (4.3 L)
+O asistență de 4 s ia 16.7 Wh (4.4% din pachet); cu DoD 80%: 18 asistențe pe încărcare
+Frânarea regenerativă admisă de celule: 4.6 kW timp de 10 s, 1.8 kW continuu
+  [TRECUT] BT1    Vârful de 336 A <= 3 x 120 A (descărcarea de 10 s a celulei)
+  [TRECUT] BT2    Continuu 34 A <= 3 x 52 A
+  [PICAT ] BT4    La vârf celula ține 2.08 V >= 2.80 V (minimul pentru care e calculat ISG); ar trebui 9p
+  [TRECUT] BT3    Asistența de 4 s <= 10 s, durata vârfului din fișă
 
 === S21 Sensibilitatea la estimări ===
    viteza maximă              99.7: P_ef (9%), eta_tr (8%), CdA (7%)
@@ -283,7 +292,68 @@ Masa 190 kg (motocicleta 115 + pilot 75), Crr 0.020, randamentul transmisiei 0.8
    căldura în apă           9222.6: eta_i (25%), imep_plin (20%), f_apa (20%)
    uleiul                     86.3: T_apa_modul (17%), eta_i (6%), imep_plin (5%)
    modulul ISG                94.0: eta_inv (131%), T_apa_modul (16%), modul (4%)
-   (177 parametri [ESTIMARE] variați cu ±20%; în paranteză, schimbarea cea mai mare a rezultatului)
+   (183 parametri [ESTIMARE] variați cu ±20%; în paranteză, schimbarea cea mai mare a rezultatului)
+unghi | x arbore | încape | garda min [mm] | colector, punctul de jos [mm] | spatele tobei [mm] | lovituri
+   30 |      520 |      0 |            212 |                           212 |               -223 | 1  roata spate / filtru
+   30 |      540 |      0 |            212 |                           212 |               -203 | 1  roata spate / filtru
+   30 |      560 |      1 |            212 |                           212 |               -183 | 0  
+   30 |      580 |      1 |            212 |                           212 |               -163 | 0  
+   30 |      600 |      1 |            212 |                           212 |               -143 | 0  
+   30 |      620 |      1 |            212 |                           212 |               -123 | 0  
+   30 |      640 |      1 |            212 |                           212 |               -103 | 0  
+   30 |      660 |      1 |            212 |                           212 |                -83 | 0  
+   30 |      680 |      1 |            212 |                           212 |                -63 | 0  
+   30 |      700 |      0 |            212 |                           212 |                -43 | 2  radiator / colector (ieșire); radiator / colector (cot spre dreapta)
+   30 |      720 |      0 |            212 |                           212 |                -23 | 4  chiulasa / radiator; roata fata / colector (cot spre dreapta); radiator / colector (ieșire); radiator / colector (cot spre dreapta)
+   45 |      520 |      0 |            212 |                           212 |               -263 | 1  roata spate / filtru
+   45 |      540 |      0 |            212 |                           212 |               -243 | 0  
+   45 |      560 |      1 |            212 |                           212 |               -223 | 0  
+   45 |      580 |      1 |            212 |                           212 |               -203 | 0  
+   45 |      600 |      1 |            212 |                           212 |               -183 | 0  
+   45 |      620 |      1 |            212 |                           212 |               -163 | 0  
+   45 |      640 |      1 |            212 |                           212 |               -143 | 0  
+   45 |      660 |      1 |            212 |                           212 |               -123 | 0  
+   45 |      680 |      1 |            212 |                           212 |               -103 | 0  
+   45 |      700 |      0 |            212 |                           212 |                -83 | 1  chiulasa / radiator
+   45 |      720 |      0 |            212 |                           212 |                -63 | 3  cilindru / radiator; chiulasa / radiator; roata fata / colector (cot spre dreapta)
+   60 |      520 |      0 |            214 |                           214 |               -313 | 0  
+   60 |      540 |      0 |            214 |                           214 |               -293 | 0  
+   60 |      560 |      0 |            214 |                           214 |               -273 | 0  
+   60 |      580 |      0 |            214 |                           214 |               -253 | 0  
+   60 |      600 |      1 |            214 |                           214 |               -233 | 0  
+   60 |      620 |      1 |            214 |                           214 |               -213 | 0  
+   60 |      640 |      1 |            214 |                           214 |               -193 | 0  
+   60 |      660 |      1 |            214 |                           214 |               -173 | 0  
+   60 |      680 |      0 |            214 |                           214 |               -153 | 1  chiulasa / radiator
+   60 |      700 |      0 |            214 |                           214 |               -133 | 1  chiulasa / radiator
+   60 |      720 |      0 |            214 |                           214 |               -113 | 4  cilindru / radiator; chiulasa / roata fata; chiulasa / radiator; roata fata / colector (cot spre dreapta)
+
+Cu bateria și rezervorul:
+unghi | x arbore | încape tot | garda [mm] | spatele tobei [mm] | baterie | rezervor | vârful chiulasei z [mm] | centrul cilindru+chiulasă z [mm]
+   30 |      600 |          1 |        212 |               -143 |       1 |        1 |                     496 |                              411
+        baterie: x 630..842, z 370..582, y 92..188 mm
+        rezervor 5.0 L: x 370..566, z 470..670, y 70..210 mm
+        lovituri: niciuna
+   45 |      620 |          1 |        210 |               -163 |       1 |        1 |                     477 |                              391
+        baterie: x 265..477, z 210..305, y -66..146 mm
+        rezervor 5.0 L: x 570..766, z 470..670, y 70..210 mm
+        lovituri: niciuna
+   60 |      600 |          1 |        210 |               -233 |       1 |        1 |                     446 |                              364
+        baterie: x 270..482, z 210..305, y -66..146 mm
+        rezervor 5.0 L: x 600..796, z 470..670, y 70..210 mm
+        lovituri: niciuna
+
+Cea mai bună: unghi 30, arborele la x = 600 mm (50% din ampatament), încape tot: 1
+  garda minimă 212 mm (cerut 210); colectorul coboară la 212 mm
+  tunelul se termină la x = -143 mm (limita EZ-9: -240 mm în spatele axului spate)
+  radiatorul: miez 300 x 135 mm
+  baterie: x 630..842, z 370..582, y 92..188 mm
+  rezervor 5.0 L: x 370..566, z 470..670, y 70..210 mm
+  lovituri: niciuna
+  [TRECUT] VL1    La 30 de grade (arborele la 600 mm) garda 212 mm >= 210 mm
+  [TRECUT] VL2    Fără lovituri și cu jocul termic de 50 mm la bateria și rezervorul de lângă tobă
+  [TRECUT] VL3    Bateria (212 x 212 x 95 mm) și rezervorul de 5 L au loc
+  [TRECUT] VL4    Tunelul tobei se termină la x = -143 mm, în lungimea EZ-9 (-240 mm)
 
 === M01 Modelul Simulink al arborelui (MIL-1) ===
 Am construit model_arbore.slx (se deschide și rulează singur: cazul C)
@@ -301,4 +371,5 @@ La 10500 rot/min: forța totală pe carcasă 5.85 kN pe axa cilindrului, 4.63 kN
   [TRECUT] M2c    Simscape: forța lumii pe mecanism = suma m*a cu masele din Fusion (abatere 7.2e-12)
   [TRECUT] M2d    Forța transversală din Simscape 4.632 kN = BF*m_rec*r*omega^2 din s12 4.622 kN (în 1%)
 
-=== Rezumat: 97 din 97 verificări trecute ===
+=== Rezumat: 104 din 105 verificări trecute ===
+  PICAT: BT4 La vârf celula ține 2.08 V >= 2.80 V (minimul pentru care e calculat ISG); ar trebui 9p

@@ -6,7 +6,7 @@ Pachetul calculează și verifică pe bucăți conceptul din propunere, exportă
 
 1. Deschide folderul în MATLAB (R2020a sau mai nou, cu Simulink).
 2. Scrie `ruleaza_tot` în Command Window.
-3. Citește rezumatul de la final: **94 din 94** (MATLAB R2026a, 24 noiembrie 2026). Graficele și jurnalul ajung în `rezultate/`.
+3. Citește rezumatul de la final: **104 din 105** (MATLAB R2026a, 26 noiembrie 2026). Pică BT4, cu bună știință: bateria 16s3p nu ține tensiunea la vârful de asistență (decizie deschisă, vezi raportul Etapei 9). Graficele și jurnalul ajung în `rezultate/`.
 4. În Fusion (Z în sus): Shift+S, rulează `construieste`. Componentele trecute în `fusion/construieste/reconstruieste.txt` se șterg și se refac; raportul ajunge în `fusion/construieste/raport.txt`: **94 din 94**.
 
 În GNU Octave merg scripturile s; `m01` și `m02` cer Simulink și Simscape și se sar.
@@ -35,11 +35,13 @@ Pachetul calculează și verifică pe bucăți conceptul din propunere, exportă
 | `s17_racire.m` | Răcirea cu apă: căldura, debitul, vitezele, pereții, pierderile pe circuit, pompa, radiatorul |
 | `s18_capac.m` | Capacul din dreapta: jocurile față de rotor, prinderea statorului, camera de apă și temperatura modulului de putere, prinderile pe cadru, scutul |
 | `s19_vehicul.m` | Viteza maximă din puterea netă de la arbore și încadrarea în L3e-A1 |
+| `s20_bilant_electric.m` | Bateria din bilanțul electric: vârful de curent, energia, cutia (calculul e în `baterie.m`) |
+| `s23_bilant_volum.m` | Bilanțul de volum în vedere laterală, în anvelopa EZ-9, la 30/45/60 de grade (doar MATLAB: `polyshape`) |
 | `m01_model_arbore.m` | Construiește `model_arbore.slx` (dinamica arborelui + volantul activ) și îl compară cu s05 |
 | `m02_multicorp.m` | Modelul Simscape Multibody al mecanismului, cu masele și inerțiile din Fusion |
 | `fusion/` | `construieste/construieste.py` (scriptul Fusion: construiește componentele și le verifică), `README_fusion.md`, CSV-ul generat |
 | `ruleaza_tot.m` | Rulează tot și scrie `rezultate/jurnal.txt` |
-| funcții | `cinematica`, `presiune_cilindru`, `simuleaza_arbore`, `tabel_volant_activ`, `isg_constante`, `isg_geometrie`, `lungime_curea`, `viteza_medie`, `camera_ardere`, `echilibrare`, `geometrie_carter`, `compresor`, `racire`, `capac`, `ungere`, `evalueaza_fusion`, `verifica`, `figura_noua`, `salveaza_figura` |
+| funcții | `cinematica`, `presiune_cilindru`, `simuleaza_arbore`, `tabel_volant_activ`, `isg_constante`, `isg_geometrie`, `lungime_curea`, `viteza_medie`, `camera_ardere`, `echilibrare`, `geometrie_carter`, `compresor`, `racire`, `capac`, `ungere`, `baterie`, `evalueaza_fusion`, `verifica`, `figura_noua`, `salveaza_figura` |
 
 `model_arbore.slx` e generat: nu se editează de mână. Se schimbă `parametri.m` sau `m01_model_arbore.m` și se rulează din nou. Datele stau în spațiul de lucru al modelului, deci modelul se deschide și rulează singur (cazul C).
 
@@ -60,6 +62,8 @@ Pachetul calculează și verifică pe bucăți conceptul din propunere, exportă
 | Q1–Q3 | Capacul din dreapta (≥ 5 mm de rotor, filetul statorului ≥ 1,5 d), joncțiunea modulului ≤ 125 °C cu apa la 75 °C, prinderile M10 pe material plin |
 | F7f | Fețele capacului din Fusion = s18 |
 | N1–N3 | Cinematica rulată în Fusion = formula bielă-manivelă (poziția pistonului, rotația bielei, accelerația) |
+| BT1–BT4 | Bateria: curentul de vârf și cel continuu față de fișa celulei, durata asistenței, tensiunea celulei la vârf |
+| VL1–VL4 | Bilanțul de volum la unghiul ales: garda, fără lovituri și cu joc termic, bateria și rezervorul au loc, toba în lungimea EZ-9 |
 | G1–G2 | Vehiculul: viteza maximă ≥ ținta la puterea netă; puterea și raportul putere/masă în limitele L3e-A1 |
 | C…, S1… (Fusion) | Geometria fiecărui pas din `construieste`, jocurile în 180 de poziții, materialele, interferențele: lista completă în `raport.txt` |
 | M1a–M1c | Simulink (integrare în timp, ode45) = metoda energiei pe unghi din s05, pentru volantul clasic, ușor pasiv și ușor activ: fluctuația sub 2%, turația sub 0,5% |

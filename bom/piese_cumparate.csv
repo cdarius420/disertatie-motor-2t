@@ -22,3 +22,4 @@ Poz;Denumire;Buc;Cote / cod;Producator;Sursa;Status
 21;Rulmenti rotoare Roots;DE CONFIRMAT;dupa MR-008;DE CONFIRMAT;DE CONFIRMAT;dupa MR-008
 22;Injector, pompa de inalta presiune, supapa de limitare;1 set;dupa MR-007;DE CONFIRMAT;DE CONFIRMAT;dupa MR-007
 23;Senzori (docs/defectari.md);9;dupa MR-010;DE CONFIRMAT;DE CONFIRMAT;dupa MR-010
+24;Celule baterie LFP;48 (16s3p);ANR26650M1B, 3,3 V, 2,5 Ah, 52 A continuu, 120 A 10 s, 76 g;A123 / Lithium Werks;fisa 26650 Power Cell, 2022 (lithiumwerks.com);verificat [catalog], paralelul e deschis (BT4 cere 9p, MR-021)

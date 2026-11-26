@@ -56,7 +56,7 @@ T = {
 'grosime_magnet',      'mm',  num2str(P.t_mag*mm),                       'Grosimea magneților'
 'pahar_subtire',       'mm',  num2str(P.t_pahar_subtire*mm),             'Paharul rotorului în afara magneților'
 'pana_h',              'mm',  num2str(P.pana(2)*mm),                     'Pana Woodruff: înălțimea'
-'raza_roata',          'mm',  num2str(P.r_roata*mm),                     'Raza dinamică a roții de 17 inci'
+'raza_roata',          'mm',  num2str(P.r_roata*mm),                     'Raza dinamică a roții spate de 10 inci'
 'grosime_perete',      'mm',  num2str(P.t_perete*mm),                    'Peretele cămășii cilindrului'
 'deck_peste_coroana',  'mm',  num2str(P.deck*mm),                        'Puntea cilindrului deasupra coroanei la PMI'
 'alezaj_ab_sup',       'mm',  num2str(P.alezaj_tol*mm),                  'Abaterea superioară a alezajului (+0/+0,014), 4 clase'

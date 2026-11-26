@@ -7,15 +7,15 @@
 % Origine: axul roții spate pe sol; x înainte, z în sus [mm].
 % Cotele motorului vin din raport.txt (C9f, C12a, C13a etc.); cele marcate [ESTIMARE] sunt ipoteze.
 
-clear; P = parametri; Tb = toba(P); C = compresor(P); W = racire(P);
+P = parametri; Tb = toba(P); C = compresor(P); W = racire(P); Bat = baterie(P);
 warning('off', 'MATLAB:polyshape:repairedBySimplify'); warning('off', 'MATLAB:polyshape:boundary3Points');
 
-% --- Anvelopa EZ-9 (fișa Honda) și deciziile ---
-WB = 1200; rf = 484.8/2; rr = 488/2; caster = 26; trail = 60; cursa_f = 100; cursa_s = 110;
-GC = 210; sa = 750; L_EZ = 1680;            % garda, șaua, lungimea totală EZ-9
-C_cvt = 150;                                % variatorul scurt (decizie: spre ~150 mm)
-V_rez = 5;                                  % rezervorul [L] (decizia C)
-bat = [212 95 212];                         % cutia bateriei din s20 [mm]; orientarea și locul le caută plaseaza
+% --- Anvelopa EZ-9 și deciziile, din parametri.m ---
+E9 = P.ez9;  WB = E9.WB; rf = E9.D_f/2; rr = E9.D_s/2; caster = E9.caster; trail = E9.trail;
+cursa_f = E9.cursa_f; cursa_s = E9.cursa_s; GC = E9.GC; sa = E9.sa; L_EZ = E9.L;
+C_cvt = P.C*1e3;                            % variatorul scurt
+V_rez = P.V_rez;                            % rezervorul [L] (decizia C)
+bat = Bat.cutie*1e3;                        % cutia bateriei din baterie.m [mm]; orientarea și locul le caută plaseaza
 
 % --- Ipoteze de integrare [ESTIMARE] ---
 zc     = GC + 85.5 + 4.5;                   % axa arborelui: scutul la 85,5 mm sub ea (C14c), garda 214,5 mm
@@ -24,9 +24,10 @@ D_col  = 60;                                % diametrul exterior al coloanei (in
 joc_aripa = 15;                             % aripa peste anvelopă
 manta  = 15 + 1;  joc_panou = 12;           % golul tobă-manta + tabla, golul manta-panou
 joc_cald = 50;                              % rezervorul și bateria față de învelișul tobei
-filtru = [150 150];  y_filtru = [45 195];   % în afara plăcii pivotului (±40)   % cutia filtrului: lungime, înălțime; lățimea
-rez = [200 V_rez*1.1e6/(200*140) 140];     % rezervorul: 200 x h x 140 mm, 10% perete și aer; orientarea și locul le caută plaseaza
-y_corp = 220;                               % semilățimea caroseriei = marginea exterioară a tunelului tobei (simetric)
+filtru = [150 150];  y_filtru = [50 200];   % în afara plăcii pivotului (±40), cu 10 mm joc   % cutia filtrului: lungime, înălțime; lățimea
+rezervor = [200 V_rez*1.1e6/(200*140) 140];     % rezervorul: 200 x h x 140 mm, 10% perete și aer; orientarea și locul le caută plaseaza
+y_corp = 225;                               % semilățimea caroseriei = marginea exterioară a tunelului tobei (simetric)
+R_cot = 1.5*Tb.D1*1e3;                      % raza primului cot al colectorului, 1,5 D1 [ESTIMARE]
 rad_lat = 300; rad_gros = 40;               % radiatorul: lățime, grosime
 A_rad = W.Q/(1005*P.aer_radiator(2))/(1.13*P.aer_radiator(1))*1e6;   % aria miezului din debitul de aer (s17) [mm2]
 rad_h = A_rad/rad_lat;
@@ -35,9 +36,9 @@ alfa_sc = [30 45 60];  xc_sc = 520:20:720;
 S = struct('P', P, 'Tb', Tb, 'C', C, 'WB', WB, 'rf', rf, 'rr', rr, 'caster', caster, 'trail', trail, ...
     'cursa_f', cursa_f, 'cursa_s', cursa_s, 'GC', GC, 'zc', zc, 'C_cvt', C_cvt, 'z_sub_sa', z_sub_sa, 'D_col', D_col, ...
     'joc_aripa', joc_aripa, 'manta', manta, 'joc_panou', joc_panou, 'joc_cald', joc_cald, 'filtru', filtru, ...
-    'y_filtru', y_filtru, 'rez', rez, 'y_corp', y_corp, 'bat', bat, 'rad_lat', rad_lat, 'rad_gros', rad_gros, ...
+    'y_filtru', y_filtru, 'rezervor', rezervor, 'y_corp', y_corp, 'R_cot', R_cot, 'bat', bat, 'rad_lat', rad_lat, 'rad_gros', rad_gros, ...
     'rad_h', rad_h, 'L_EZ', L_EZ, 'V_rez', V_rez);
-rez_tab = [];  cel_bun = [];  scor_bun = Inf;  lov_txt = {};
+rez_tab = [];  cel_bun = [];  ales = [];  lov_txt = {};
 % faza 1: toate unghiurile și pozițiile, fără baterie și rezervor (rapid)
 for alfa = alfa_sc
     for xc = xc_sc
@@ -68,11 +69,23 @@ for alfa = alfa_sc
     fprintf('        %s\n        %s\n        lovituri: %s\n', q.txt_b, q.txt_r, lt);
     deseneaza(r, WB, rf, rr, GC, sa, L_EZ, sprintf('s23_bilant_volum_%d.png', alfa));
     if isempty(cel_bun) || (r.ok && ~cel_bun.ok), cel_bun = r; end
+    if alfa == P.unghi_cil, ales = r; end
 end
 b = cel_bun;
 fprintf('\nCea mai bună: unghi %d, arborele la x = %d mm (%.0f%% din ampatament), încape tot: %d\n', b.alfa, b.xc, 100*b.xc/WB, b.ok);
 fprintf('%s\n', b.info.text);
 deseneaza(b, WB, rf, rr, GC, sa, L_EZ, 's23_bilant_volum.png');
+
+% verificările, la unghiul ales (P.unghi_cil)
+if isempty(ales)
+    verifica(false, 'VL1', sprintf('La %d de grade există o poziție a arborelui fără lovituri', P.unghi_cil));
+else
+    q = ales.info;
+    verifica(q.gc >= GC - 1e-6, 'VL1', sprintf('La %d de grade (arborele la %d mm) garda %.0f mm >= %d mm', P.unghi_cil, ales.xc, q.gc, GC));
+    verifica(q.lovituri == 0, 'VL2', sprintf('Fără lovituri și cu jocul termic de %d mm la bateria și rezervorul de lângă tobă', joc_cald));
+    verifica(q.ok_b && q.ok_r, 'VL3', sprintf('Bateria (%.0f x %.0f x %.0f mm) și rezervorul de %.0f L au loc', bat, V_rez));
+    verifica(q.spate >= -(L_EZ - WB)/2, 'VL4', sprintf('Tunelul tobei se termină la x = %.0f mm, în lungimea EZ-9 (%.0f mm)', q.spate, -(L_EZ - WB)/2));
+end
 
 % ======================================================================
 function [ok, info, el] = configureaza(alfa, xc, S, cu_plasare)
@@ -80,7 +93,7 @@ function [ok, info, el] = configureaza(alfa, xc, S, cu_plasare)
 P = S.P; Tb = S.Tb; C = S.C; WB = S.WB; rf = S.rf; rr = S.rr; caster = S.caster; trail = S.trail;
 cursa_f = S.cursa_f; cursa_s = S.cursa_s; GC = S.GC; zc = S.zc; C_cvt = S.C_cvt; z_sub_sa = S.z_sub_sa;
 D_col = S.D_col; joc_aripa = S.joc_aripa; manta = S.manta; joc_panou = S.joc_panou; joc_cald = S.joc_cald;
-filtru = S.filtru; y_filtru = S.y_filtru; rez = S.rez; bat = S.bat; rad_lat = S.rad_lat;
+filtru = S.filtru; y_filtru = S.y_filtru; rezervor = S.rezervor; bat = S.bat; rad_lat = S.rad_lat;
 rad_gros = S.rad_gros; rad_h = S.rad_h; L_EZ = S.L_EZ;
 
 a = deg2rad(alfa);
@@ -128,31 +141,44 @@ el = adauga(el, 'radiator', dreptunghi(x_r - rad_gros, x_r, z_r - rad_h/2, z_r +
 el = adauga(el, 'filtru', dreptunghi(E(1) - filtru(1) - 10, E(1) - 10, z_sub_sa - filtru(2), z_sub_sa), y_filtru, 'aux');
 
 % toba: colectorul și difuzorul pe dreapta, apoi tunelul sub șa
-f = [cos(a); -sin(a)];  port = M(56, 164.25 - 26.8 - 27.7/2);   % mijlocul ferestrei de evacuare (C2d, C12f)
-W1 = port + 12*f;  W2 = W1 + 60*f;
+f = [cos(a); -sin(a)];  port = M(56, 164.25 - 26.8 - 27.7/2);   % mijlocul ferestrei de evacuare, pe fața cilindrului (C2d, C12f)
+% colectorul pornește de la fața flanșei (W1) spre înainte-jos (f) și cotește în jos: cotul de rază R_cot, înlocuit
+% în linia frântă de colțul W2, aflat la R_cot*tan(theta/2) de flanșă (theta = unghiul dintre f și verticală)
+L_drept = S.R_cot*tand((90 - alfa)/2);
+W1 = port + 12*f;  W2 = W1 + L_drept*f;
 h_tun = Tb.D2*1e3 + 2*(manta + joc_panou);  z_ax = z_sub_sa - h_tun/2;
-L_cer = (Tb.L1 + Tb.L2)*1e3;  r_col = (Tb.D1 + Tb.D2)/4*1e3 + manta;   % raza medie colector-difuzor cu manta
+L_cer = (Tb.L1 - Tb.L_port + Tb.L2)*1e3;                          % de la fața flanșei, ca în s07 și s22
+raza = @(s) 1e3*(Tb.D1/2 + min(max(s/1e3 - (Tb.L1 - Tb.L_port), 0), Tb.L2)*(Tb.D2 - Tb.D1)/(2*Tb.L2)) + manta;   % cu manta, la s mm de flanșă
 % difuzorul urcă pe dreapta, în afara capacului ISG; locul urcării se mută spre spate până când bucla de sub motor
-% rămâne deasupra gărzii (lungimea colector + difuzor e dată de toba.m)
+% rămâne deasupra gărzii, cu lungimea colector + difuzor dată de toba.m. Deplasarea laterală spre dreapta (~150 mm)
+% nu e numărată în lungime: bucla iese mai adâncă decât în realitate (conservativ pentru gardă)
 for x_urc = xc:-10:Pv(1)
-    lung = @(zj) norm(W1 - port) + norm(W2 - W1) + abs(W2(2) - zj) + abs(W2(1) - x_urc) + abs(z_ax - zj);
-    z_jos = W2(2);
-    if lung(W2(2)) < L_cer, z_jos = fzero(@(zj) lung(zj) - L_cer, [-500 W2(2)]); end
-    if z_jos - r_col >= GC, break, end
+    lung = @(zj) L_drept + (W2(2) - zj) + abs(W2(1) - x_urc) + (z_ax - zj);
+    if lung(W2(2)) >= L_cer                      % nu mai trebuie coborât: urcarea se pune unde lungimea iese exact
+        x_urc = W2(1) - (L_cer - L_drept - (z_ax - W2(2)));  z_jos = W2(2);  break
+    end
+    z_jos = fzero(@(zj) lung(zj) - L_cer, [-500 W2(2)]);
+    if z_jos - raza(lung(z_jos) - (z_ax - z_jos)) >= GC, break, end
 end
+r_jos = raza(lung(z_jos) - (z_ax - z_jos));      % raza la capătul de jos al buclei (cea mai mare de pe porțiunea de jos)
 x_t0 = x_urc - 20;
-traseu = [port W1 W2 [W2(1); z_jos] [x_urc; z_jos] [x_urc; z_ax]];
-tub = polyshape();
-for k = 1:size(traseu, 2) - 1, tub = union(tub, banda(traseu(:, k), traseu(:, k + 1), 2*r_col)); end
-el = adauga(el, 'colector+difuzor', tub, [-170 -115], 'toba');
+traseu = [W1 W2 [W2(1); z_jos] [x_urc; z_jos] [x_urc; z_ax]];
+s_cap = cumsum([0 vecnorm(diff(traseu, 1, 2))]);                % lungimea de la flanșă la fiecare colț
+tub = cell(1, 4);
+for k = 1:4, tub{k} = banda(traseu(:, k), traseu(:, k + 1), 2*raza(s_cap(k + 1))); end
+% ieșirea stă în axa cilindrului (y = 0); în cotul din W2 țeava trece spre dreapta, în afara carterului și a capacului ISG;
+% coborârea, bucla de sub motor și urcarea stau pe dreapta
+el = adauga(el, 'colector (ieșire)', tub{1}, [-1 1]*raza(0), 'toba');
+el = adauga(el, 'colector (cot spre dreapta)', intersect(cerc(W2, raza(L_drept)), dr(56 + 12, 2000, -2000, 2000)), [-175 raza(0)], 'toba');   % cotul nu trece în spatele flanșei
+el = adauga(el, 'colector+difuzor (coborâre, buclă, urcare)', union(union(tub{2}, tub{3}), tub{4}), [-175 -120], 'toba');
 L_tun = (Tb.L3 + Tb.L4 + Tb.L5)*1e3;
-el = adauga(el, 'tunel (burta, con, stinger)', dreptunghi(x_t0 - L_tun, x_t0 + 20, z_ax - h_tun/2, z_ax + h_tun/2), [-220 -70], 'toba');   % lângă roata spate, nu deasupra ei
+el = adauga(el, 'tunel (burta, con, stinger)', dreptunghi(x_t0 - L_tun, x_t0 + 20, z_ax - h_tun/2, z_ax + h_tun/2), [-225 -75], 'toba');   % lângă roata spate, nu deasupra ei
 
 % bateria și rezervorul: bateria jos și la mijlocul ampatamentului, rezervorul sub șa, în spatele filtrului
 ok_b = true; ok_r = true; txt_b = ''; txt_r = '';
 if cu_plasare
     [el, ok_b, txt_b] = plaseaza(el, 'baterie', bat, [WB/2; GC], joc_cald, GC, z_sub_sa, ax_x, S.y_corp);
-    [el, ok_r, txt_r] = plaseaza(el, sprintf('rezervor %.1f L', S.V_rez), rez, [E(1) - 300; z_sub_sa], joc_cald, GC, z_sub_sa, ax_x, S.y_corp);
+    [el, ok_r, txt_r] = plaseaza(el, sprintf('rezervor %.1f L', S.V_rez), rezervor, [E(1) - 300; z_sub_sa], joc_cald, GC, z_sub_sa, ax_x, S.y_corp);
 end
 
 % verificările
@@ -160,11 +186,12 @@ lov = {};
 for i = 1:numel(el)
     for j = i + 1:numel(el)
         if strcmp(el(i).tip, el(j).tip) && any(strcmp(el(i).tip, {'roata', 'cadru', 'toba'})), continue, end   % piese legate între ele
-        if el(i).y(1) < el(j).y(2) && el(j).y(1) < el(i).y(2) && area(intersect(el(i).p, el(j).p)) > 1
+        jl = 10*~strcmp(el(i).tip, el(j).tip);   % 10 mm joc lateral între organe diferite, ca la plasare [ESTIMARE]
+        if el(i).y(1) < el(j).y(2) + jl && el(j).y(1) < el(i).y(2) + jl && area(intersect(el(i).p, el(j).p)) > 1
             lov{end + 1} = sprintf('%s / %s', el(i).nume, el(j).nume); %#ok<AGROW>
         end
         % jocul termic: bateria și rezervorul trebuie să stea la joc_cald de tobă pe cel puțin o axă (lateral sau în vedere laterală)
-        rece = startsWith({el(i).nume, el(j).nume}, {'baterie', 'rezervor'});  cald_ = strcmp({el(i).tip, el(j).tip}, 'toba');
+        rece = strcmp({el(i).tip, el(j).tip}, 'rece');  cald_ = strcmp({el(i).tip, el(j).tip}, 'toba');
         if any(rece) && any(cald_)
             gol_y = max(el(i).y(1) - el(j).y(2), el(j).y(1) - el(i).y(2));
             if gol_y < joc_cald && area(intersect(polybuffer(el(i).p, joc_cald), el(j).p)) > 1
@@ -177,7 +204,7 @@ zmin = arrayfun(@(e) min(e.p.Vertices(:, 2)), el(~strcmp({el.tip}, 'roata')));
 spate = x_t0 - L_tun;  lim_spate = -(L_EZ - WB)/2;
 ch = strcmp({el.nume}, 'chiulasa');  [~, info.zg_cil] = centroid(union(el(strcmp({el.nume}, 'cilindru')).p, el(ch).p));  info.z_chi = max(el(ch).p.Vertices(:, 2));
 info.ok_b = ok_b;  info.ok_r = ok_r;  info.txt_b = txt_b;  info.txt_r = txt_r;
-info.gc = min(zmin);  info.z_jos = z_jos - r_col;  info.spate = spate;  info.lovituri = numel(lov);  info.lov_txt = strjoin(lov, '; ');
+info.gc = min(zmin);  info.z_jos = z_jos - r_jos;  info.L_drept = L_drept;  info.spate = spate;  info.lovituri = numel(lov);  info.lov_txt = strjoin(lov, '; ');
 ok = info.gc >= GC - 1e-6 && isempty(lov) && ok_b && ok_r && spate >= lim_spate;
 info.text = sprintf(['  garda minimă %.0f mm (cerut %d); colectorul coboară la %.0f mm\n' ...
     '  tunelul se termină la x = %.0f mm (limita EZ-9: %.0f mm în spatele axului spate)\n' ...
@@ -198,7 +225,7 @@ end
 
 function [el, ok, txt] = plaseaza(el, nume, dims, tinta, joc_cald, GC, z_sus, ax_x, y_max)
 % cutia cu laturile dims în poziția liberă cea mai apropiată de țintă (plus abaterea laterală), în toate cele 6 orientări,
-% la poziții laterale din 20 în 20 mm cu |y| <= y_max, numai în spatele axei de direcție (60 mm joc pentru virare).
+% la poziții laterale din 20 în 20 mm, de la mijloc spre stânga (0 <= y, marginea <= y_max), numai în spatele axei de direcție (60 mm joc pentru virare).
 % Obstacolele se rasterizează la 5 mm în vedere laterală, umflate cu un pas, și cu 10 mm joc lateral (conservativ). Față de tobă cutia are nevoie
 % de joc_cald pe cel puțin o axă: două cutii sunt separate dacă sunt separate pe o axă.
 h = 5;  [Xg, Zg] = meshgrid(-250:h:1300, GC:h:z_sus);  [nz, nx] = size(Xg);
@@ -214,7 +241,7 @@ for io = 1:size(O, 1)
     lx = O(io, 1); lz = O(io, 2); ly = O(io, 3);  ymx = y_max - ly/2;
     ni = ceil(lz/h);  nj = ceil(lx/h);                          % cutia acoperită de celule întregi (conservativ)
     if ymx < 0 || ni >= nz || nj >= nx, continue, end
-    for yc = unique([0:20:ymx, -(0:20:ymx)])
+    for yc = 0:20:ymx                      % la mijloc sau pe stânga: ce e rece stă pe stânga, toba pe dreapta (regula de plasare, Etapa 5)
         y = yc + [-ly ly]/2;  sel = y(1) < yk(:, 2) & yk(:, 1) < y(2);
         I = zeros(nz + 1, nx + 1);  I(2:end, 2:end) = cumsum(cumsum(blocat0 | any(m(:, :, sel), 3), 1), 2);
         ii = (1:nz - ni)';  jj = 1:nx - nj;
@@ -228,14 +255,14 @@ for io = 1:size(O, 1)
 end
 ok = isfinite(best(1));  txt = sprintf('%s: nu încape', nume);
 if ok
-    el(end + 1) = struct('nume', nume, 'p', dreptunghi(best(2), best(2) + best(4), best(3), best(3) + best(5)), 'y', best(6:7), 'tip', 'aux');
+    el(end + 1) = struct('nume', nume, 'p', dreptunghi(best(2), best(2) + best(4), best(3), best(3) + best(5)), 'y', best(6:7), 'tip', 'rece');
     txt = sprintf('%s: x %.0f..%.0f, z %.0f..%.0f, y %.0f..%.0f mm', nume, best(2), best(2) + best(4), best(3), best(3) + best(5), best(6), best(7));
 end
 end
 
 function deseneaza(b, WB, rf, rr, GC, sa, L_EZ, fis)
 fig = figure('Visible', 'off', 'Position', [100 100 1400 760]); hold on; axis equal; grid on;
-culori = struct('motor', [0.45 0.45 0.45], 'cadru', [0.2 0.2 0.2], 'roata', [0.75 0.75 0.75], 'aux', [0.20 0.45 0.75], 'toba', [0.85 0.25 0.15]);
+culori = struct('motor', [0.45 0.45 0.45], 'cadru', [0.2 0.2 0.2], 'roata', [0.75 0.75 0.75], 'aux', [0.20 0.45 0.75], 'rece', [0.20 0.60 0.30], 'toba', [0.85 0.25 0.15]);
 for e = b.el
     plot(e.p, 'FaceColor', culori.(e.tip), 'FaceAlpha', 0.25, 'EdgeColor', culori.(e.tip));
     [cx, cz] = centroid(e.p); text(cx, cz, e.nume, 'FontSize', 8, 'HorizontalAlignment', 'center');

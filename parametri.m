@@ -354,14 +354,20 @@ P.toleranta_cvt  = 0.05;          % cât de precis ține variatorul turația (cr
 P.banda_fara_cvt = [6000 10500];  % banda unei cutii cu trepte, pentru comparație [ESTIMARE]
 
 % --- Variator CVT ---
-P.C      = 0.250;    % distanța dintre axele fuliilor [m]      [ESTIMARE]
+P.C      = 0.150;    % distanța dintre axele fuliilor [m]: variatorul scurt, ca la EZ-9 (145 mm), cerut de bilanțul de volum s23 [ESTIMARE]
 P.r1_min = 0.024;    % raza fuliei conducătoare, minimă [m]    [ESTIMARE]
 P.r1_max = 0.054;    % raza fuliei conducătoare, maximă [m]    [ESTIMARE]
 P.r2_max = 0.062;    % raza fuliei conduse la pornire [m]      [ESTIMARE]
 P.beta   = 14;       % semiunghiul flancurilor curelei [grade] [ESTIMARE]
 
+% --- Anvelopa EZ-9 și deciziile de ambalare (s23) [mm, grade] ---
+P.ez9 = struct('WB', 1200, 'D_f', 484.8, 'D_s', 488, 'caster', 26, 'trail', 60, 'cursa_f', 100, 'cursa_s', 110, ...
+               'GC', 210, 'sa', 750, 'L', 1680);
+P.unghi_cil = 30;   % cilindrul față de verticală [grade]: decizia B; s23 arată că 60 de grade nu țin garda
+P.V_rez = 5;        % rezervorul de benzină [L]: decizia C
+
 % --- Vehicul ---
-P.r_roata = 0.29;    % raza dinamică a roții de 17 inci [m]    [ESTIMARE]
+P.r_roata = 0.237;   % raza dinamică a roții spate de 10 inci (Ø 488 mm, ~3% strivire) [m] [ESTIMARE]
 P.v_max   = 99;      % ținta (decizia D1: L3e-A1, 11 kW, valoarea dată de s19 cu Roots) [km/h]
 P.P_ef    = 11e3;    % puterea efectivă la n_putere: limita L3e-A1, după care s-a ales imep_plin [W] [ESTIMARE]
 P.P_A1    = [11e3 0.1e3];  % L3e-A1: putere maximă [W], raport putere/masă [W/kg] (Reg. UE 168/2013, anexa I)
@@ -373,6 +379,17 @@ P.rho_aer = 1.2;     % densitatea aerului [kg/m3]
 
 % --- Bateria (16 celule LFP) și mașina electrică ---
 P.n_cel = 16; P.V_cel_min = 2.8; P.V_cel_nom = 3.2; P.V_cel_max = 3.65;  % [V]
+% Celula aleasă (s20): A123 / Lithium Werks ANR26650M1B, fișa 26650 Power Cell (2022). Fișa dă 3,3 V nominal;
+% V_cel_nom rămâne 3,2 V, deci energia din baterie.m e cu 3% sub cea din fișă.
+P.n_par = 3;                                         % celule în paralel; s20 verifică curenții (BT1, BT2) și tensiunea la vârf (BT4)
+P.cel_C_Ah = 2.5; P.cel_I_cont = 52; P.cel_I_puls = 120; P.cel_t_puls = 10;   % [Ah], [A], [A] timp de [s]
+P.cel_I_inc = 10; P.cel_I_inc_puls = 26; P.cel_m = 0.076; P.cel_D = 25.96e-3; P.cel_L = 65.15e-3;   % [A], [A], [kg], [m], [m]
+P.eta_isg = 0.90;   % ISG + invertor, motor sau generator [-] [ESTIMARE]
+P.t_asist = 4;      % asistența la cuplul maxim [s], reperul PCX Hybrid [ESTIMARE]
+P.P_aux   = [50 60 40];  % pompa de apă, ventilatorul radiatorului, ECU + servo + lumini LED [W] [ESTIMARE]
+P.DoD     = 0.8;    % adâncimea de descărcare folosită [-] [ESTIMARE]
+P.joc_pachet = 15e-3;    % BMS, bare, carcasă, pe fiecare latură a cutiei [m] [ESTIMARE]
+P.cel_R = 10e-3;    % rezistența internă: fișa dă impedanța la 1 kHz sub 10 mOhm; cea în curent continuu la 10 s nu e dată [Ohm] [ESTIMARE]
 P.I_pk    = 380;     % curentul de fază de vârf [A]: controlerul ales; volantul activ (s05)
 P.r_rot   = 0.060;   % raza interioară a paharului (= exteriorul magneților) [m] [ESTIMARE]
 P.t_pahar = 0.0075;  % grosimea paharului de oțel în dreptul magneților: închide fluxul fără saturație (s15) [m]
