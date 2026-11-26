@@ -363,7 +363,7 @@ P.beta   = 14;       % semiunghiul flancurilor curelei [grade] [ESTIMARE]
 % --- Anvelopa EZ-9 și deciziile de ambalare (s23) [mm, grade] ---
 P.ez9 = struct('WB', 1200, 'D_f', 484.8, 'D_s', 488, 'caster', 26, 'trail', 60, 'cursa_f', 100, 'cursa_s', 110, ...
                'GC', 210, 'sa', 750, 'L', 1680);
-P.unghi_cil = 30;   % cilindrul față de verticală [grade]: decizia B; s23 arată că 60 de grade nu țin garda
+P.unghi_cil = 60;   % cilindrul față de verticală [grade]: decizia ta (26.11.2026), înlocuiește 30; s23 VL1–VL4 la acest unghi
 P.V_rez = 5;        % rezervorul de benzină [L]: decizia C
 
 % --- Vehicul ---

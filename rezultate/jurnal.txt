@@ -1,5 +1,5 @@
 Dizertație: grup propulsor 2T hibrid, controlat mecatronic
-Rulare: 26-Nov-2026 11:40:42
+Rulare: 26-Nov-2026 19:37:59
 
 === S01 Cinematica bielă-manivelă și ferestrele ===
 Cilindree: 124.8 cm3, lambda = r/L = 0.248
@@ -343,17 +343,17 @@ unghi | x arbore | încape tot | garda [mm] | spatele tobei [mm] | baterie | rez
         rezervor 5.0 L: x 600..796, z 470..670, y 70..210 mm
         lovituri: niciuna
 
-Cea mai bună: unghi 30, arborele la x = 600 mm (50% din ampatament), încape tot: 1
-  garda minimă 212 mm (cerut 210); colectorul coboară la 212 mm
-  tunelul se termină la x = -143 mm (limita EZ-9: -240 mm în spatele axului spate)
+La unghiul ales: unghi 60, arborele la x = 600 mm (50% din ampatament), încape tot: 1
+  garda minimă 210 mm (cerut 210); colectorul coboară la 214 mm
+  tunelul se termină la x = -233 mm (limita EZ-9: -240 mm în spatele axului spate)
   radiatorul: miez 300 x 135 mm
-  baterie: x 630..842, z 370..582, y 92..188 mm
-  rezervor 5.0 L: x 370..566, z 470..670, y 70..210 mm
+  baterie: x 270..482, z 210..305, y -66..146 mm
+  rezervor 5.0 L: x 600..796, z 470..670, y 70..210 mm
   lovituri: niciuna
-  [TRECUT] VL1    La 30 de grade (arborele la 600 mm) garda 212 mm >= 210 mm
+  [TRECUT] VL1    La 60 de grade (arborele la 600 mm) garda 210 mm >= 210 mm
   [TRECUT] VL2    Fără lovituri și cu jocul termic de 50 mm la bateria și rezervorul de lângă tobă
   [TRECUT] VL3    Bateria (212 x 212 x 95 mm) și rezervorul de 5 L au loc
-  [TRECUT] VL4    Tunelul tobei se termină la x = -143 mm, în lungimea EZ-9 (-240 mm)
+  [TRECUT] VL4    Tunelul tobei se termină la x = -233 mm, în lungimea EZ-9 (-240 mm)
 
 === M01 Modelul Simulink al arborelui (MIL-1) ===
 Am construit model_arbore.slx (se deschide și rulează singur: cazul C)

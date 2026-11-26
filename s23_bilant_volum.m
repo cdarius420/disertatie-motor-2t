@@ -71,8 +71,8 @@ for alfa = alfa_sc
     if isempty(cel_bun) || (r.ok && ~cel_bun.ok), cel_bun = r; end
     if alfa == P.unghi_cil, ales = r; end
 end
-b = cel_bun;
-fprintf('\nCea mai bună: unghi %d, arborele la x = %d mm (%.0f%% din ampatament), încape tot: %d\n', b.alfa, b.xc, 100*b.xc/WB, b.ok);
+b = ales;  if isempty(b), b = cel_bun; end      % configurația de la unghiul ales (P.unghi_cil)
+fprintf('\nLa unghiul ales: unghi %d, arborele la x = %d mm (%.0f%% din ampatament), încape tot: %d\n', b.alfa, b.xc, 100*b.xc/WB, b.ok);
 fprintf('%s\n', b.info.text);
 deseneaza(b, WB, rf, rr, GC, sa, L_EZ, 's23_bilant_volum.png');
 
