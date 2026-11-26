@@ -1,5 +1,5 @@
 Dizertație: grup propulsor 2T hibrid, controlat mecatronic
-Rulare: 26-Nov-2026 19:37:59
+Rulare: 26-Nov-2026 19:58:54
 
 === S01 Cinematica bielă-manivelă și ferestrele ===
 Cilindree: 124.8 cm3, lambda = r/L = 0.248
@@ -354,6 +354,38 @@ La unghiul ales: unghi 60, arborele la x = 600 mm (50% din ampatament), încape 
   [TRECUT] VL2    Fără lovituri și cu jocul termic de 50 mm la bateria și rezervorul de lângă tobă
   [TRECUT] VL3    Bateria (212 x 212 x 95 mm) și rezervorul de 5 L au loc
   [TRECUT] VL4    Tunelul tobei se termină la x = -233 mm, în lungimea EZ-9 (-240 mm)
+
+Revizuirea porților 5-6 (propunere), cilindrul la 60 de grade:
+x arbore | încape tot | scut [mm] | organe [mm] | spatele tobei [mm] | chiulasă-radiator [mm] | lovituri
+     560 |          0 |       215 |         225 |                -95 |                     73 | 
+           baterie: x 600..812, z 420..632, y 72..168 mm | rezervor 5.0 L: nu încape | rezerva CBS: x 870..920, z 515..565, y -40..40 mm
+     580 |          1 |       215 |         225 |                -75 |                     54 | 
+     600 |          0 |       215 |         225 |                -55 |                     37 | 
+           baterie: x 210..422, z 225..437, y 112..208 mm | rezervor 5.0 L: x 600..796, z 470..670, y 70..210 mm | rezerva CBS: x 870..920, z 515..565, y -40..40 mm
+     620 |          0 |       215 |         225 |                -35 |                     19 | 
+           baterie: x 230..442, z 225..437, y 112..208 mm | rezervor 5.0 L: nu încape | rezerva CBS: x 870..920, z 515..565, y -40..40 mm
+     640 |          0 |       215 |         225 |                -15 |                      2 | 
+           baterie: x 250..462, z 225..437, y 112..208 mm | rezervor 5.0 L: nu încape | rezerva CBS: x 870..920, z 515..565, y -40..40 mm
+     660 |          0 |       215 |         225 |                  5 |                      0 | chiulasa / radiator + ventilator
+           baterie: x 270..482, z 225..437, y 112..208 mm | rezervor 5.0 L: nu încape | rezerva CBS: x 870..920, z 515..565, y -40..40 mm
+     680 |          0 |       215 |         225 |                 25 |                      0 | cilindru / radiator + ventilator; chiulasa / radiator + ventilator
+           baterie: x 290..502, z 225..437, y 112..208 mm | rezervor 5.0 L: nu încape | rezerva CBS: x 870..920, z 515..565, y -40..40 mm
+     700 |          0 |       215 |         225 |                 45 |                      0 | cilindru / radiator + ventilator; chiulasa / radiator + ventilator; roots / radiator + ventilator
+           baterie: x 310..522, z 225..437, y 112..208 mm | rezervor 5.0 L: x 210..350, z 470..670, y -18..178 mm | rezerva CBS: x 870..920, z 515..565, y -40..40 mm
+
+Propunerea, arborele la x = 580 mm:
+  garda minimă 215 mm (cerut 210); colectorul coboară la 236 mm
+  tunelul se termină la x = -75 mm (limita EZ-9: -240 mm în spatele axului spate)
+  radiatorul: miez 300 x 135 mm
+  baterie: x 190..402, z 225..437, y 112..208 mm
+  rezervor 5.0 L: x 580..776, z 470..670, y 70..210 mm
+  lovituri: niciuna
+  organele (fără scut) coboară la 225 mm (cerut 225)
+  tunelul ține burta, conul și cursa telescopică de 100 mm; amortizorul de 2.0 L stă sub tunel
+  stingerul până în amortizor: 253 mm la cursa minimă, 353 mm la cea maximă (toba.m: 276 mm)
+  chiulasa la 54 mm de radiator + ventilator
+  rezerva CBS: x 870..920, z 515..565, y -40..40 mm
+  demontarea bateriei: liberă spre stânga, prin panoul lateral
 
 === M01 Modelul Simulink al arborelui (MIL-1) ===
 Am construit model_arbore.slx (se deschide și rulează singur: cazul C)

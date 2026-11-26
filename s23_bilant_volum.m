@@ -37,7 +37,7 @@ S = struct('P', P, 'Tb', Tb, 'C', C, 'WB', WB, 'rf', rf, 'rr', rr, 'caster', cas
     'cursa_f', cursa_f, 'cursa_s', cursa_s, 'GC', GC, 'zc', zc, 'C_cvt', C_cvt, 'z_sub_sa', z_sub_sa, 'D_col', D_col, ...
     'joc_aripa', joc_aripa, 'manta', manta, 'joc_panou', joc_panou, 'joc_cald', joc_cald, 'filtru', filtru, ...
     'y_filtru', y_filtru, 'rezervor', rezervor, 'y_corp', y_corp, 'R_cot', R_cot, 'bat', bat, 'rad_lat', rad_lat, 'rad_gros', rad_gros, ...
-    'rad_h', rad_h, 'L_EZ', L_EZ, 'V_rez', V_rez);
+    'rad_h', rad_h, 'L_EZ', L_EZ, 'V_rez', V_rez, 'rev', false);
 rez_tab = [];  cel_bun = [];  ales = [];  lov_txt = {};
 % faza 1: toate unghiurile și pozițiile, fără baterie și rezervor (rapid)
 for alfa = alfa_sc
@@ -88,8 +88,38 @@ else
 end
 
 % ======================================================================
+% Revizuirea porților 5-6: propunere, neaprobată. Același unghi, cu cerințele revizuite; VL1-VL4 rămân pe layoutul
+% actual până la aprobare.
+Sr = S;  Sr.rev = true;
+Sr.gc_org = GC + 3 + 12;            % bucla tobei și bateria stau la 15 mm peste scut: tablă de 3 mm + 12 mm joc [ESTIMARE]
+Sr.dy_lat = 147.5;                  % colectorul trece din axa cilindrului (y = 0) la mijlocul benzii din dreapta (y = -147,5): drum real, numărat în lungime
+Sr.cursa_tel = 100;                 % cursa tobei telescopice: compensarea din s02 T2, sub 10% din lungimea acordată [ESTIMARE]
+Sr.L_sil = 300;  Sr.V_sil = 2.0;    % amortizorul cu flux inversat, sub tunel: lungime [mm], volum interior [L] [ESTIMARE: nu am dovadă]
+Sr.ventilator = 35;                 % ventilatorul din spatele miezului radiatorului [mm] [ESTIMARE]
+Sr.joc_roata = 10;  Sr.joc_motor = 15;   % bateria: peste jocurile generale, ca să rămână 25 mm față de roată (cu aripa) și de motor [ESTIMARE]
+Sr.cbs = [80 50 50];                % volumul rezervat distribuitorului CBS [mm] [ESTIMARE: nu am dovadă]
+Sr.joc_chi_rad = 40;                % aer între ventilator și chiulasă, ca să poată fi întors spre tunel [mm] [ESTIMARE]
+fprintf('\nRevizuirea porților 5-6 (propunere), cilindrul la %d de grade:\n', P.unghi_cil);
+fprintf('x arbore | încape tot | scut [mm] | organe [mm] | spatele tobei [mm] | chiulasă-radiator [mm] | lovituri\n');
+rv = [];
+for xc = 560:20:700
+    [okr, ir, elr] = configureaza(P.unghi_cil, xc, Sr, true);
+    fprintf('%8d | %10d | %9.0f | %11.0f | %18.0f | %22.0f | %s\n', xc, okr, ir.gc, ir.gc_org, ir.spate, ir.d_chi_rad, ir.lov_txt);
+    if ~okr, fprintf('           %s | %s | %s\n', ir.txt_b, ir.txt_r, ir.txt_c); end
+    if okr && (isempty(rv) || abs(xc/WB - 0.5) < abs(rv.xc/WB - 0.5)), rv = struct('alfa', P.unghi_cil, 'xc', xc, 'el', elr, 'info', ir, 'ok', okr); end
+end
+if isempty(rv)
+    fprintf('Propunerea nu încape la nicio poziție a arborelui.\n');
+else
+    fprintf('\nPropunerea, arborele la x = %d mm:\n%s\n%s\n', rv.xc, rv.info.text, rv.info.text_rev);
+    deseneaza(rv, WB, rf, rr, GC, sa, L_EZ, 's23_layout_revizuit.png');
+end
+
+% ======================================================================
 function [ok, info, el] = configureaza(alfa, xc, S, cu_plasare)
-% construiește toate contururile pentru un unghi și o poziție a motorului și le verifică
+% construiește toate contururile pentru un unghi și o poziție a motorului și le verifică;
+% S.rev = true construiește propunerea revizuită (porțile 5-6)
+rev = S.rev;
 P = S.P; Tb = S.Tb; C = S.C; WB = S.WB; rf = S.rf; rr = S.rr; caster = S.caster; trail = S.trail;
 cursa_f = S.cursa_f; cursa_s = S.cursa_s; GC = S.GC; zc = S.zc; C_cvt = S.C_cvt; z_sub_sa = S.z_sub_sa;
 D_col = S.D_col; joc_aripa = S.joc_aripa; manta = S.manta; joc_panou = S.joc_panou; joc_cald = S.joc_cald;
@@ -135,7 +165,11 @@ el = adauga(el, 'brat + lant', br, [-100 100], 'roata');        % lățimea bra�
 % radiatorul: în fața chiulasei, cât mai în față fără să atingă roata
 z_r = zc + 140;  x_r = WB;
 while x_r > xc && overlaps(dreptunghi(x_r - rad_gros, x_r, z_r - rad_h/2, z_r + rad_h/2), rf_p), x_r = x_r - 5; end
-el = adauga(el, 'radiator', dreptunghi(x_r - rad_gros, x_r, z_r - rad_h/2, z_r + rad_h/2), [-rad_lat rad_lat]/2, 'aux');
+if rev   % ventilatorul electric din spatele miezului face parte din volum
+    el = adauga(el, 'radiator + ventilator', dreptunghi(x_r - rad_gros - S.ventilator, x_r, z_r - rad_h/2, z_r + rad_h/2), [-rad_lat rad_lat]/2, 'aux');
+else
+    el = adauga(el, 'radiator', dreptunghi(x_r - rad_gros, x_r, z_r - rad_h/2, z_r + rad_h/2), [-rad_lat rad_lat]/2, 'aux');
+end
 
 % filtrul sub șa, imediat în spatele ieșirii coloanei, pe stânga
 el = adauga(el, 'filtru', dreptunghi(E(1) - filtru(1) - 10, E(1) - 10, z_sub_sa - filtru(2), z_sub_sa), y_filtru, 'aux');
@@ -152,18 +186,21 @@ raza = @(s) 1e3*(Tb.D1/2 + min(max(s/1e3 - (Tb.L1 - Tb.L_port), 0), Tb.L2)*(Tb.D
 % difuzorul urcă pe dreapta, în afara capacului ISG; locul urcării se mută spre spate până când bucla de sub motor
 % rămâne deasupra gărzii, cu lungimea colector + difuzor dată de toba.m. Deplasarea laterală spre dreapta (~150 mm)
 % nu e numărată în lungime: bucla iese mai adâncă decât în realitate (conservativ pentru gardă)
+gc_bucla = GC;  dy = 0;
+if rev, gc_bucla = S.gc_org;  dy = S.dy_lat; end   % propunerea: garda organelor și drumul lateral real
 for x_urc = xc:-10:Pv(1)
-    lung = @(zj) L_drept + (W2(2) - zj) + abs(W2(1) - x_urc) + (z_ax - zj);
+    lung = @(zj) L_drept + dy + (W2(2) - zj) + abs(W2(1) - x_urc) + (z_ax - zj);
     if lung(W2(2)) >= L_cer                      % nu mai trebuie coborât: urcarea se pune unde lungimea iese exact
-        x_urc = W2(1) - (L_cer - L_drept - (z_ax - W2(2)));  z_jos = W2(2);  break
+        x_urc = W2(1) - (L_cer - L_drept - dy - (z_ax - W2(2)));  z_jos = W2(2);  break
     end
     z_jos = fzero(@(zj) lung(zj) - L_cer, [-500 W2(2)]);
-    if z_jos - raza(lung(z_jos) - (z_ax - z_jos)) >= GC, break, end
+    if z_jos - raza(lung(z_jos) - (z_ax - z_jos)) >= gc_bucla, break, end
 end
 r_jos = raza(lung(z_jos) - (z_ax - z_jos));      % raza la capătul de jos al buclei (cea mai mare de pe porțiunea de jos)
 x_t0 = x_urc - 20;
 traseu = [W1 W2 [W2(1); z_jos] [x_urc; z_jos] [x_urc; z_ax]];
 s_cap = cumsum([0 vecnorm(diff(traseu, 1, 2))]);                % lungimea de la flanșă la fiecare colț
+s_cap(3:end) = s_cap(3:end) + dy;                               % drumul lateral din cot (doar în propunere)
 tub = cell(1, 4);
 for k = 1:4, tub{k} = banda(traseu(:, k), traseu(:, k + 1), 2*raza(s_cap(k + 1))); end
 % ieșirea stă în axa cilindrului (y = 0); în cotul din W2 țeava trece spre dreapta, în afara carterului și a capacului ISG;
@@ -171,14 +208,33 @@ for k = 1:4, tub{k} = banda(traseu(:, k), traseu(:, k + 1), 2*raza(s_cap(k + 1))
 el = adauga(el, 'colector (ieșire)', tub{1}, [-1 1]*raza(0), 'toba');
 el = adauga(el, 'colector (cot spre dreapta)', intersect(cerc(W2, raza(L_drept)), dr(56 + 12, 2000, -2000, 2000)), [-175 raza(0)], 'toba');   % cotul nu trece în spatele flanșei
 el = adauga(el, 'colector+difuzor (coborâre, buclă, urcare)', union(union(tub{2}, tub{3}), tub{4}), [-175 -120], 'toba');
-L_tun = (Tb.L3 + Tb.L4 + Tb.L5)*1e3;
-el = adauga(el, 'tunel (burta, con, stinger)', dreptunghi(x_t0 - L_tun, x_t0 + 20, z_ax - h_tun/2, z_ax + h_tun/2), [-225 -75], 'toba');   % lângă roata spate, nu deasupra ei
+if rev
+    % propunerea: în tunel stau burta (cu catalizatorul), conul și cursa telescopică; stingerul face un U în jos și intră
+    % printr-o îmbinare glisantă în amortizorul cu flux inversat de sub tunel; intrarea și ieșirea sunt în spate
+    x_tail = x_t0 - (Tb.L3 + Tb.L4)*1e3 - S.cursa_tel;            % capătul conului la cursa maximă
+    el = adauga(el, 'tunel (burta cu catalizator, con, cursa)', dreptunghi(x_tail, x_t0 + 20, z_ax - h_tun/2, z_ax + h_tun/2), [-225 -75], 'toba');
+    w_i = 115 - 2*manta;  h_o = S.V_sil*1e6/(S.L_sil*w_i) + 2*manta;   % amortizorul: 115 mm lățime cu manta (între braț și caroserie)
+    z_sil = z_ax - h_tun/2 - 10 - h_o/2;  R_U = (z_ax - z_sil)/2;  r3 = Tb.D3*1e3/2 + manta;  cU = [x_tail; (z_ax + z_sil)/2];
+    x_sr = x_tail + S.cursa_tel + 30;                                % fața din spate a amortizorului: îmbinarea glisantă
+    U = intersect(subtract(cerc(cU, R_U + r3), cerc(cU, R_U - r3)), dreptunghi(-1e4, x_tail, -1e4, 1e4));
+    el = adauga(el, 'stinger (U, îmbinare glisantă)', union(U, banda([x_tail; z_sil], [x_sr; z_sil], 2*r3)), [-225 -110], 'toba');
+    el = adauga(el, 'amortizor (flux inversat)', dreptunghi(x_sr, x_sr + S.L_sil, z_sil - h_o/2, z_sil + h_o/2), [-225 -110], 'toba');
+    spate = x_tail - R_U - r3;
+    L_st = pi*R_U + [30, S.cursa_tel + 30];                          % stingerul până în amortizor, la cursa minimă și maximă
+else
+    L_tun = (Tb.L3 + Tb.L4 + Tb.L5)*1e3;
+    el = adauga(el, 'tunel (burta, con, stinger)', dreptunghi(x_t0 - L_tun, x_t0 + 20, z_ax - h_tun/2, z_ax + h_tun/2), [-225 -75], 'toba');   % lângă roata spate, nu deasupra ei
+    spate = x_t0 - L_tun;
+end
 
 % bateria și rezervorul: bateria jos și la mijlocul ampatamentului, rezervorul sub șa, în spatele filtrului
-ok_b = true; ok_r = true; txt_b = ''; txt_r = '';
+ok_b = true; ok_r = true; ok_c = true; txt_b = ''; txt_r = ''; txt_c = '';
+z0 = GC;  ext = [0 0];
+if rev, z0 = S.gc_org;  ext = [S.joc_roata S.joc_motor]; end
 if cu_plasare
-    [el, ok_b, txt_b] = plaseaza(el, 'baterie', bat, [WB/2; GC], joc_cald, GC, z_sub_sa, ax_x, S.y_corp);
+    [el, ok_b, txt_b] = plaseaza(el, 'baterie', bat, [WB/2; z0], joc_cald, z0, z_sub_sa, ax_x, S.y_corp, ext);
     [el, ok_r, txt_r] = plaseaza(el, sprintf('rezervor %.1f L', S.V_rez), rezervor, [E(1) - 300; z_sub_sa], joc_cald, GC, z_sub_sa, ax_x, S.y_corp);
+    if rev, [el, ok_c, txt_c] = plaseaza(el, 'rezerva CBS', S.cbs, [ax_x(450) - 120; 450], joc_cald, z0, z_sub_sa, ax_x, S.y_corp); end
 end
 
 % verificările
@@ -200,12 +256,28 @@ for i = 1:numel(el)
         end
     end
 end
+if rev   % piesele tobei se verifică și între ele acolo unde nu sunt legate: amortizorul față de urcare
+    ia = strcmp({el.nume}, 'amortizor (flux inversat)');  iu = strcmp({el.nume}, 'colector+difuzor (coborâre, buclă, urcare)');
+    if area(intersect(polybuffer(el(ia).p, 10), el(iu).p)) > 1, lov{end + 1} = 'amortizor / urcarea tobei'; end
+end
 zmin = arrayfun(@(e) min(e.p.Vertices(:, 2)), el(~strcmp({el.tip}, 'roata')));
-spate = x_t0 - L_tun;  lim_spate = -(L_EZ - WB)/2;
+lim_spate = -(L_EZ - WB)/2;
+org = ~strcmp({el.tip}, 'roata') & ~strcmp({el.nume}, 'carter');   % carterul are scutul de oțel
+info.gc_org = min(arrayfun(@(e) min(e.p.Vertices(:, 2)), el(org)));
+info.d_chi_rad = dist_poly(el(strcmp({el.nume}, 'chiulasa')).p, el(startsWith({el.nume}, 'radiator')).p);
 ch = strcmp({el.nume}, 'chiulasa');  [~, info.zg_cil] = centroid(union(el(strcmp({el.nume}, 'cilindru')).p, el(ch).p));  info.z_chi = max(el(ch).p.Vertices(:, 2));
-info.ok_b = ok_b;  info.ok_r = ok_r;  info.txt_b = txt_b;  info.txt_r = txt_r;
+info.ok_b = ok_b;  info.ok_r = ok_r;  info.txt_b = txt_b;  info.txt_r = txt_r;  info.txt_c = txt_c;
 info.gc = min(zmin);  info.z_jos = z_jos - r_jos;  info.L_drept = L_drept;  info.spate = spate;  info.lovituri = numel(lov);  info.lov_txt = strjoin(lov, '; ');
 ok = info.gc >= GC - 1e-6 && isempty(lov) && ok_b && ok_r && spate >= lim_spate;
+info.text_rev = '';
+if rev
+    ok = ok && info.gc_org >= S.gc_org - 0.5 && ok_c && info.d_chi_rad >= S.joc_chi_rad;   % 0,5 mm: toleranța lui fzero și a grilei
+    info.text_rev = sprintf(['  organele (fără scut) coboară la %.0f mm (cerut %.0f)\n' ...
+        '  tunelul ține burta, conul și cursa telescopică de %.0f mm; amortizorul de %.1f L stă sub tunel\n' ...
+        '  stingerul până în amortizor: %.0f mm la cursa minimă, %.0f mm la cea maximă (toba.m: %.0f mm)\n' ...
+        '  chiulasa la %.0f mm de radiator + ventilator\n  %s\n  demontarea bateriei: %s'], ...
+        info.gc_org, S.gc_org, S.cursa_tel, S.V_sil, L_st, Tb.L5*1e3, info.d_chi_rad, txt_c, demontare(el, 'baterie', S.y_corp));
+end
 info.text = sprintf(['  garda minimă %.0f mm (cerut %d); colectorul coboară la %.0f mm\n' ...
     '  tunelul se termină la x = %.0f mm (limita EZ-9: %.0f mm în spatele axului spate)\n' ...
     '  radiatorul: miez %.0f x %.0f mm\n  %s\n  %s\n  lovituri: %s'], ...
@@ -223,17 +295,19 @@ n = [-(B(2) - A(2)); B(1) - A(1)];  n = n/norm(n)*w/2;
 p = polyshape([A(1) + n(1), B(1) + n(1), B(1) - n(1), A(1) - n(1)], [A(2) + n(2), B(2) + n(2), B(2) - n(2), A(2) - n(2)]);
 end
 
-function [el, ok, txt] = plaseaza(el, nume, dims, tinta, joc_cald, GC, z_sus, ax_x, y_max)
+function [el, ok, txt] = plaseaza(el, nume, dims, tinta, joc_cald, GC, z_sus, ax_x, y_max, ext)
 % cutia cu laturile dims în poziția liberă cea mai apropiată de țintă (plus abaterea laterală), în toate cele 6 orientări,
 % la poziții laterale din 20 în 20 mm, de la mijloc spre stânga (0 <= y, marginea <= y_max), numai în spatele axei de direcție (60 mm joc pentru virare).
 % Obstacolele se rasterizează la 5 mm în vedere laterală, umflate cu un pas, și cu 10 mm joc lateral (conservativ). Față de tobă cutia are nevoie
 % de joc_cald pe cel puțin o axă: două cutii sunt separate dacă sunt separate pe o axă.
+if nargin < 10, ext = [0 0]; end                           % jocuri suplimentare față de roți și de motor [mm]
 h = 5;  [Xg, Zg] = meshgrid(-250:h:1300, GC:h:z_sus);  [nz, nx] = size(Xg);
 blocat0 = Xg >= ax_x(Zg) - 60;
 m = false(nz, nx, numel(el));  yk = zeros(numel(el), 2);
 for k = 1:numel(el)
     j = h;  yk(k, :) = el(k).y + [-10 10];                    % 10 mm joc lateral față de orice organ [ESTIMARE]
     if strcmp(el(k).tip, 'toba'), j = h + joc_cald;  yk(k, :) = el(k).y + [-joc_cald joc_cald]; end
+    if strcmp(el(k).tip, 'roata'), j = j + ext(1); elseif strcmp(el(k).tip, 'motor'), j = j + ext(2); end
     m(:, :, k) = reshape(isinterior(polybuffer(el(k).p, j), Xg(:), Zg(:)), nz, nx);
 end
 O = unique(perms(dims), 'rows');  best = [Inf zeros(1, 6)];   % cost, x, z, lx, lz, y1, y2
@@ -274,4 +348,32 @@ xlabel('x de la axul roții spate [mm]'); ylabel('z de la sol [mm]');
 xlim([-400 1600]); ylim([0 900]);
 if ~exist('rezultate', 'dir'), mkdir('rezultate'); end
 exportgraphics(fig, fullfile('rezultate', fis), 'Resolution', 150); close(fig);
+end
+
+function d = dist_poly(p1, p2)
+% distanța minimă dintre două contururi (0 dacă se suprapun)
+if overlaps(p1, p2), d = 0; return, end
+v1 = p1.Vertices(~any(isnan(p1.Vertices), 2), :);  v2 = p2.Vertices(~any(isnan(p2.Vertices), 2), :);
+d = min(dist_pct_lat(v1, v2), dist_pct_lat(v2, v1));
+end
+
+function d = dist_pct_lat(P, V)
+% distanța minimă de la punctele P la laturile poligonului închis V
+A = V;  B = circshift(V, -1);  d = Inf;
+for k = 1:size(A, 1)
+    ab = B(k, :) - A(k, :);  t = max(0, min(1, ((P - A(k, :))*ab')/max(ab*ab', eps)));
+    d = min(d, min(vecnorm(P - (A(k, :) + t.*ab), 2, 2)));
+end
+end
+
+function txt = demontare(el, nume, y_max)
+% bateria iese spre stânga: tot ce stă în proiecția ei laterală, între ea și caroserie, o blochează
+ib = find(strcmp({el.nume}, nume), 1);
+if isempty(ib), txt = 'bateria nu e plasată'; return, end
+pb = polybuffer(el(ib).p, 5);  yb = el(ib).y;  bloc = {};
+for k = setdiff(1:numel(el), ib)
+    if el(k).y(2) > yb(2) - 1 && el(k).y(1) < y_max && area(intersect(pb, el(k).p)) > 1, bloc{end + 1} = el(k).nume; end %#ok<AGROW>
+end
+if isempty(bloc), txt = 'liberă spre stânga, prin panoul lateral';
+else, txt = ['blocată spre stânga de: ' strjoin(bloc, ', ')]; end
 end
