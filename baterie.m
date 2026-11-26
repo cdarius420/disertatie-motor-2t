@@ -3,7 +3,7 @@ function B = baterie(P)
 % Cererea de vârf: ISG la cuplul maxim la turația de putere, prin randament, plus Roots și consumatorii,
 % la tensiunea minimă a bateriei (curentul cel mai mare).
 I = isg_constante(P); C = compresor(P);
-B.P_isg_mec = I.T_max*P.n_putere*2*pi/60;                  % [W] limita de sus, fără căderea inductivă (s04)
+B.P_isg_mec = min(I.T_max*P.n_putere*2*pi/60, P.P_asist_max);   % [W] cuplul maxim, plafonat de controler (motorul + ISG <= 11 kW)
 B.P_roots = C.P_e;                                         % [W] electric, din compresor.m
 B.P_varf = B.P_isg_mec/P.eta_isg + B.P_roots + sum(P.P_aux);   % la bornele bateriei [W]
 B.P_cont = B.P_roots + sum(P.P_aux);                       % dacă ISG nu generează [W]

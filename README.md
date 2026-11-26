@@ -6,7 +6,7 @@ Pachetul calculează și verifică pe bucăți conceptul din propunere, exportă
 
 1. Deschide folderul în MATLAB (R2020a sau mai nou, cu Simulink).
 2. Scrie `ruleaza_tot` în Command Window.
-3. Citește rezumatul de la final: **104 din 105** (MATLAB R2026a, 26 noiembrie 2026). Pică BT4, cu bună știință: bateria 16s3p nu ține tensiunea la vârful de asistență (decizie deschisă, vezi raportul Etapei 9). Graficele și jurnalul ajung în `rezultate/`.
+3. Citește rezumatul de la final: **105 din 105** (MATLAB R2026a, 26 noiembrie 2026). Graficele și jurnalul ajung în `rezultate/`.
 4. În Fusion (Z în sus): Shift+S, rulează `construieste`. Componentele trecute în `fusion/construieste/reconstruieste.txt` se șterg și se refac; raportul ajunge în `fusion/construieste/raport.txt`: **94 din 94**.
 
 În GNU Octave merg scripturile s; `m01` și `m02` cer Simulink și Simscape și se sar.

@@ -1,5 +1,5 @@
 Dizertație: grup propulsor 2T hibrid, controlat mecatronic
-Rulare: 26-Nov-2026 07:45:27
+Rulare: 26-Nov-2026 11:40:42
 
 === S01 Cinematica bielă-manivelă și ferestrele ===
 Cilindree: 124.8 cm3, lambda = r/L = 0.248
@@ -274,15 +274,15 @@ Masa 190 kg (motocicleta 115 + pilot 75), Crr 0.020, randamentul transmisiei 0.8
    CdA 0.75 m2: viteza maximă  90 km/h; la 99 km/h trebuie 12.2 kW la arbore
   [TRECUT] G1     Viteza maximă 99.7 km/h >= ținta de 99 km/h (CdA 0.55 m2, 9.5 kW net)
   [TRECUT] G2     L3e-A1: 11.0 kW <= 11 kW; 0.096 kW/kg <= 0.1 kW/kg (masa în ordine de mers 115 kg)
-   De confirmat: cum se adună puterea ISG la încadrarea în A1.
-Cererea la bornele bateriei: ISG 12.2 kW mecanic / 0.90 + Roots 1.38 kW + consumatori 150 W = 15.1 kW
-Curentul la 44.8 V: 336 A de vârf, 34 A continuu (fără generare)
+   Strategia: controlerul ține motorul + ISG <= 11 kW; asistența ISG <= 3.0 kW (P.P_asist_max). Regula de măsurare la hibrizi (Reg. 134/2014): de citit.
+Cererea la bornele bateriei: ISG 3.0 kW mecanic (plafonul controlerului) / 0.90 + Roots 1.38 kW + consumatori 150 W = 4.9 kW
+Curentul la 44.8 V: 108 A de vârf, 34 A continuu (fără generare)
 Pachet 16s3p din ANR26650M1B: 384 Wh, 3.65 kg celule, cutie 212 x 212 x 95 mm (4.3 L)
-O asistență de 4 s ia 16.7 Wh (4.4% din pachet); cu DoD 80%: 18 asistențe pe încărcare
+O asistență de 4 s ia 5.4 Wh (1.4% din pachet); cu DoD 80%: 56 asistențe pe încărcare
 Frânarea regenerativă admisă de celule: 4.6 kW timp de 10 s, 1.8 kW continuu
-  [TRECUT] BT1    Vârful de 336 A <= 3 x 120 A (descărcarea de 10 s a celulei)
+  [TRECUT] BT1    Vârful de 108 A <= 3 x 120 A (descărcarea de 10 s a celulei)
   [TRECUT] BT2    Continuu 34 A <= 3 x 52 A
-  [PICAT ] BT4    La vârf celula ține 2.08 V >= 2.80 V (minimul pentru care e calculat ISG); ar trebui 9p
+  [TRECUT] BT4    La vârf celula ține 2.84 V >= 2.80 V (minimul pentru care e calculat ISG); ar trebui 3p
   [TRECUT] BT3    Asistența de 4 s <= 10 s, durata vârfului din fișă
 
 === S21 Sensibilitatea la estimări ===
@@ -371,5 +371,4 @@ La 10500 rot/min: forța totală pe carcasă 5.85 kN pe axa cilindrului, 4.63 kN
   [TRECUT] M2c    Simscape: forța lumii pe mecanism = suma m*a cu masele din Fusion (abatere 7.2e-12)
   [TRECUT] M2d    Forța transversală din Simscape 4.632 kN = BF*m_rec*r*omega^2 din s12 4.622 kN (în 1%)
 
-=== Rezumat: 104 din 105 verificări trecute ===
-  PICAT: BT4 La vârf celula ține 2.08 V >= 2.80 V (minimul pentru care e calculat ISG); ar trebui 9p
+=== Rezumat: 105 din 105 verificări trecute ===

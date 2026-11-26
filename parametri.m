@@ -385,6 +385,8 @@ P.n_par = 3;                                         % celule în paralel; s20 v
 P.cel_C_Ah = 2.5; P.cel_I_cont = 52; P.cel_I_puls = 120; P.cel_t_puls = 10;   % [Ah], [A], [A] timp de [s]
 P.cel_I_inc = 10; P.cel_I_inc_puls = 26; P.cel_m = 0.076; P.cel_D = 25.96e-3; P.cel_L = 65.15e-3;   % [A], [A], [kg], [m], [m]
 P.eta_isg = 0.90;   % ISG + invertor, motor sau generator [-] [ESTIMARE]
+P.P_asist_max = 3.0e3;  % asistența ISG, mecanic [W]: decizia ta (26.11.2026), motorul + ISG <= 11 kW (L3e-A1), impusă de controler;
+                        % 3 kW e ce ține pachetul 16s3p la capătul descărcării fără să coboare sub V_cel_min (BT4)
 P.t_asist = 4;      % asistența la cuplul maxim [s], reperul PCX Hybrid [ESTIMARE]
 P.P_aux   = [50 60 40];  % pompa de apă, ventilatorul radiatorului, ECU + servo + lumini LED [W] [ESTIMARE]
 P.DoD     = 0.8;    % adâncimea de descărcare folosită [-] [ESTIMARE]
