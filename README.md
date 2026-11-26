@@ -2,12 +2,18 @@
 
 Pachetul calculează și verifică pe bucăți conceptul din propunere, exportă parametrii pentru Fusion, unde scriptul `construieste` desenează și verifică ansamblul, și construiește modelele Simulink și Simscape. Totul pleacă din `parametri.m`.
 
+## Unde stă restul proiectului
+
+- Decizii, riscuri, cerințe, organe, sarcini și revizii: Notion, [pagina proiectului](https://app.notion.com/p/424787147a1b81f2ba95c588a9513592).
+- Exporturi, PDF-uri și arhive: Google Drive, [Dizertatie_EZ9_hibrid](https://drive.google.com/drive/folders/1D-yQPOYOjUR2wFIwRjnItcxNqGVt326X).
+- Istoricul: acest repo, un commit pe MR.
+
 ## Cum rulezi
 
 1. Deschide folderul în MATLAB (R2020a sau mai nou, cu Simulink).
 2. Scrie `ruleaza_tot` în Command Window.
 3. Citește rezumatul de la final: **105 din 105** (MATLAB R2026a, 26 noiembrie 2026). Graficele și jurnalul ajung în `rezultate/`.
-4. În Fusion (Z în sus): Shift+S, rulează `construieste`. Componentele trecute în `fusion/construieste/reconstruieste.txt` se șterg și se refac; raportul ajunge în `fusion/construieste/raport.txt`: **94 din 94**.
+4. În Fusion (Z în sus): Shift+S, rulează `construieste`. Componentele trecute în `fusion/construieste/reconstruieste.txt` se șterg și se refac; raportul ajunge în `fusion/construieste/raport.txt`: **98 din 98** la MR-018; după MR-022 (variatorul de 150 mm) modelul trebuie reconstruit.
 
 În GNU Octave merg scripturile s; `m01` și `m02` cer Simulink și Simscape și se sar.
 
